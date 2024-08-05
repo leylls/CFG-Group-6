@@ -15,7 +15,7 @@
 
  ~~~~~~~~~~~~~~  \\  |[*]|   |[*]|   |[*]|  // ~~~~~~~~~~~~~
  |                                                         |
-                     Welcome back Georgia!
+                    Welcome back {user_name}!
 
                       What would you like
                           to do today?
@@ -38,17 +38,18 @@
 
 
 
-  ~~~~~ \\             New User Set up             // ~~~~~
+ ~~~~~ \\             New User Set up             // ~~~~~
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~\\//~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-               I see you are new around here.
+            I see that you are new around here.
           How about we set up a few things first?
 
               For example, what is your name?
 
-       ->
+       ->  #username
 
 
-            Great! Nice to meet you {}.
+            Great! Nice to meet you {user_name}.
 
        Do you want to know how to use this app?
             [ N ] No thank you, I already know how it works.
@@ -61,6 +62,8 @@
          Now that you know how to operate PriceTracking app,
                  it's time to jump into business!
 
+ ~~~~~~~~~~~~~~~~~~~~~~~~~\\__//~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 
 
@@ -69,7 +72,7 @@
 
 
  ~~~~~~~~~~~~~~  \\  |[*]|   |[*]|   |[*]|  // ~~~~~~~~~~~~~
-
+ |                                                         |
                         \  MAIN MENU  /
 
                   What would you like to do?
@@ -81,7 +84,8 @@
                [ 5 ]  Help
                [ 0 ]  Exit
 
- ~~~~~~~~~~~~~  \\  |[*]|   |[*]|    |[*]|  //  ~~~~~~~~~~~~~
+ |                                                         |
+ ~~~~~~~~~~~~~~  \\  |[*]|   |[*]|   |[*]|  // ~~~~~~~~~~~~~
 
    Type a number
        ->
@@ -92,7 +96,7 @@
 
 
 
-  .................  \\      [ 1 ]      //  .................
+  ................  \\      [ 1 ]      //  ...................
                    ** TRACK A NEW PRODUCT **
 
 
