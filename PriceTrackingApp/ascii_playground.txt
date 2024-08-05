@@ -1,0 +1,169 @@
+                              **
+                         ************
+                *****************************
+============================================================
+*          *              WELCOME TO            *          *
+*         * *         PRICE TRACKING APP       * *         *
+============================================================
+                *****************************
+                         ************
+                              **
+
+
+
+
+
+ ~~~~~~~~~~~~~~  \\  |[*]|   |[*]|   |[*]|  // ~~~~~~~~~~~~~
+ |                                                         |
+                     Welcome back Georgia!
+
+                      What would you like
+                          to do today?
+
+               [ 1 ]  Track a new product
+               [ 2 ]  My tracked products
+               [ 3 ]  App settings
+               [ 4 ]  Email notifications
+               [ 5 ]  Help
+               [ 0 ]  Exit
+ |                                                         |
+ ~~~~~~~~~~~~~~  \\  |[*]|   |[*]|   |[*]|  // ~~~~~~~~~~~~~
+
+   Type a number
+       ->
+
+
+
+
+
+
+
+  ~~~~~ \\             New User Set up             // ~~~~~
+
+               I see you are new around here.
+          How about we set up a few things first?
+
+              For example, what is your name?
+
+       ->
+
+
+            Great! Nice to meet you {}.
+
+       Do you want to know how to use this app?
+            [ N ] No thank you, I already know how it works.
+            [ Y ] Yes please! #TODO #Link to ReadMe?
+
+  Type either Y or N
+       ->
+
+
+         Now that you know how to operate PriceTracking app,
+                 it's time to jump into business!
+
+
+
+
+
+
+
+
+ ~~~~~~~~~~~~~~  \\  |[*]|   |[*]|   |[*]|  // ~~~~~~~~~~~~~
+
+                        \  MAIN MENU  /
+
+                  What would you like to do?
+
+               [ 1 ]  Track a new product
+               [ 2 ]  My tracked products
+               [ 3 ]  App settings
+               [ 4 ]  Email notifications
+               [ 5 ]  Help
+               [ 0 ]  Exit
+
+ ~~~~~~~~~~~~~  \\  |[*]|   |[*]|    |[*]|  //  ~~~~~~~~~~~~~
+
+   Type a number
+       ->
+
+
+
+
+
+
+
+  .................  \\      [ 1 ]      //  .................
+                   ** TRACK A NEW PRODUCT **
+
+
+
+  ...........................................................
+
+
+
+
+
+
+
+
+  .................  \\      [ 2 ]      //  .................
+                   ** MY TRACKED PRODUCTS **
+
+
+
+  ...........................................................
+
+
+
+
+
+
+
+  .................  \\      [ 3 ]      //  .................
+                       ** APP SETTINGS **
+
+
+
+  ...........................................................
+
+
+
+
+
+
+
+  .................  \\      [ 4 ]      //  .................
+                   ** EMAIL NOTIFICATIONS **
+
+
+
+
+  ...........................................................
+
+
+
+
+
+
+
+
+
+  .................  \\      [ 5 ]      //  .................
+                           ** HELP **
+
+
+
+
+  ...........................................................
+
+
+
+
+
+
+
+
+
+
+
+
