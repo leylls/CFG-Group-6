@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 
 #Variable url would come as an input from the FE side, hard-coded for testing
-url='https://www.amazon.co.uk/Ends-Us-Colleen-Hoover/dp/1471156265/ref=sr_1_1?sr=8-1'
+url= 'https://www.amazon.co.uk/Windy-Seamless-Ultra-Ultra-Thin-Comfort/dp/B0D6RR2661/ref=zg_bsnr_c_fashion_d_sccl_1/258-6243987-5478100?pd_rd_i=B0D6RR2661&psc=1'
 
 #browser information - amend 'User_Agent' according to your browser (google 'my user agent')
 browser_header = {
@@ -27,13 +27,28 @@ else:
     product_title = page_content.find(id='productTitle').get_text()
     print(product_title.strip())
 
+    #get price on the right-hand side table
     price_whole = page_content.find('span', class_ = 'a-price-whole').get_text(strip=True)
     price_decimal = page_content.find('span', class_ = 'a-price-fraction').get_text(strip=True)
-    print(price_whole + price_decimal)
+    #store currency to display it to the user
+    price_currency = page_content.find('span', class_ = 'a-price-symbol')
+    price = price_whole + price_decimal
+    if price == None:
+        print('Error loading price.')
 
-    # with open('debug.txt', 'w') as text_file:
-    #     text_file.write("{}".format(page_content.contents))
-    # product_price = page_content.find(id = 'corePriceDisplay_desktop_feature_div')
-    # print(product_price)
-    # pp = product_price.find('span', {'class': 'a-price-whole'})
-    # print(pp)
+    #In case price is showing with a comma (searching Amazon ES, for example), convert to EN number convention
+    price = price.replace(',','.')
+    print(price)
+
+    
+''' 
+ISSUES
+Incorrect pricing in following products: 
+https://www.amazon.co.uk/Ends-Us-Colleen-Hoover/dp/1471156265/ref=sr_1_1?s=books&sr=1-1
+https://www.amazon.co.uk/Windy-Seamless-Ultra-Ultra-Thin-Comfort/dp/B0D6RR2661/ref=zg_bsnr_c_fashion_d_sccl_1/258-6243987-5478100?pd_rd_i=B0D6RR2661&psc=1
+https://www.amazon.co.uk/coskefy-Underwear-Waisted-Knickers-Stretchy/dp/B0BRK8YHMC?pd_rd_i=B0BRK8YHMC&ref_=oct_dx_dotd_B0BRK8YHMC
+'''
+
+#get price under title
+    # price = page_content.select_one('span.a-price').select_one('span.a-offscreen')
+    # print(price.text)
