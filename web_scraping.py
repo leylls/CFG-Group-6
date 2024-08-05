@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 
 #Variable url would come as an input from the FE side, hard-coded for testing
-url= 'https://www.amazon.co.uk/Windy-Seamless-Ultra-Ultra-Thin-Comfort/dp/B0D6RR2661/ref=zg_bsnr_c_fashion_d_sccl_1/258-6243987-5478100?pd_rd_i=B0D6RR2661&psc=1'
+url= 'https://www.amazon.co.uk/LG-LED-LQ63-32-Smart/dp/B0D17VJPSD?ref_=Oct_d_otopr_d_560864_0&pd_rd_i=B09SKR4QD9'
 
 #browser information - amend 'User_Agent' according to your browser (google 'my user agent')
 browser_header = {
@@ -13,6 +13,20 @@ browser_header = {
     'DNT': '1', # Do Not Track Request Header 
     'Connection': 'close'
     }
+
+def get_price(page_content):
+    try:
+        price_whole = page_content.find('span', class_ = 'a-price-whole').get_text(strip=True)
+        price_decimal = page_content.find('span', class_ = 'a-price-fraction').get_text(strip=True)
+        #store currency to display it to the user
+        currency = page_content.find('span', class_ = 'a-price-symbol').text
+    except:
+        print('Error loading price.')
+    else:
+        price = price_whole + price_decimal
+        #In case price is showing with a comma (searching Amazon ES, for example), convert to EN number convention
+        price = price.replace(',','.')
+    return price, currency
 
 response = requests.get(url, headers=browser_header)
 
@@ -25,22 +39,11 @@ else:
     page_content = BeautifulSoup(response.content, 'html.parser') #lxml
 
     product_title = page_content.find(id='productTitle').get_text()
-    print(product_title.strip())
+    print(f'Product: {product_title.strip()}')
 
-    #get price on the right-hand side table
-    price_whole = page_content.find('span', class_ = 'a-price-whole').get_text(strip=True)
-    price_decimal = page_content.find('span', class_ = 'a-price-fraction').get_text(strip=True)
-    #store currency to display it to the user
-    price_currency = page_content.find('span', class_ = 'a-price-symbol')
-    price = price_whole + price_decimal
-    if price == None:
-        print('Error loading price.')
+    price, currency = get_price(page_content)
+    print(f'Price: {currency + price}')
 
-    #In case price is showing with a comma (searching Amazon ES, for example), convert to EN number convention
-    price = price.replace(',','.')
-    print(price)
-
-    
 ''' 
 ISSUES
 Incorrect pricing in following products: 
