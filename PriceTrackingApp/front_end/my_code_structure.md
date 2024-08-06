@@ -12,3 +12,4 @@ modules withiin the app's main.py final file
 
 Example of expected main.py script
 
+![image](https://github.com/user-attachments/assets/9d31bdeb-2b06-442a-aa36-96ff56b8c28c)
