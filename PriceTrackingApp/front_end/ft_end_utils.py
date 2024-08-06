@@ -6,7 +6,7 @@ def clean(string):
     :return: cleaned_string as str - trimmed or refactor answer as str
     """
     to_remove = [".", "-", "*", "\\", "/", " ", '"', ","]
-    cleaned_string = string.strip().lower().replace(".",'').replace(".",'').replace(".",'').replace(".",'')
+    cleaned_string = string.strip().lower()
 
     for char in to_remove:
         cleaned_string = cleaned_string.replace(char, '')
@@ -15,7 +15,7 @@ def clean(string):
         return "y"
     elif cleaned_string == "no":
         return "n"
-    print(cleaned_string)
+
     return cleaned_string
 
 
@@ -27,27 +27,30 @@ def choice_validation(user_input, data_type, num_choices=0):
     :param num_choices: int - the number of choices the user is given - depending on menu length.
     :return: True | False
     """
-    try:
-        if data_type == str:
-            user_answer = user_input
-            valid_answers = ["n","y"]
-            if user_answer not in valid_answers:
-                raise ValueError
-
-        elif data_type == int:
-            user_answer = int(user_input) # If cannot be turned into and int then it will raise ValueError
-            valid_answers = [num for num in range(num_choices)]
-            if user_answer not in valid_answers:
-                raise ValueError
-        else:
-            raise TypeError("Incorrect datatype argument given")
-            # This is for apps development, if Exception is raised then it means the data_type parameter is wrong
-
-    except ValueError:
-        print("Please only type one of the given options!")
+    if user_input == None:
         return False
-    except TypeError:
-        return False
+    else:
+        try:
+            if data_type == str:
+                user_answer = user_input
+                valid_answers = ["n","y"]
+                if user_answer not in valid_answers:
+                    raise ValueError
+
+            elif data_type == int:
+                user_answer = int(user_input) # If cannot be turned into and int then it will raise ValueError
+                valid_answers = [num for num in range(num_choices)]
+                if user_answer not in valid_answers:
+                    raise ValueError
+            else:
+                raise TypeError("Incorrect datatype argument given")
+                # This is for apps development, if Exception is raised then it means the data_type parameter is wrong
+
+        except ValueError:
+            print("Please only type one of the given options!")
+            return False
+        except TypeError:
+            return False
 
     return True
 
@@ -64,4 +67,8 @@ def get_user_input(suggestion=None):
     user_answer = clean(input("->  "))
     return user_answer
 
-
+def goodbye(): #TODO
+    """
+    It prints a nice goodbye message and keeps the app running for a few seconds before exiting.
+    :return:
+    """

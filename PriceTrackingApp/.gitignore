@@ -1,2 +1,3 @@
 .idea/
+__pycache__/
 #not needed in the repository
