@@ -16,7 +16,7 @@ def app_welcome_ascii():
     return printout()
 
 
-def menu_decor(func):
+def main_menu_ascii(func):
     def wrapper():
         print(f""" ~~~~~~~~~~~~~~  \\\\  |[*]|   |[*]|   |[*]|  // ~~~~~~~~~~~~~
  |                                                         |""")
@@ -25,8 +25,14 @@ def menu_decor(func):
  ~~~~~~~~~~~~~~  \\\\   |[*]|   |[*]|   |[*]|  // ~~~~~~~~~~~~~""")
     return wrapper
 
-def menu_option_decor(opt_num, opt_task, func):
+def menu_option_ascii(opt_num, task_title, func):
     print(f"""  ................  \\      [ {opt_num} ]      //  ...................""")
-    print(f"** {opt_task} **")
+    print(f"** {task_title} **")
     func()
     print(" " + "."*59)
+
+def new_user_ascii(dialogue):
+    print(""" ~~~~~ \\\\             New User Set up             // ~~~~~
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\//~~~~~~~~~~~~~~~~~~~~~~~~~~~\n""")
+    dialogue()
+    print("""\n ~~~~~~~~~~~~~~~~~~~~~~~~~\\\\__//~~~~~~~~~~~~~~~~~~~~~~~~~~""")

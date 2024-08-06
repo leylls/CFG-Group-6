@@ -52,15 +52,32 @@
             Great! Nice to meet you {user_name}.
 
        Do you want to know how to use this app?
-            [ N ] No thank you, I already know how it works.
             [ Y ] Yes please! #TODO #Link to ReadMe?
+            [ N ] No thank you, I already know how it works.
 
   Type either Y or N
        ->
 
+            We can notify you by email of any price drop
+                within the range of your choice,
 
-         Now that you know how to operate PriceTracking app,
-                 it's time to jump into business!
+                  would you like to set it up?
+
+                        [ Y ] Yes please                   # If YES -> Email set up dialogue
+            [ N ] No thank you, I will check manually.
+
+            #If NO:
+
+     All good, you can always set up email notifications
+           later on the [4]Email notifications page.
+
+                    ** ** ** ** ** ** **
+
+                         Oki doke!
+       Now that you know how to use {PriceTracking app},
+               it's time to jump into business!
+
+                       € * £ * ¥ * $
 
  ~~~~~~~~~~~~~~~~~~~~~~~~~\\__//~~~~~~~~~~~~~~~~~~~~~~~~~~
 
