@@ -1,4 +1,6 @@
+import os.path
 import sqlite3
+
 def get_username(): #TODO to change mock handlers to functional ones
     try:
         conn = sqlite3.connect("appdb.db") #mock db name
@@ -15,3 +17,14 @@ def get_username(): #TODO to change mock handlers to functional ones
         username = "visitor"
     return username
 
+def db_exists(): #TODO
+    """
+    Checks if a DB exists (i.e. if there is an existing user). Returns True or False.
+    :return: True | False
+    """
+    #path = './ft_end_utils.py'     #To test func
+    # TODO replace with actual DB file path
+    if os.path.isfile(path):
+        return True
+    else:
+        return False

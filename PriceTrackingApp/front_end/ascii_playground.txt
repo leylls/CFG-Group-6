@@ -74,7 +74,7 @@
                     ** ** ** ** ** ** **
 
                          Oki doke!
-       Now that you know how to use {PriceTracking app},
+       Now that you know how to use {PriceTracking app},       #Perhaps apps name will change?
                it's time to jump into business!
 
                        € * £ * ¥ * $

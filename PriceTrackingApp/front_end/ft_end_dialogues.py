@@ -1,6 +1,6 @@
-from ft_end_dbinteractions import get_username
-from ft_end_ascii_decorators import main_menu_ascii, menu_option_ascii, new_user_ascii
-from ft_end_utils import  get_user_input, clean, choice_validation
+from front_end.ft_end_dbinteractions import get_username
+from front_end.ft_end_ascii_decorators import main_menu_ascii, menu_option_ascii, new_user_ascii
+from front_end.ft_end_utils import  get_user_input, clean, choice_validation
 
 
 username = "Georgia" # Mock name - actual data to be extracted from db with get_username()
@@ -11,10 +11,10 @@ def new_user_dialogue():
     Full CLI dialogue to set up the main details of the new user (user_name + email_pref + user_email).
     :return: None
     """
-    print("""I see that you are new around here.
-          How about we set up a few things first?""".center(60))
-    print("\n\nFor example, what is your name?".center(60))
-    user_name = get_user_input("blank")
+    print("I see that you are new around here.".center(60))
+    print("How about we set up a few things first?\n".center(60))
+    print("For example, what is your name?".center(60))
+    user_name = get_user_input()
     #TODO add name into DB
     print(f"Great! Nice to meet you {user_name}.".center(60))
     print("We can notify you by email of any price drop\n"
@@ -26,13 +26,20 @@ def new_user_dialogue():
         try:
             email_pref = clean(get_user_input("y_n"))
             if email_pref == "y":
+                pass
                 #TODO func to set_up_email_notifications
             elif email_pref == "n":
                 print("All good, you can always set up email notifications\n"
                       "later on the [4]Email notifications page.".center(60))
         except ValueError:
             print("Let's try again")
+    print("""\n** ** ** ** ** ** **
 
+                         Oki doke!
+       Now that you know how to use {PriceTracking app},
+               it's time to jump into business!
+
+                       € * £ * ¥ * $""") #TODO perhaps apps name will change?
 
 
 @main_menu_ascii
