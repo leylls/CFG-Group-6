@@ -1,12 +1,12 @@
-from front_end.ft_end_dbinteractions import get_username
-from front_end.ft_end_ascii_decorators import main_menu_ascii, menu_option_ascii, new_user_ascii
-from front_end.ft_end_utils import  get_user_input, clean, choice_validation
+from ft_end_ascii_decorators import *
+from ft_end_input_utils import *
+from time import sleep
 
 
 username = "Georgia" # Mock name - actual data to be extracted from db with get_username()
 
 @new_user_ascii
-def new_user_dialogue():
+def new_user_setup_dialogue():
     """
     Full CLI dialogue to set up the main details of the new user (user_name + email_pref + user_email).
     :return: None
@@ -84,26 +84,39 @@ def main_menu_options():
 
 
 @menu_option_ascii(1, "Track a new product")
-def opt_1_track_new():
+def opt_1_track_new_dialogue():
     print(""" """) #TODO Set up options for this task
     pass
 
 @menu_option_ascii(2, "My tracked products")
-def opt_2_tracked_prod():
+def opt_2_tracked_prod_dialogue():
     print(""" """) #TODO Set up options for this task
     pass
 
 @menu_option_ascii(3, "App settings")
-def opt_3_app_settings():
+def opt_3_app_settings_dialoge():
     print(""" """) #TODO Set up options for this task
     pass
 
 @menu_option_ascii(4, "Email notifications")
-def opt_4_email_notifications():
+def opt_4_email_notifications_dialogue():
     print(""" """) #TODO Set up options for this task
     pass
 
 @menu_option_ascii(5, "My tracked products")
-def opt_5_help():
+def opt_5_help_dialogue():
     print(""" """) #TODO Set up options for this task
     pass
+
+
+@goodbye_ascii
+def goodbye():
+    """
+    It prints a nice goodbye message and keeps the app running for a few seconds before exiting.
+    :return:
+    """
+    print("""                 **    Thank you for using    **
+                        PriceTrackingApp!
+                            *   *   *""")
+    sleep(4)
+    quit()

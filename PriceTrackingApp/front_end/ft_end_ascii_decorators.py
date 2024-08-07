@@ -36,3 +36,8 @@ def new_user_ascii(dialogue):
  ~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\//~~~~~~~~~~~~~~~~~~~~~~~~~~~\n""")
     dialogue()
     print("""\n ~~~~~~~~~~~~~~~~~~~~~~~~~\\\\__//~~~~~~~~~~~~~~~~~~~~~~~~~~""")
+
+
+def goodbye_ascii(goodbye_message):
+    print("""  ................  \\\\      Bye bye!      //  ................""")
+    goodbye_message()

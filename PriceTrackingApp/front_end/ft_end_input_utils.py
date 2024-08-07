@@ -1,3 +1,4 @@
+from ft_end_dialogues import *
 def clean(string):
     """
     Clean user inputs of extra symbols or spaces, lower cases the answer.
@@ -5,7 +6,7 @@ def clean(string):
     :param string: str - raw user's input
     :return: cleaned_string as str - trimmed or refactor answer as str
     """
-    to_remove = [".", "-", "*", "\\", "/", " ", '"', ","]
+    to_remove = [".", "-", "*", "\\", "/", " ", '"', ",", "!","?",":",";","'","#","@"]
     cleaned_string = string.strip().lower()
 
     for char in to_remove:
@@ -27,7 +28,7 @@ def choice_validation(user_input, data_type, num_choices=0):
     :param num_choices: int - the number of choices the user is given - depending on menu length.
     :return: True | False
     """
-    if user_input == None:
+    if user_input is None: #To enter the loop without raising ValueError i.e. Displaying user mistake message
         return False
     else:
         try:
@@ -67,8 +68,3 @@ def get_user_input(suggestion=None):
     user_answer = clean(input("->  "))
     return user_answer
 
-def goodbye(): #TODO
-    """
-    It prints a nice goodbye message and keeps the app running for a few seconds before exiting.
-    :return:
-    """
