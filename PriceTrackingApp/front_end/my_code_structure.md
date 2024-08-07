@@ -7,9 +7,9 @@ My current file system (as of 6th August)
  Splitted the script in "dialogues", "decorators", "db interactions" and "utils" - which will then be imported 
 modules within the app's main.py final file
 
-![image](https://github.com/user-attachments/assets/7eafcff0-a2c9-4232-a04b-19b3aba7c1ab)
+![image](https://github.com/user-attachments/assets/f46ae2be-840f-4c9e-969b-7ed82f8e2d51)
 
 
 Example of expected main.py script
 
-![image](https://github.com/user-attachments/assets/9d31bdeb-2b06-442a-aa36-96ff56b8c28c)
+![image](https://github.com/user-attachments/assets/0a0b242b-3b5e-4871-8134-8128b5228573)

@@ -1,6 +1,7 @@
 from front_end.ft_end_dbinteractions import *
 from front_end.ft_end_choice_logic import *
 
+
 def run():
     if db_exists():
         new_user_setup_dialogue()
