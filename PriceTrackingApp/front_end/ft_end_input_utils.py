@@ -120,18 +120,20 @@ def get_app_instructions():
     if answer == "y":
         webbrowser.open_new_tab("https://github.com/evapchiri/evapchiri/blob/main/README.md")
         print("""
-                               Now that you know everything,""")
+                Now that you know everything,""")
         print("do you want to continue?".center(60))
-        print("""                    [ Y ] Yes, I am ready!
-                    [ N ] No, I need to see that again.""")
-        proceed = None
-        while not choice_validation(proceed,str):
-            proceed = get_user_input("y_n")
-        if proceed == "y":
-            pass
-        else:
-            webbrowser.open_new_tab("https://github.com/evapchiri/evapchiri/blob/main/README.md")
-            proceed = get_user_input("y_n")
+        print("""            [ Y ] Yes, I am ready!
+            [ N ] No, I need to see that again.""")
+        new_answer = None
+        is_ready = False
+        while not is_ready:
+            proceed = None
+            while not choice_validation(proceed,str):
+                proceed = get_user_input("y_n")
+                if proceed == "y":
+                    is_ready = True
+                else:
+                    webbrowser.open_new_tab("https://github.com/evapchiri/evapchiri/blob/main/README.md")
     else:
         print("Brave!\nYou can always find the app's instructions\nin the 'Help' page if needed.".center(60))
 
