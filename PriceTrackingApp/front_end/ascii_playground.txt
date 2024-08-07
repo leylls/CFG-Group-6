@@ -51,8 +51,12 @@
 
             Great! Nice to meet you {user_name}.
 
+                Our app has been created to
+         help you track the price of any product
+         and assess when is the best time to shop!
+
        Do you want to know how to use this app?
-            [ Y ] Yes please! #TODO #Link to ReadMe?
+            [ Y ] Yes please!
             [ N ] No thank you, I already know how it works.
 
   Type either Y or N
@@ -63,13 +67,16 @@
 
                   would you like to set it up?
 
-                        [ Y ] Yes please                   # If YES -> Email set up dialogue
+                        [ Y ] Yes please
             [ N ] No thank you, I will check manually.
 
             #If NO:
 
      All good, you can always set up email notifications
            later on the [4]Email notifications page.
+
+              We are now creating your account
+
 
                     ** ** ** ** ** ** **
 
@@ -174,7 +181,7 @@
 
 
 
-
+                     Is this email correct?
   ...........................................................
 
 

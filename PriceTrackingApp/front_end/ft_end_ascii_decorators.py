@@ -1,8 +1,7 @@
 
 
 def app_welcome_ascii():
-    def printout():
-        print("""\n                              **
+    print("""                              **
                          ************
                 *****************************
 ============================================================
@@ -11,19 +10,18 @@ def app_welcome_ascii():
 ============================================================
                 *****************************
                          ************
-                              ** \n\n\n""")
-
-    return printout()
+                              **\n\n""")
 
 
-def main_menu_ascii(func):
-    def wrapper():
+
+def main_menu_ascii(menu_text):
+    def deco_wrapper(menu_options):
         print(f""" ~~~~~~~~~~~~~~  \\\\  |[*]|   |[*]|   |[*]|  // ~~~~~~~~~~~~~
  |                                                         |""")
-        func()
+        menu_text(menu_options)
         print(f""" |                                                          |
  ~~~~~~~~~~~~~~  \\\\   |[*]|   |[*]|   |[*]|  // ~~~~~~~~~~~~~""")
-    return wrapper
+    return deco_wrapper
 
 def menu_option_ascii(opt_num, task_title, func):
     print(f"""  ................  \\      [ {opt_num} ]      //  ...................""")
@@ -32,10 +30,13 @@ def menu_option_ascii(opt_num, task_title, func):
     print(" " + "."*59)
 
 def new_user_ascii(dialogue):
-    print(""" ~~~~~ \\\\             New User Set up             // ~~~~~
- ~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\//~~~~~~~~~~~~~~~~~~~~~~~~~~~\n""")
-    dialogue()
-    print("""\n ~~~~~~~~~~~~~~~~~~~~~~~~~\\\\__//~~~~~~~~~~~~~~~~~~~~~~~~~~""")
+    def wrapper():
+        print(""" ~~~~~~~~~~~~~ \\\\      New User Set up       // ~~~~~~~~~~~~
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~\\\\//~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     \n""")
+        dialogue()
+        print("""\n ~~~~~~~~~~~~~~~~~~~~~~~~~\\\\__//~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n""")
+    return wrapper
 
 
 def goodbye_ascii(goodbye_message):
