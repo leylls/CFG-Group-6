@@ -2,6 +2,10 @@ from front_end.ft_end_dialogues_choice_logic import *
 from front_end.ft_end_dbinteractions import *
 
 def run():
+    """
+    App's central script.
+    :return:
+    """
     current_user = user_config.current_user  # For testing logic before DB is fully set up
     if not db_exists():
         new_user_setup_dialogue()

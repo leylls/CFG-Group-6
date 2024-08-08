@@ -1,6 +1,11 @@
 import os.path
 import sqlite3
 def DB_interaction(sql_query):
+    """
+    Connects + interacts with DB with sql_query provided. Returns the fetched_data.
+    :param sql_query:
+    :return: fetched_data (tuple)
+    """
     fetched_data = ""
     try:
         conn = sqlite3.connect("appdb.db") #mock db name
@@ -8,10 +13,8 @@ def DB_interaction(sql_query):
         cur.execute('select user_name from user_data') #mock column name and table name
         fetched_data = cur.fetchall()
         conn.close()
-        username = str(fetched_data).title()
     except ConnectionError: #TODO add to python logs
-        print("ConnectionError: Could not connect to Database, so the user's name has been set as 'visitor'")
-        username = "visitor"
+        print("ConnectionError: Could not connect to Database, please check the file exists.")
     return fetched_data
 
 
@@ -19,8 +22,10 @@ def get_username():
     try:
         sql_query = """ SELECT username FROM userDetails"""
         fetched_data = DB_interaction(sql_query)
+        # Doesn't need to be mapped as it only fetched one value
         username = str(fetched_data).title()
     except ValueError:
+        # In case the retrieved username was not stored as str
         print("ValueError: Could not retrieve user's name, the user's name has been set as 'visitor'")
         username = "visitor"
     return username

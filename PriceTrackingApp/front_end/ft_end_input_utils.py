@@ -114,6 +114,10 @@ def set_up_email_notifications():
     return {"email_pref": email_pref, "user_email": user_email}
 
 def get_app_instructions():
+    """
+    Logic to open PriceTrackingApp's README from Github and ensure user feels ready to use the app.
+    :return:
+    """
     answer = None
     while not choice_validation(answer, str):
         # While the answer cannot be validated, then keep asking the user until valid answer
@@ -136,4 +140,4 @@ def get_app_instructions():
                 else:
                     webbrowser.open_new_tab("https://github.com/evapchiri/evapchiri/blob/main/README.md")
     else:
-        print("Brave!\nYou can always find the app's instructions\nin the 'Help' page if needed.".center(60))
+        print("""\n      You can always find the app's instructions\n             in the 'Help' page if needed.""".center(60))
