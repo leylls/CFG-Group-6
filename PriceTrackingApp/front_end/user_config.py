@@ -4,3 +4,5 @@ class User:
         self.email_pref = email_pref
         self.user_email = user_email
 
+current_user = User("Eva", "y", "eva@cfg.com")
+

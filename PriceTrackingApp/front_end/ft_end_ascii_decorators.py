@@ -1,4 +1,4 @@
-
+from time import sleep
 
 def app_welcome_ascii():
     print("""                              **
@@ -15,10 +15,10 @@ def app_welcome_ascii():
 
 
 def main_menu_ascii(menu_text):
-    def deco_wrapper(menu_options):
+    def deco_wrapper(username, menu_options):
         print(f""" ~~~~~~~~~~~~~~  \\\\  |[*]|   |[*]|   |[*]|  // ~~~~~~~~~~~~~
  |                                                         |""")
-        menu_text(menu_options)
+        menu_text(username, menu_options)
         print(f""" |                                                          |
  ~~~~~~~~~~~~~~  \\\\   |[*]|   |[*]|   |[*]|  // ~~~~~~~~~~~~~""")
     return deco_wrapper
@@ -40,5 +40,19 @@ def new_user_ascii(dialogue):
 
 
 def goodbye_ascii(goodbye_message):
-    print("""  ................  \\\\      Bye bye!      //  ................""")
-    goodbye_message()
+    def wrapper():
+        print("""  ................  \\\\      Bye bye!      //  ................""")
+        goodbye_message()
+    return wrapper
+
+@goodbye_ascii
+def goodbye():
+    """
+    It prints a nice goodbye message and keeps the app running for a few seconds before exiting.
+    :return:
+    """
+    print("""                 **    Thank you for using    **
+                        PriceTrackingApp!
+                            *   *   *""")
+    sleep(4)
+    quit()
