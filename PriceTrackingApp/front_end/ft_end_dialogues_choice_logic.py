@@ -2,9 +2,6 @@ import user_config
 from ft_end_ascii_decorators import *
 from ft_end_input_utils import *
 
-# Mock name - real data
-# current_user = "Georgia"
-
 
 @new_user_ascii
 def new_user_setup_dialogue():
@@ -37,14 +34,20 @@ def new_user_setup_dialogue():
     print("""                        [ Y ] Yes please
             [ N ] No thank you, I will check manually.\n""")
     user_email_settings = set_up_email_notifications()
+    print("TESTING ------------" +f"{user_email_settings}")
     print("""** @ **\n""".center(60))
     sleep(4)
     print("We are now creating your account".center(60))
-    user_config.current_user = user_config.User(user_name, user_email_settings["email_pref"], user_email=user_email_settings["user_email"])
     loading()
 
+    #TODO Write new user details into DB
+    new_user = {'username': f'{user_name}',
+                'email_pref': f'{user_email_settings["email_pref"]}',
+                'user_email': f'{user_email_settings["user_email"]}'}
+
     print("""\n
-                    ** Acount created! **""")
+                    ** Account created! **\n""")
+    print("TESTING ------------" + f"{user_config.current_user.username}")
     print("""               it's time to jump into business!
 
                        € * £ * ¥ * $""") #TODO perhaps apps name will change?
@@ -115,7 +118,7 @@ def main_menu_options():
 #
 def main_menu_choice():
     """
-    Logic behind asking, and validating user's choice of one of the main menu options, and runs the script of the chosen one.
+    Logic behind Main Menu choice selection, and validating user's choice of one of the main menu options, and runs the script of the chosen one.
     :return: None
     """
     #Needed to enter the loop without showing "non-valid answer" message

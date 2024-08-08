@@ -15,10 +15,10 @@ def app_welcome_ascii():
 
 
 def main_menu_ascii(menu_text):
-    def deco_wrapper(username, menu_options):
+    def deco_wrapper(x,y):
         print(f""" ~~~~~~~~~~~~~~  \\\\  |[*]|   |[*]|   |[*]|  // ~~~~~~~~~~~~~
  |                                                         |""")
-        menu_text(username, menu_options)
+        menu_text(x,y)
         print(f""" |                                                          |
  ~~~~~~~~~~~~~~  \\\\   |[*]|   |[*]|   |[*]|  // ~~~~~~~~~~~~~""")
     return deco_wrapper
