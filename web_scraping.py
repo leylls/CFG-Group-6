@@ -8,7 +8,7 @@ import time
 class HTTPRequest:
     def __init__(self, url):
         self.url = url
-        self.headers = self.generate_header() #Identification string sent with the network request
+        self.headers = self.generate_header() # Identification string sent with the network request
         self.soup = self.get_soup()
 
     def random_user_agent(self):
@@ -19,12 +19,12 @@ class HTTPRequest:
 
     def generate_header(self):
         return {
-            'User-Agent': self.random_user_agent(), #Browser and user software
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', #Content type that user is able to accept
+            'User-Agent': self.random_user_agent(), # Browser and user software
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', # Content type that user is able to accept
             'Accept-Language': 'en-GB,en;q=0.5',
-            'Accept-Encoding': 'gzip', #Compresing algorythm
+            'Accept-Encoding': 'gzip', # Compresing algorythm
             'DNT': '1', # Do Not Track
-            'Connection': 'close', #If network connection stays open after the current transaction finishes
+            'Connection': 'close', # If network connection stays open after the current transaction finishes
             'Referer': 'https://google.com'
         }
 
@@ -61,7 +61,7 @@ class WebScraping:
             url_results = (self.index, title, currency, price, timestamp, url)
             self.web_scraping_results.append(url_results)
             
-            if self.index % 10 == 0: #adding a pause every 10 requests
+            if self.index % 25 == 0: # Adding a pause every bunch of requests
                 time.sleep(2)
 
             self.index += 1
@@ -96,18 +96,17 @@ class AmazonWebScraper(WebScraping):
         
         else:
             price_comb = price_whole + price_decimal
-            price = price_comb.replace(',','.') #uniformize prices formatting in other language to EN number convention
+            price = price_comb.replace(',','.') # Uniformize prices formatting in other language to EN number convention
         
         return price, currency
 
 
-#Variable url would come as an input from the FE side, hard-coded for testing
+# Variable url would come as an input from the FE side, hard-coded for testing
 url_list = [
-    'https://www.amazon.co.uk/dp/B0BL6GJVZS',
-    'https://www.amazon.co.uk/Ends-Us-Colleen-Hoover/dp/1471156265/',
-    'https://www.amazon.com/Mighty-Patch-Hydrocolloid-Absorbing-count/dp/B074PVTPBW',
-    'https://www.amazon.com/HP-Single-3200MHz-Laptop-Memory/dp/B0948X9C9N/ref=sr_1_3?sr=8-3'
-]
+    'https://www.amazon.es/Loop-Tap%C3%B3n-O%C3%ADdos-Reducci%C3%B3n-Ruido/dp/B08TCH6CVB/ref=sr_1_5?sr=8-5',
+    'https://www.amazon.co.uk/Molblly-Breathable-Resistant-Skin-friendly-135x190x20cm/dp/B07YV84PTM',
+    'https://www.amazon.co.uk/UNO-W2087-Card-Game-European/dp/B005I5M2F8/ref=sr_1_4?c=ts&s=kids&sr=1-4&ts_id=364147031'
+    ]
 ws = WebScraping(url_list)
 ws.print_results()
 
@@ -127,3 +126,4 @@ PENDING
 
 NEXT LEVEL 
 - add other websites - Argos
+'''
