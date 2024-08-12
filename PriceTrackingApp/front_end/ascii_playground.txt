@@ -22,7 +22,7 @@
 
                [ 1 ]  Track a new product
                [ 2 ]  My tracked products
-               [ 3 ]  App settings
+               [ 3 ]  My account
                [ 4 ]  Email notifications
                [ 5 ]  Help
                [ 0 ]  Exit
@@ -103,7 +103,7 @@
 
                [ 1 ]  Track a new product
                [ 2 ]  My tracked products
-               [ 3 ]  App settings
+               [ 3 ]  My account
                [ 4 ]  Email notifications
                [ 5 ]  Help
                [ 0 ]  Exit
@@ -123,7 +123,49 @@
   ................  \\      [ 1 ]      //  ...................
                    ** TRACK A NEW PRODUCT **
 
+              Please paste the product's Amazon url:
 
+  or Type 0 if you want to exit to Main Menu
+ ->
+
+           We are extracting the products details
+                         Please wait
+                           . . . .
+
+    *> Product title:
+
+    *> Current price:
+
+                       Is this correct?
+
+  Type either Y or N
+       ->
+
+               > ** PRODUCT ADDED TO ACCOUNT ** <
+
+               Would you like to add this product
+                     into your email list?
+
+  Type either Y or N
+       ->
+
+                 When do you want to be notified?
+
+                    #todo
+
+              If you change your mind, you can set
+              email notifications for this product
+                on the Email Notifications page
+
+              ** * ** * ** * ** * ** * ** * **
+
+                 Choose an option:
+
+               [ 1 ]  Track another item
+               [ 0 ]  Exit to Main Menu
+
+   Type a number
+       ->
 
   ...........................................................
 
@@ -137,7 +179,11 @@
   .................  \\      [ 2 ]      //  .................
                    ** MY TRACKED PRODUCTS **
 
+                 Choose an option:
 
+               [ 1 ]
+               [ 2 ]
+               [ 3 ]
 
   ...........................................................
 

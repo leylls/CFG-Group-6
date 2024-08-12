@@ -32,13 +32,14 @@ def main_menu_ascii(menu_text):
  ~~~~~~~~~~~~~~  \\\\   |[*]|   |[*]|   |[*]|  // ~~~~~~~~~~~~~""")
     return deco_wrapper
 
-def menu_option_ascii(func):
+
+def menu_option_ascii(opt_num, task_title,func):
     """
     DECORATOR - ASCII border art for EACH Main Menu option.
     :param func: the option logic
     :return:
     """
-    def wrapper(opt_num, task_title):
+    def wrapper():
         print(f"""  ................  \\      [ {opt_num} ]      //  ...................""")
         print(f"** {task_title} **")
         func()

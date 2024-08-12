@@ -1,6 +1,9 @@
 import user_config
+# FRONT END UTILS
 from ft_end_ascii_decorators import *
 from ft_end_input_utils import *
+# BACK END IMPLEMENTATION
+from ft_end_backend_interactions import *
 
 
 @new_user_ascii
@@ -34,7 +37,6 @@ def new_user_setup_dialogue():
     print("""                        [ Y ] Yes please
             [ N ] No thank you, I will check manually.\n""")
     user_email_settings = set_up_email_notifications()
-    print("TESTING ------------" +f"{user_email_settings}")
     print("""** @ **\n""".center(60))
     sleep(4)
     print("We are now creating your account".center(60))
@@ -46,8 +48,7 @@ def new_user_setup_dialogue():
                 'user_email': f'{user_email_settings["user_email"]}'}
 
     print("""\n
-                    ** Account created! **\n""")
-    print("TESTING ------------" + f"{user_config.current_user.username}")
+                    > ** ACCOUNT CREATED! ** <\n""")
     print("""               it's time to jump into business!
 
                        € * £ * ¥ * $""") #TODO perhaps apps name will change?
@@ -85,16 +86,35 @@ def main_menu_options():
     """
     print(("""\n               [ 1 ]  Track a new product
                [ 2 ]  My tracked products
-               [ 3 ]  App settings
+               [ 3 ]  My account
                [ 4 ]  Email notifications
                [ 5 ]  Help
                [ 0 ]  Exit""").center(60))
 
-#
-# @menu_option_ascii(1, "Track a new product")
-# def opt_1_track_new_dialogue():
-#     print(""" """) #TODO Set up options for this task
-#     pass
+
+@menu_option_ascii(1, "Track a new product")
+def opt_1_track_new_dialogue():
+    correct_url = False
+    while not correct_url:
+        try:
+    print("""              Please paste the product's Amazon url:\n""")
+    print("""  [or Type 0 to go back to Main Menu]""")
+    url = get_user_input()
+    product = get_product_data(url)
+    print("""           We are extracting the products details""")
+    loading()
+    print(f"""    *> Product title:{product['title']}
+
+    *> Current price:{product['price']}""")
+    print("""                       Is this correct?""")
+
+
+
+
+
+    pass
+
+
 #
 # @menu_option_ascii(2, "My tracked products")
 # def opt_2_tracked_prod_dialogue():
