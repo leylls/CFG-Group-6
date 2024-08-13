@@ -1,6 +1,6 @@
 import os.path
 import sqlite3
-def get_DB_data(sql_query): # SHAIRA TODO
+def get_DB_data(sql_query: str): # SHAIRA TODO
     """
     Connects + interacts with DB with sql_query provided. Returns the fetched_data as tuple.
     :param sql_query:
@@ -46,3 +46,30 @@ def db_exists():
         return True
     else:
         return False
+
+
+def get_product_id(product_title: str):
+    """
+    Gets a product's id from DB given the product title.
+    :param product_title: str
+    :return: product_id: int
+    """
+
+    return 12
+
+
+def email_notifications_on(product_id: int):
+    """
+    Sets as TRUE the email notifications for a specific product given the product_id.
+    :param product_id:
+    :return:
+    """
+    return
+
+def email_notifications_off(product_id: int):
+    """
+    Sets as FALSE the email notifications for a specific product given the product_id.
+    :param product_id:
+    :return:
+    """
+    return
