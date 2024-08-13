@@ -122,7 +122,7 @@
 
   ................  \\      [ 1 ]      //  ...................
                    ** TRACK A NEW PRODUCT **
-
+                      Okay let's try again.
               Please paste the product's Amazon url:
 
   or Type 0 if you want to exit to Main Menu

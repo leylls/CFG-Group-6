@@ -10,7 +10,7 @@ def run():
     if not db_exists():
         new_user_setup_dialogue()
         sleep(4.5)
-        main_menu_text(main_menu_options, get_username())
+        main_menu_text(main_menu_options)
 
     else:
         welcome_back_text(current_user.username, main_menu_options)

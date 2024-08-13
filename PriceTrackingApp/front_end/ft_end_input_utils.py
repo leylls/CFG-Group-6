@@ -106,7 +106,7 @@ def set_up_email_notifications():
             if answer == "y":
                 is_correct = True
             else:
-                print("Okay let's try again".center(60))
+                print("Okay let's try again\n".center(60))
     elif email_pref == "n":
         print("""\n                   If you change your mind,\n        you can always set up email notifications
          later on the [4]Email notifications page.\n""")

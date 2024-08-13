@@ -4,6 +4,7 @@ from ft_end_ascii_decorators import *
 from ft_end_input_utils import *
 # BACK END IMPLEMENTATION
 from ft_end_backend_interactions import *
+from ft_end_dbinteractions import *
 
 
 @new_user_ascii
@@ -73,10 +74,12 @@ def main_menu_text(menu_options):
     :param menu_options: - Only to be inserted main_menu options
     :return: None
     """
-    print("""                        \\  MAIN MENU  /
+    def wrapper():
+        print("""                        \\  MAIN MENU  /
 
                   What would you like to do?""")
-    menu_options()
+        menu_options()
+    return wrapper()
 
 
 def main_menu_options():
@@ -92,27 +95,70 @@ def main_menu_options():
                [ 0 ]  Exit""").center(60))
 
 
-@menu_option_ascii(1, "Track a new product")
+@menu_option_ascii(1, "Track new product")
 def opt_1_track_new_dialogue():
-    correct_url = False
-    while not correct_url:
-        try:
-    print("""              Please paste the product's Amazon url:\n""")
-    print("""  [or Type 0 to go back to Main Menu]""")
-    url = get_user_input()
-    product = get_product_data(url)
-    print("""           We are extracting the products details""")
-    loading()
-    print(f"""    *> Product title:{product['title']}
+    print("""           Please paste the product's Amazon url:\n""")
+    print("[or Type 0 to go back to Main Menu]".center(60))
+    is_correct = False
+    while not is_correct: # To ensure the obtained product details are correct until user is happy
+        url = get_user_input()
 
-    *> Current price:{product['price']}""")
-    print("""                       Is this correct?""")
+        if url == "0": # Exit back to Main Menu # TODO to refactor and avoid recursion
+            main_menu_text(main_menu_options)
+            main_menu_choice()
+
+        product_data = get_product_data(url)
+        print("""           We are extracting the products details""")
+        loading()
+        print(f"""\n\n        *> Product title:   {product_data['title']}
+    
+        *> Current price:   {product_data['currency']}{product_data['price']}\n""")
+        print("""                       Are these correct?\n""")
+        correct_details = get_user_input("y_n")
+
+        if correct_details == "y":
+            is_correct = True
+
+        else:
+            print("""                      Okay let's try again.
+              Please paste the product's Amazon url:""".center(60))
+
+    print("""\n               Would you like to add this product
+                     into your email list?\n""")
+    notify = get_user_input("y_n")
+
+    if notify == "y": # If "n" then do nothing as default is 'False'
+        product_data['email_notif'] = True
+
+    else:
+        print("""              If you change your mind, you can set
+              email notifications for this product
+                on the Email Notifications page""")
+
+    add_new_tracking(product_data)
+    print("""\n               > ** PRODUCT ADDED TO ACCOUNT ** <\n""")
+    sleep(2.5)
+    print("""                ** * ** * ** * ** * ** * ** * **
+
+                        Choose an option:
+
+                  [ 1 ]  Track another item
+                  [ 0 ]  Exit to Main Menu""")
+
+    # Needed to enter the loop without showing "non-valid answer" message
+    final_choice = None
+    # Creates a loop until the user_choice is the correct one
+    while not choice_validation(final_choice, int, num_choices=2):
+        final_choice = get_user_input("num")
+    match final_choice: # TODO Refactor to avoid recursion / memory leak
+        case "1": # Goes back to
+            opt_1_track_new_dialogue()
+        case "0":
+            main_menu_text(main_menu_options)
+            main_menu_choice()
 
 
-
-
-
-    pass
+# opt_1_track_new_dialogue()
 
 
 #
