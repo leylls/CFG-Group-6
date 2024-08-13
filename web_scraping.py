@@ -36,20 +36,24 @@ class HTTPRequest:
 
         return BeautifulSoup(response.content, 'html.parser')
 
+# class Logger:
+
+
 class WebScraping:
 
     def __init__(self, url_list):
         self.url_list = url_list
         self.web_scraping_results = []
-        self.index = 1
-    
-    def get_results(self):
+
+    def get_product_data(self):
+        index = 1
         for url in self.url_list:
 
             if 'amazon' in url.lower():
                 scraper = AmazonWebScraper(url)
                 title, price, currency = scraper.get_all()
                 if title is None or price is None or currency is None:
+                    #log error
                     continue
         
             else:
@@ -58,16 +62,17 @@ class WebScraping:
             
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
 
-            url_results = (self.index, title, currency, price, timestamp, url)
+            url_results = {'title': title, 'currency': currency, 'price': price, 'timestamp': timestamp, 'url': url}
             self.web_scraping_results.append(url_results)
             
-            if self.index % 25 == 0: # Adding a pause every bunch of requests
-                time.sleep(2)
+            if index % 25 == 0: # Adding a pause every bunch of requests
+                time.sleep(5)
 
-            self.index += 1
+            index += 1
+        return self.web_scraping_results
              
     def print_results(self):
-        self.get_results()
+        self.get_updated_data()
         for result in self.web_scraping_results:
             print(result)
 
@@ -82,7 +87,12 @@ class AmazonWebScraper(WebScraping):
         return title, price, currency
 
     def get_title(self):
-        return self.soup.find(id='productTitle').get_text().strip()
+        try:
+            title = self.soup.find(id='productTitle').get_text().strip()
+        except AttributeError:
+            print(f'Error loading title for {self.url}.')
+            return None
+        return title
 
     def get_price(self):
         try:
@@ -103,12 +113,15 @@ class AmazonWebScraper(WebScraping):
 
 # Variable url would come as an input from the FE side, hard-coded for testing
 url_list = [
-    'https://www.amazon.es/Loop-Tap%C3%B3n-O%C3%ADdos-Reducci%C3%B3n-Ruido/dp/B08TCH6CVB/ref=sr_1_5?sr=8-5',
-    'https://www.amazon.co.uk/Molblly-Breathable-Resistant-Skin-friendly-135x190x20cm/dp/B07YV84PTM',
-    'https://www.amazon.co.uk/UNO-W2087-Card-Game-European/dp/B005I5M2F8/ref=sr_1_4?c=ts&s=kids&sr=1-4&ts_id=364147031'
+    'https://www.amazon.es/WYBOT-Limpiafondos-Piscina-Inal%C3%A1mbrico-planificaci%C3%B3n/dp/B0CLH4Q6SR'
     ]
-ws = WebScraping(url_list)
-ws.print_results()
+# ws = WebScraping(url_list)
+# ws.print_results()
+
+if __name__ == "__main__":
+    ws = WebScraping(url_list)
+    web_scraping_results = ws.get_product_data()
+    print(web_scraping_results)
 
 
 ''' WEBSCRAPING STEPS
