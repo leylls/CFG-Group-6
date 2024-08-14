@@ -37,7 +37,6 @@ class HTTPRequest:
             raise Exception(f"""{response.status_code} - Error connecting to the url provided.
 ----------------------------------------------------------------
 """)
-
         return BeautifulSoup(response.content, 'html.parser')
 
 class Logger: #to keep logs of errors, disabled to users per default
@@ -102,10 +101,10 @@ PAGE CONTENT:
             index += 1
         return self.web_scraping_results
              
-    def print_results(self):
-        self.get_updated_data()
-        for result in self.web_scraping_results:
-            print(result)
+    def results_for_db(self):
+        results = self.get_product_data() #get results as list of dictionaries
+        results_tuple = [(result['title'], result['currency'], result['price'], result['timestamp'], result['url']) for result in results] #convert to list of tuples to pass to DB
+        return results_tuple
 
 class AmazonWebScraper(WebScraping):
     def __init__(self, url, logger):
@@ -144,13 +143,12 @@ class AmazonWebScraper(WebScraping):
 
 # Variable url would come as an input from the FE side, hard-coded for testing
 url_list = [
-    'https://www.amazon.es/WYBOT-Limpiafondos-Piscina-Inal%C3%A1mbrico-planificaci%C3%B3n/dp/B0CLH4Q6SR',
-    'https://www.amazon.co.uk/Windy-Seamless-Ultra-Ultra-Thin-Comfort/dp/B0D6RR2661/ref=zg_bsnr_c_fashion_d_sccl_1/258-6243987-5478100?psc=1',
-    'https://www.amazon.co.uk/Pritt-Child-Friendly-Activities-Strong-Hold-adhesive/dp/B004QFI99Y/ref=zg_bs_c_kitchen_d_sccl_4/258-6243987-5478100?psc=1',
-    'https://www.argos.co.uk/product/8245757?clickCSR=slp:cannedSearch'
+    'https://www.amazon.es/Ordenador-Port%C3%A1til-Ultrafino-i5-1335U-Graphics/dp/B0D6ZKJVSB'
     ]
 
 if __name__ == "__main__":
     ws = WebScraping(url_list)
-    web_scraping_results = ws.get_product_data()
-    print(web_scraping_results)
+    ws_results_FE = ws.get_product_data()
+    print(ws_results_FE)
+    ws_results_DB = ws.results_for_db()
+    print(ws_results_DB)
