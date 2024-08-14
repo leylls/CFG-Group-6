@@ -6,10 +6,11 @@ import time
 
 
 class HTTPRequest:
-    def __init__(self, url):
+    def __init__(self, url, logger):
         self.url = url
         self.headers = self.generate_header() # Identification string sent with the network request
         self.soup = self.get_soup()
+        self.logger = logger
 
     def random_user_agent(self):
         with open('list-common-user-agents.txt', 'r') as ua_file:
@@ -32,16 +33,35 @@ class HTTPRequest:
         response = requests.get(self.url, headers=self.headers)
 
         if response.status_code != 200:
-            raise Exception(f'{response.status_code} - Error connecting to the url provided.')
+            self.logger.write_log(f'Error connecting to the url - ERROR: {response.status_code} - URL: {url}')
+            raise Exception(f"""{response.status_code} - Error connecting to the url provided.
+----------------------------------------------------------------
+""")
 
         return BeautifulSoup(response.content, 'html.parser')
 
-# class Logger:
+class Logger: #to keep logs of errors, disabled to users per default
 
+    def __init__(self,timestamp, enabled=False):
+        self.enabled = enabled
+        self.log_filename = timestamp + '.txt' #records info retrieved from page content
+        self.debug_log_filename = timestamp + '_debug.txt' #records page content 
+
+    def __write(self, filename, msg):
+        if self.enabled:
+            with open('logs/' + filename, 'a', encoding="utf-8") as log_file:
+                log_file.write(msg)
+
+    def write_log(self, msg):
+        self.__write(self.log_filename, msg)
+    
+    def write_debug_log(self, msg):
+        self.__write(self.debug_log_filename, msg)
 
 class WebScraping:
 
     def __init__(self, url_list):
+        self.logger = Logger(timestamp=datetime.now().strftime("%Y-%m-%d %H-%M")) #add 'enabled=True' as parameter to debug and create error log
         self.url_list = url_list
         self.web_scraping_results = []
 
@@ -50,13 +70,24 @@ class WebScraping:
         for url in self.url_list:
 
             if 'amazon' in url.lower():
-                scraper = AmazonWebScraper(url)
+                scraper = AmazonWebScraper(url, self.logger)
                 title, price, currency = scraper.get_all()
                 if title is None or price is None or currency is None:
-                    #log error
+                    self.logger.write_log(f"""WebScraping.get_products_data - Information could not be retrieved.
+URL: {url}, TITLE: {title}, PRICE: {price}, CURRENCY: {currency}
+----------------------------------------------------------------
+""")
+                    self.logger.write_debug_log(f"""URL: {url}
+PAGE CONTENT: 
+{scraper.soup}
+----------------------------------------------------------------
+""")
                     continue
         
             else:
+                self.logger.write_log(f"""Website not supported - URL: {url}
+----------------------------------------------------------------
+""")
                 print(f'The app currently only supports Amazon URLs. The following url could not be scraped: {url}')
                 continue
             
@@ -77,9 +108,10 @@ class WebScraping:
             print(result)
 
 class AmazonWebScraper(WebScraping):
-    def __init__(self, url):
+    def __init__(self, url, logger):
         self.url = url
-        self.soup = HTTPRequest(self.url).soup
+        self.logger = logger
+        self.soup = HTTPRequest(self.url, self.logger).soup
 
     def get_all(self):
         title = self.get_title()
@@ -110,33 +142,15 @@ class AmazonWebScraper(WebScraping):
         
         return price, currency
 
-
 # Variable url would come as an input from the FE side, hard-coded for testing
 url_list = [
-    'https://www.amazon.es/WYBOT-Limpiafondos-Piscina-Inal%C3%A1mbrico-planificaci%C3%B3n/dp/B0CLH4Q6SR'
+    'https://www.amazon.es/WYBOT-Limpiafondos-Piscina-Inal%C3%A1mbrico-planificaci%C3%B3n/dp/B0CLH4Q6SR',
+    'https://www.amazon.co.uk/Windy-Seamless-Ultra-Ultra-Thin-Comfort/dp/B0D6RR2661/ref=zg_bsnr_c_fashion_d_sccl_1/258-6243987-5478100?psc=1',
+    'https://www.amazon.co.uk/Pritt-Child-Friendly-Activities-Strong-Hold-adhesive/dp/B004QFI99Y/ref=zg_bs_c_kitchen_d_sccl_4/258-6243987-5478100?psc=1',
+    'https://www.argos.co.uk/product/8245757?clickCSR=slp:cannedSearch'
     ]
-# ws = WebScraping(url_list)
-# ws.print_results()
 
 if __name__ == "__main__":
     ws = WebScraping(url_list)
     web_scraping_results = ws.get_product_data()
     print(web_scraping_results)
-
-
-''' WEBSCRAPING STEPS
-    Input needed: variable url_list (from FE (user interaction) or from DB as a dialy trigger)
-    Step 1: parse through each url and get its content (BeautifulSoup) passing header details with random user-agent                    class HTTPRequest
-    Step 2: webscrape data first checking website is supported (Amazon only initially)                                                  class WebScraping & AmazonWebScraper
-    Step 3: save id, title, price, currency, timestamp from each url as a tuple in a list
-    Next action: send WS results to DB and/or print nicely to user
-'''
-
-'''
-PENDING
--testing of different URLs list
--test error handling
-
-NEXT LEVEL 
-- add other websites - Argos
-'''
