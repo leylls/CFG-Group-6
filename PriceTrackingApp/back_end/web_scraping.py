@@ -13,7 +13,7 @@ class HTTPRequest:
         self.logger = logger
 
     def random_user_agent(self):
-        with open('list-common-user-agents.txt', 'r') as ua_file:
+        with open('PriceTrackingApp/back_end/list-common-user-agents.txt', 'r') as ua_file:
             user_agents = ua_file.readlines()
         user_agents = [agent.strip() for agent in user_agents]
         return random.choice(user_agents)
