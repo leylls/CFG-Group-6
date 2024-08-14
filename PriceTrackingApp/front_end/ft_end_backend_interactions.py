@@ -1,8 +1,7 @@
-import sys
-sys.path.insert(0, 'PriceTrackingApp/back_end')
-from web_scraping import WebScraping
+from back_end.web_scraping import WebScraping
 
-def get_product_data(url): # VIOLETA TODO
+
+def get_product_data(url):
     """
     Url webscraping. Retrieves the full data from an Amazon product given the url as parameter.
     :param url: str
