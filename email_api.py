@@ -3,8 +3,8 @@ from mailjet_rest import Client
 def send_price_alert(recipient_email, name, product_name, current_price, threshold_price, product_url, currency):
 
     # MailJet API credentials
-    api_key = 'f28667eb78876aad46462e8d6b7180f3'
-    api_secret = '656726402cd90b557e2b0a2372e9c4a2'
+    api_key = 'your_api_key' # replace with your own api key
+    api_secret = 'your_api_secret' # replace with your own api secret key
 
     mailjet = Client(auth=(api_key, api_secret), version='v3.1')
 
