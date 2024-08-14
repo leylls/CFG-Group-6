@@ -56,56 +56,23 @@ def new_user_setup_dialogue():
     return
 
 
-@main_menu_ascii
-def welcome_back_text(username, menu_options):
+@menu_option_ascii(1, "Track a new product")
+def opt_1_track_new_dialogue():
     """
-    Welcome CLI text for returning user.
-    :param menu_options:
+    Dialogue and logic of the [1] option of Main Menu.
     :return:
     """
-    print(f"Welcome back {username}!".center(60))
-    print("What would you like".center(60)+"\n"+"to do today?".center(60))
-    menu_options()
-
-@main_menu_ascii
-def main_menu_text(menu_options):
-    """
-    Main Menu's CLI text.
-    :param menu_options: - Only to be inserted main_menu options
-    :return: None
-    """
-    def wrapper():
-        print("""                        \\  MAIN MENU  /
-
-                  What would you like to do?""")
-        menu_options()
-    return wrapper()
-
-
-def main_menu_options():
-    """
-    Main Menu's CLI options.
-    :return: None
-    """
-    print(("""\n               [ 1 ]  Track a new product
-               [ 2 ]  My tracked products
-               [ 3 ]  My account
-               [ 4 ]  Email notifications
-               [ 5 ]  Help
-               [ 0 ]  Exit""").center(60))
-
-
-@menu_option_ascii(1, "Track new product")
-def opt_1_track_new_dialogue():
+    # wants_to_exit = False
+    # while not wants_to_exit:
+    #
     print("""           Please paste the product's Amazon url:\n""")
     print("[or Type 0 to go back to Main Menu]".center(60))
     is_correct = False
     while not is_correct: # To ensure the obtained product details are correct until user is happy
         url = get_user_input()
 
-        if url == "0": # Exit back to Main Menu # TODO to refactor and avoid recursion
-            main_menu_text(main_menu_options)
-            main_menu_choice()
+        if url == "0": # Exit function & back to Main Menu # TODO to refactor and avoid recursion
+            return False
 
         product_data = get_product_data(url)
         print("""           We are extracting the products details""")
@@ -143,7 +110,7 @@ def opt_1_track_new_dialogue():
                         Choose an option:
 
                   [ 1 ]  Track another item
-                  [ 0 ]  Exit to Main Menu""")
+                  [ 0 ]  Return to Main Menu""")
 
     # Needed to enter the loop without showing "non-valid answer" message
     final_choice = None
@@ -151,21 +118,46 @@ def opt_1_track_new_dialogue():
     while not choice_validation(final_choice, int, num_choices=2):
         final_choice = get_user_input("num")
     match final_choice: # TODO Refactor to avoid recursion / memory leak
-        case "1": # Goes back to
-            opt_1_track_new_dialogue()
-        case "0":
-            main_menu_text(main_menu_options)
-            main_menu_choice()
+        case "1": # Enters loop to go back to beginning of the function
+            return True
+        case "0": # Exits & Goes back to Main Menu
+            pass
+    return False
 
+@menu_option_ascii(2, "My tracked products")
+def opt_2_tracked_prod_dialogue():
+    print("These are your currently tracked products:\n".center(60))
+    all_products = get_all_tracked_prod()
+    for product in all_products:
+        print(f"""      [ * ]  {product['title'][:40]}
+               *> Current price: {product['currency']}{product['price']}\n""")
+    print("""              ** * ** * ** * ** * ** * ** * **
 
-# opt_1_track_new_dialogue()
+                 Choose an option:
 
+               [ 1 ]  See a product price history
+               [ 2 ]  Delete a product from my list
+               [ 0 ]  Return to Main Menu""")
+    # Needed to enter the loop without showing "non-valid answer" message
+    step_one = None
+    # Creates a loop until the user_choice is the correct one
+    while not choice_validation(step_one, int, num_choices=3):
+        final_choice = get_user_input("num")
+    match final_choice:
+        case "1":
+            # see_product_history()
+            # To return None
+            pass
+        case "2":
+            pass
+            # delete_tracked_product()
+            # To return None
+        case "0": # Exits and goes back to Main Menu
+            pass
+    return False
 
-#
-# @menu_option_ascii(2, "My tracked products")
-# def opt_2_tracked_prod_dialogue():
-#     print(""" """) #TODO Set up options for this task
-#     pass
+# opt_2_tracked_prod_dialogue()
+
 #
 # @menu_option_ascii(3, "App settings")
 # def opt_3_app_settings_dialoge():
@@ -182,7 +174,7 @@ def opt_1_track_new_dialogue():
 #     print(""" """) #TODO Set up options for this task
 #     pass
 #
-def main_menu_choice():
+def get_main_menu_choice():
     """
     Logic behind Main Menu choice selection, and validating user's choice of one of the main menu options, and runs the script of the chosen one.
     :return: None
@@ -192,17 +184,23 @@ def main_menu_choice():
     # Creates a loop until the user_choice is the correct one
     while not choice_validation(user_choice, int, num_choices=6):
         user_choice = get_user_input("num")
-
+    repeat_choice = True
     match user_choice:
         case "1":
-            opt_1_track_new_dialogue()
+            while repeat_choice:
+                repeat_choice = opt_1_track_new_dialogue()
         case "2":
-            opt_2_tracked_prod_dialogue()
+            while repeat_choice:
+                repeat_choice = opt_2_tracked_prod_dialogue()
         case "3":
-            opt_3_app_settings_dialoge()
+            while repeat_choice:
+                repeat_choice = opt_3_app_settings_dialoge()
         case "4":
-            opt_4_email_notifications_dialogue()
+            while repeat_choice:
+                repeat_choice = opt_4_email_notifications_dialogue()
         case "5":
-            opt_5_help_dialogue()
+            while repeat_choice:
+                repeat_choice = opt_5_help_dialogue()
         case "0":
-            goodbye()
+            return True
+    return False

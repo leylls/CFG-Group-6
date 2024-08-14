@@ -162,7 +162,7 @@
                  Choose an option:
 
                [ 1 ]  Track another item
-               [ 0 ]  Exit to Main Menu
+               [ 0 ]  Return to Main Menu
 
    Type a number
        ->
@@ -179,11 +179,124 @@
   .................  \\      [ 2 ]      //  .................
                    ** MY TRACKED PRODUCTS **
 
+           These are your currently tracked products:
+
+      [ * ]  Amazon Fire HD 10 Kids Pro tablet | ages (...)
+               *> Current price: £199.99
+
+      [ * ]  It Ends With Us: The emotional #1 Sunday (...)
+               *> Current price: £5.00
+
+      [ * ]  Mighty Patch Hero Cosmetics Original Pat (...)
+               *> Current price: $27.88
+
+      [ * ]  HP S1 8GB RAM DDR4 (1x8GB) Laptop Ram 32 (...)
+               *> Current price: $19.69
+
+              ** * ** * ** * ** * ** * ** * **
+
                  Choose an option:
 
-               [ 1 ]
-               [ 2 ]
-               [ 3 ]
+               [ 1 ]  See a product price history
+               [ 2 ]  Delete a product from my list
+               [ 0 ]  Return to Main Menu
+
+    Type a number
+       ->
+
+## [ 1 ] See product price history   or    [ 2 ] Delete product from my list
+
+                    Please select a product:
+      [ 1 ]  Amazon Fire HD 10 Kids Pro tablet | ages (...)
+      [ 2 ]  It Ends With Us: The emotional #1 Sunday (...)
+      [ 3 ]  Mighty Patch Hero Cosmetics Original Pat (...)
+      [ 4 ]  HP S1 8GB RAM DDR4 (1x8GB) Laptop Ram 32 (...)
+
+    Type a number
+       ->
+
+## [ 1 ] See product price history
+
+            SELECTED:
+            **> Amazon Fire HD 10 Kids Pro tablet | ages (...)
+
+                 Choose an option:
+
+               [ 1 ]  7-day price history
+               [ 2 ]  All price history
+
+    Type a number
+       ->
+
+                *> 7 DAY PRICE HISTORY <*
+
+
+            |
+            |
+            |
+            |                    *
+            |            *     *
+            |         *     *
+            |       *
+            |    *
+            ----------------------------------
+
+            (*) 14/08/24 -> £199.99
+            (*) 13/08/24 -> £198.99
+            (*) 12/08/24 -> £197.50
+            (*) 11/08/24 -> £198.99
+            (*) 10/08/24 -> £197.50
+            (*) 09/08/24 -> £195.50
+            (*) 08/08/24 -> £194.99
+
+                *> FULL PRICE HISTORY <*
+
+
+            |
+            |
+            |
+            |                      *
+            |            *       *
+            |           *  *   *
+            |         *      *
+            |    *  *
+            ----------------------------------
+
+            (*) 14/08/24 -> £199.99
+            (*) 12/08/24 -> £198.99
+            (*) 11/08/24 -> £197.50
+            (*) 07/08/24 -> £198.99
+            (*) 05/08/24 -> £197.50
+            (*) 03/08/24 -> £195.50
+            (*) 01/08/24 -> £194.99
+            (*) 28/08/24 -> £194.99
+            (*) 25/07/24 -> £194.99
+            (*) 22/07/24 -> £194.99
+
+                 Choose an option:
+
+               [ 1 ]  See product 7-day price history            //    See full product price history
+               [ 2 ]  Delete this product from my list
+               [ 3 ]  Go back to my list
+               [ 0 ]  Return to Main Menu
+
+    Type a number
+       ->
+
+
+## [ 1 ] [ 2 ]
+
+          Do you want to stop tracking this product?
+
+       **> Amazon Fire HD 10 Kids Pro tablet | ages (...)
+
+  Type either Y or N
+       ->
+
+                  > ** PRODUCT DELETED ** <            # Loops back to [ 1 ]
+
+
+
 
   ...........................................................
 

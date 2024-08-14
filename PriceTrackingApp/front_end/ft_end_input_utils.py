@@ -23,7 +23,7 @@ def clean(string):
     return cleaned_string
 
 
-def choice_validation(user_input, data_type, num_choices=0):
+def choice_validation(user_input, data_type, num_choices=0, exit_option=True):
     """
     Checks that the user input is the correct data type and within the valid choices.
     Use user_input = None to enter the loop without getting Invalid Answer message.
@@ -45,6 +45,9 @@ def choice_validation(user_input, data_type, num_choices=0):
             elif data_type == int:
                 user_answer = int(user_input) # If cannot be turned into and int then it will raise ValueError
                 valid_answers = [num for num in range(num_choices)]
+                if not exit_option:
+                    # To remove "0" as a valid choice if there is not exit [ 0 ] option
+                    valid_answers = valid_answers[1:]
                 if user_answer not in valid_answers:
                     raise ValueError
             else:

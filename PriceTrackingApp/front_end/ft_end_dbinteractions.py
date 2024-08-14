@@ -73,3 +73,23 @@ def email_notifications_off(product_id: int):
     :return:
     """
     return
+
+def get_all_tracked_prod():
+    """
+    Returns a dict of all products tracked and their details
+    :return: dict [
+    """
+
+    return [{'title': 'Full length mirror 120cm Black',
+            'currency': '£',
+            'price': '39.99',
+            'timestamp': '2024-08-08 19:26',
+            'url': 'https://www.amazon.co.uk/dp/B0BL6GJVZS',
+            'email_notif': False},
+            {'title': 'Amazon Tablet for kids',
+             'currency': '£',
+             'price': '299.99',
+             'timestamp': '2024-08-08 19:26',
+             'url': 'https://www.amazon.co.uk/dp/B0BL6GJVZS',
+             'email_notif': False}
+            ]
