@@ -117,10 +117,12 @@ def opt_1_track_new_dialogue():
     # Creates a loop until the user_choice is the correct one
     while not choice_validation(final_choice, int, num_choices=2):
         final_choice = get_user_input("num")
-    match final_choice: # TODO Refactor to avoid recursion / memory leak
+    match final_choice:
         case "1": # Enters loop to go back to beginning of the function
+            print("About to return TRUE")
             return True
         case "0": # Exits & Goes back to Main Menu
+            print("About to return FALSE")
             pass
     return False
 
@@ -188,7 +190,9 @@ def get_main_menu_choice():
     match user_choice:
         case "1":
             while repeat_choice:
+                print("About to call opt_1")
                 repeat_choice = opt_1_track_new_dialogue()
+                print(f"FINISHED opt_1 and repeat = {repeat_choice}")
         case "2":
             while repeat_choice:
                 repeat_choice = opt_2_tracked_prod_dialogue()

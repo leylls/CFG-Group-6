@@ -13,6 +13,7 @@ def get_product_data(url): # VIOLETA TODO
             'email_notif': False}
     # To set up 'email_notif' as False as default
 
+
 def add_new_tracking(product_data):
     """
     Adds product data into to DB.

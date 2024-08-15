@@ -44,8 +44,9 @@ def menu_option_ascii(opt_num, task_title):
         def wrapper(*args, **kwargs):
             print(f"""\n  ................  \\      [ {opt_num} ]      //  ...................""")
             print(f"** {task_title} **\n".center(60))
-            func(*args, **kwargs)
+            true_false = func(*args, **kwargs)
             print(" " + "."*59 + "\n")
+            return true_false
         return wrapper
     return decorator
 
