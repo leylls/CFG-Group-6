@@ -14,11 +14,6 @@ def get_product_data(url):
 
     return web_scraping_results[0]
 
+def data_viz(prod_price_history): #TODO Ikram
 
-def add_new_tracking(product_data):
-    """
-    Adds product data into to DB.
-    :param product_data [dict {title, currency, price, timestamp, url}]
-    :return: None
-    """
-    pass
+    return "" # Something that I can print()
