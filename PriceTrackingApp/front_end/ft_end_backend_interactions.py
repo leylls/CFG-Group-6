@@ -14,6 +14,7 @@ def get_product_data(url):
 
     return web_scraping_results[0]
 
+
 def add_new_tracking(product_data):
     """
     Adds product data into to DB.
@@ -21,4 +22,3 @@ def add_new_tracking(product_data):
     :return: None
     """
     pass
-    return
