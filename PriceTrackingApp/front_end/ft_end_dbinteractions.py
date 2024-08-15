@@ -74,6 +74,7 @@ def email_notifications_off(product_id: int):
     """
     return
 
+
 def get_all_tracked_prod():
     """
     Returns a dict of all products tracked and their details
