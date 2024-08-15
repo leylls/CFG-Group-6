@@ -116,3 +116,23 @@ def main_menu_options():
                [ 4 ]  Email notifications
                [ 5 ]  Help
                [ 0 ]  Exit""").center(60))
+
+
+def print_products(product_list, collapsed=False):
+    """
+    Prints out the title (if not collapsed: and price) of a given list of products.
+    :param product_list: [list]
+    :param collapsed: i.e. toggle print products price
+    :return:
+    """
+    if not collapsed:
+        for product in product_list:
+            print(f"""      [ * ]  {product['title'][:40]}(...)
+                   *> Current price: {product['currency']}{product['price']}\n""")
+    else:
+        i = 1
+        for product in product_list:
+            print(f"""      [ * ]  {product['title'][:40]}(...)""")
+    return
+
+

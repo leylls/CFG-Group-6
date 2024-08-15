@@ -149,7 +149,14 @@
   Type either Y or N
        ->
 
-                 When do you want to be notified?
+             Please enter the price change threshold
+                  you want to be notified for.
+
+        (e.g. if you say "5" we will email you when the price
+            has either dropped or raised a min of £5)
+
+         ->
+
 
                     #todo
 

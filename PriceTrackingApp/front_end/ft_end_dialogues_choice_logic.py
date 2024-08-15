@@ -47,6 +47,7 @@ def new_user_setup_dialogue():
     new_user = {'username': f'{user_name}',
                 'email_pref': f'{user_email_settings["email_pref"]}',
                 'user_email': f'{user_email_settings["user_email"]}'}
+    update_user_details(new_user)
 
     print("""\n
                     > ** ACCOUNT CREATED! ** <\n""")
@@ -67,8 +68,8 @@ def opt_1_track_new_dialogue():
     #
     print("""           Please paste the product's Amazon url:\n""")
     print("[or Type 0 to go back to Main Menu]".center(60))
-    is_correct = False
-    while not is_correct: # To ensure the obtained product details are correct until user is happy
+    all_correct = False
+    while not all_correct: # To ensure the obtained product details are correct until user is happy
         url = get_user_input()
 
         if url == "0": # Exit function & back to Main Menu # TODO to refactor and avoid recursion
@@ -77,14 +78,17 @@ def opt_1_track_new_dialogue():
         product_data = get_product_data(url)
         print("""           We are extracting the products details""")
         loading()
-        print(f"""\n\n        *> Product title:   {product_data['title']}
+        print(f"""\n\n        *> Product title:   {product_data['title'][:40]}(...)
     
         *> Current price:   {product_data['currency']}{product_data['price']}\n""")
         print("""                       Are these correct?\n""")
-        correct_details = get_user_input("y_n")
+        correct_details = None # To enter loop without error message
+        while not choice_validation(correct_details, str):
+            # If answer is not either "yes" or "no" (or alternatives) then keep asking the user
+            correct_details = get_user_input("y_n")
 
         if correct_details == "y":
-            is_correct = True
+            all_correct = True
 
         else:
             print("""                      Okay let's try again.
@@ -101,10 +105,12 @@ def opt_1_track_new_dialogue():
         print("""              If you change your mind, you can set
               email notifications for this product
                 on the Email Notifications page""")
-
+    # Adding product data/settings to DB
     add_new_tracking(product_data)
     print("""\n               > ** PRODUCT ADDED TO ACCOUNT ** <\n""")
     sleep(2.5)
+
+    ## TRACK ANOTHER ITEM LOOP or return to Main Menu
     print("""                ** * ** * ** * ** * ** * ** * **
 
                         Choose an option:
@@ -112,27 +118,59 @@ def opt_1_track_new_dialogue():
                   [ 1 ]  Track another item
                   [ 0 ]  Return to Main Menu""")
 
-    # Needed to enter the loop without showing "non-valid answer" message
+    # Needed to enter the choice loop without showing "non-valid answer" message
     final_choice = None
     # Creates a loop until the user_choice is the correct one
     while not choice_validation(final_choice, int, num_choices=2):
         final_choice = get_user_input("num")
     match final_choice:
-        case "1": # Enters loop to go back to beginning of the function
-            print("About to return TRUE")
+        case "1": # Enters TRACK NEW loop to keep adding products to track
             return True
         case "0": # Exits & Goes back to Main Menu
-            print("About to return FALSE")
             pass
     return False
+
+
+def print_price_history(produc_id, history_choice):
+    match history_choice:
+        case "1": # prints 7-day price history chart
+            prod_price_history = get_price_history(produc_id, full_history=False)
+            print(f"""{data_viz(prod_price_history)}""")
+        case "2": # prints full price history chart
+            prod_price_history = get_price_history(produc_id, full_history=True)
+    return
+
+
+def opt2_1_price_history():
+    print("Please select one from the list:")
+    all_products = get_all_tracked_prod()
+    print_products(all_products)
+    # Needed to enter the choice loop without showing "non-valid answer" message
+    user_prod_choice = None
+    # Creates a loop until the user_choice is the correct one
+    while not choice_validation(user_prod_choice, int, num_choices=len(all_products), exit_option=False):
+        user_prod_choice = get_user_input("num")
+    selected_product = all_products[user_prod_choice]
+    print(f"""            SELECTED:
+            **> {selected_product['title'][:40]}""")
+    print("""                            Choose an option:
+
+                      [ 1 ]  7-day price history
+                      [ 2 ]  All price history""")
+    history_choice = None
+    # Creates a loop until the user_choice is the correct one
+    while not choice_validation(history_choice, int, num_choices=2, exit_option=False):
+        history_choice = get_user_input("num")
+    print_price_history(selected_product['id'], history_choice)
+
+  #TODO  #####################################
+
 
 @menu_option_ascii(2, "My tracked products")
 def opt_2_tracked_prod_dialogue():
     print("These are your currently tracked products:\n".center(60))
     all_products = get_all_tracked_prod()
-    for product in all_products:
-        print(f"""      [ * ]  {product['title'][:40]}
-               *> Current price: {product['currency']}{product['price']}\n""")
+    print_products(all_products)
     print("""              ** * ** * ** * ** * ** * ** * **
 
                  Choose an option:
@@ -140,23 +178,25 @@ def opt_2_tracked_prod_dialogue():
                [ 1 ]  See a product price history
                [ 2 ]  Delete a product from my list
                [ 0 ]  Return to Main Menu""")
-    # Needed to enter the loop without showing "non-valid answer" message
-    step_one = None
+    # Needed to enter the choice loop without showing "non-valid answer" message
+    opt_1_choice = None
+    repeat_choice = True
     # Creates a loop until the user_choice is the correct one
-    while not choice_validation(step_one, int, num_choices=3):
-        final_choice = get_user_input("num")
-    match final_choice:
+    while not choice_validation(opt_1_choice, int, num_choices=3):
+        opt_1_choice = get_user_input("num")
+    match opt_1_choice:
         case "1":
-            # see_product_history()
-            # To return None
-            pass
+            while repeat_choice:
+                repeat_choice = opt2_1_price_history()
         case "2":
-            pass
-            # delete_tracked_product()
-            # To return None
+            while repeat_choice:
+                #repeat_choice = delete_tracked_product()
         case "0": # Exits and goes back to Main Menu
             pass
     return False
+
+
+
 
 # opt_2_tracked_prod_dialogue()
 
@@ -190,9 +230,7 @@ def get_main_menu_choice():
     match user_choice:
         case "1":
             while repeat_choice:
-                print("About to call opt_1")
                 repeat_choice = opt_1_track_new_dialogue()
-                print(f"FINISHED opt_1 and repeat = {repeat_choice}")
         case "2":
             while repeat_choice:
                 repeat_choice = opt_2_tracked_prod_dialogue()
