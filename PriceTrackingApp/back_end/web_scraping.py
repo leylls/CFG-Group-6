@@ -3,6 +3,7 @@ import requests
 from datetime import datetime
 import random
 import time
+import os
 
 
 class HTTPRequest:
@@ -13,8 +14,8 @@ class HTTPRequest:
         self.logger = logger
 
     def random_user_agent(self):
-        # with open('PriceTrackingApp/back_end/list_common_user_agents.txt', 'r') as ua_file:
-        with open("back_end/list_common_user_agents.txt", "r") as ua_file:
+        a = os.path.dirname(__file__)
+        with open(a + '/list-common-user-agents.txt', 'r') as ua_file:
             user_agents = ua_file.readlines()
         user_agents = [agent.strip() for agent in user_agents]
         return random.choice(user_agents)
