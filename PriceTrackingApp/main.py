@@ -1,5 +1,6 @@
 from front_end.ft_end_dialogues_choice_logic import *
 from front_end.ft_end_dbinteractions import *
+import front_end.user_config as temp_user_config
 
 def run():
     """
@@ -7,7 +8,7 @@ def run():
     :return:
     """
     wants_to_exit = False
-    current_user = user_config.current_user  # For testing logic before DB is fully set up
+    current_user = temp_user_config.current_user  # For testing logic before DB is fully set up
 
     if not db_exists():
         new_user_setup_dialogue()

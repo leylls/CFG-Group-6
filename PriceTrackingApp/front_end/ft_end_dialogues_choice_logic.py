@@ -1,4 +1,4 @@
-import user_config
+from front_end.user_config import current_user
 # FRONT END UTILS
 from front_end.ft_end_ascii_decorators import *
 from front_end.ft_end_input_utils import *
@@ -63,21 +63,19 @@ def opt_1_track_new_dialogue():
     Dialogue and logic of the [1] option of Main Menu.
     :return:
     """
-    # wants_to_exit = False
-    # while not wants_to_exit:
-    #
     print("""           Please paste the product's Amazon url:\n""")
     print("[or Type 0 to go back to Main Menu]".center(60))
     all_correct = False
     while not all_correct: # To ensure the obtained product details are correct until user is happy
-        url = get_user_input()
+        url = input("""       ->""")
 
-        if url == "0": # Exit function & back to Main Menu # TODO to refactor and avoid recursion
+        if url == "0": # Exit function & back to Main Menu
             return False
-
-        product_data = get_product_data(url)
+        print("\n")
         print("""           We are extracting the products details""")
         loading()
+        product_data = get_product_data(url)
+
         print(f"""\n\n        *> Product title:   {product_data['title'][:40]}(...)
     
         *> Current price:   {product_data['currency']}{product_data['price']}\n""")
@@ -101,13 +99,18 @@ def opt_1_track_new_dialogue():
     if notify == "y": # If "n" then do nothing as default is 'False'
         product_data['email_notif'] = True
         print("""          Please enter the minimum price drop you would 
-                         like to be notified for:
+                      like to be notified for:
     
-               (e.g. if you say "5" we will email you when
-                   the price has dropped a min of £5)\n""")
-        product_threshold = choice_validation(get_user_input("num"), int)
-        product_data['prod_threshold'] = int(product_threshold)
+             (e.g. if you say "5" we will email you when
+                 the price has dropped a min of £5)\n""")
 
+        product_threshold = None
+        while not choice_validation(product_threshold, int):
+            product_threshold = get_user_input("num")
+            product_data['prod_threshold'] = int(product_threshold)
+            print(f"Great! You will get an email if the price of".center(60))
+            print(f"'{product_data['title'][:40]}'".center(60))
+            print(f"drops by {product_data['currency']}{product_threshold}".center(60))
     else:
         print("""              If you change your mind, you can set
               email notifications for this product
