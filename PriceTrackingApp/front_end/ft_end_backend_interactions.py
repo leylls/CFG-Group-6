@@ -11,6 +11,7 @@ def get_product_data(url):
     web_scraping_results = {}
     web_scraping_results = ws.get_product_data()
     web_scraping_results[0]['email_notif'] = False
+    web_scraping_results[0]['price_threshold'] = 0
 
     return web_scraping_results[0]
 
