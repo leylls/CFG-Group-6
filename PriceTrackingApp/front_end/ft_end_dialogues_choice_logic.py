@@ -1,10 +1,10 @@
 import user_config
 # FRONT END UTILS
-from ft_end_ascii_decorators import *
-from ft_end_input_utils import *
+from front_end.ft_end_ascii_decorators import *
+from front_end.ft_end_input_utils import *
 # BACK END IMPLEMENTATION
-from ft_end_backend_interactions import *
-from ft_end_dbinteractions import *
+from front_end.ft_end_backend_interactions import *
+from front_end.ft_end_dbinteractions import *
 
 
 @new_user_ascii
@@ -100,11 +100,20 @@ def opt_1_track_new_dialogue():
 
     if notify == "y": # If "n" then do nothing as default is 'False'
         product_data['email_notif'] = True
+        print("""          Please enter the minimum price drop you would 
+                         like to be notified for:
+    
+               (e.g. if you say "5" we will email you when
+                   the price has dropped a min of £5)\n""")
+        product_threshold = choice_validation(get_user_input("num"), int)
+        product_data['prod_threshold'] = int(product_threshold)
 
     else:
         print("""              If you change your mind, you can set
               email notifications for this product
                 on the Email Notifications page""")
+        # email_notif is False and prod_threshold is NULL
+
     # Adding product data/settings to DB
     add_new_tracking(product_data)
     print("""\n               > ** PRODUCT ADDED TO ACCOUNT ** <\n""")
@@ -189,8 +198,9 @@ def opt_2_tracked_prod_dialogue():
             while repeat_choice:
                 repeat_choice = opt2_1_price_history()
         case "2":
-            while repeat_choice:
+            # while repeat_choice:
                 #repeat_choice = delete_tracked_product()
+            pass
         case "0": # Exits and goes back to Main Menu
             pass
     return False

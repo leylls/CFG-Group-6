@@ -23,33 +23,38 @@ def clean(string):
     return cleaned_string
 
 
-def choice_validation(user_input, data_type, num_choices=0, exit_option=True):
+def choice_validation(user_input, required_data_type, num_choices=0, exit_option=True):
     """
     Checks that the user input is the correct data type and within the valid choices.
     Use user_input = None to enter the loop without getting Invalid Answer message.
-    :param user_input: this is the user's answer
-    :param data_type: str | int  - the expected data type of the
-    :param num_choices: int - the number of choices the user is given - depending on menu length.
-    :return: True | False
+    :param exit_option: True | False - Tells the func if [0] "Exit to Main Menu" is an available option.
+    :param user_input: Any - This is the user's answer
+    :param required_data_type: str | int  - The required data type for the user input
+    :param num_choices: int - The number of choices the user is given - depending on each menu's length.
+    :return: True | False - If it's a valid answer or not
     """
-    if user_input is None: #To enter the loop without raising ValueError i.e. Invalid answer message
+    if user_input is None:
+        # To enter the loop without raising ValueError i.e. Invalid answer message
         return False
     else:
         try:
-            if data_type == str:
+            if required_data_type == str:
                 user_answer = user_input
                 valid_answers = ["n","y"]
                 if user_answer not in valid_answers:
                     raise ValueError
 
-            elif data_type == int:
+            elif required_data_type == int:
                 user_answer = int(user_input) # If cannot be turned into and int then it will raise ValueError
                 valid_answers = [num for num in range(num_choices)]
                 if not exit_option:
                     # To remove "0" as a valid choice if there is not exit [ 0 ] option
                     valid_answers = valid_answers[1:]
-                if user_answer not in valid_answers:
+                elif num_choices > 0 and user_answer not in valid_answers:
                     raise ValueError
+                elif num_choices == 0:
+                    # Allows any number >0 to be inserted
+                    return True
             else:
                 raise TypeError("Incorrect datatype argument given")
                 # This is for apps development, if Exception is raised then it means the data_type parameter is wrong
@@ -66,10 +71,9 @@ def choice_validation(user_input, data_type, num_choices=0, exit_option=True):
 def get_user_input(suggestion=None):
     """
     Runs Input method with a suggestion of choice, depending on the data type needed.
-    :param suggestion: [str] y_n | num | blank
+    :param suggestion: [str] -> y_n | num | blank
     :return: None
     """
-    #TODO function documentation in other functions
     input_suggestions = {"y_n": "  Type either Y or N", "num": "   Type a number", None: ""}
     print(input_suggestions[suggestion])
     user_answer = clean(input("->  "))

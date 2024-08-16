@@ -149,16 +149,14 @@
   Type either Y or N
        ->
 
-             Please enter the price change threshold
-                  you want to be notified for.
+           Please enter the minimum price drop you would
+                     like to be notified for:
 
-        (e.g. if you say "5" we will email you when the price
-            has either dropped or raised a min of £5)
+           (e.g. if you say "5" we will email you when
+               the price has dropped a min of £5)
 
-         ->
-
-
-                    #todo
+   Type a number
+       ->
 
               If you change your mind, you can set
               email notifications for this product
