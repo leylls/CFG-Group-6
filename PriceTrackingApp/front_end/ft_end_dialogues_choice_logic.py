@@ -397,16 +397,51 @@ def opt_3_app_settings_dialogue():
 
 
 #
-# @menu_option_ascii(4, "Email notifications")
+# @menu_option_ascii(4, "EMAIL NOTIFICATIONS")
 # def opt_4_email_notifications_dialogue():
 #     print(""" """) #TODO Set up options for this task
 #     pass
 #
-# @menu_option_ascii(5, "My tracked products")
-# def opt_5_help_dialogue():
-#     print(""" """) #TODO Set up options for this task
-#     pass
-#
+
+@menu_option_ascii(5, "HELP")
+def opt_5_help_dialogue():
+    print("Need some help figuring out how to use the app?\n".center(60))
+    print(f"{colours.main_colour()}Our README📄 is packed with all the".center(60))
+    print("information you’ll need.\n".center(60))
+    sleep(4.5)
+    colours.question("Would you like to open it in your browser?\n".center(60))
+    user_answer = None
+    while not choice_validation(user_answer, str):
+        user_answer = get_user_input("y_n")
+
+    if user_answer == "y":
+        webbrowser.open_new_tab("https://github.com/evapchiri/evapchiri/blob/main/README.md")
+        sleep(2)
+        print(f"""              ** * ** * ** * ** * ** * ** * **""")
+        colours.question("Choose an option:".center(60))
+        print("""               [ 1 ]  Open README📄 again
+               [ 0 ]  Return to Main Menu\n""")
+
+        # Making a little loop to keep opening README if needed
+        is_ready = False
+        while not is_ready:
+            final_choice = None
+            while not choice_validation(final_choice, int, num_choices=2):
+                final_choice = get_user_input("num")
+                if final_choice == "0":
+                    is_ready = True
+                else:
+                    webbrowser.open_new_tab("https://github.com/evapchiri/evapchiri/blob/main/README.md")
+                    # TODO change url with actual app's README url when finished
+    else:
+        print("No worries!".center(60))
+        print("The README📄 will always be available if you need it.\n".center(60))
+        sleep(2)
+        print("We are now taking you back to the Main Menu\n".center(60))
+        sleep(2.5)
+    return False
+
+
 def get_main_menu_choice():
     """
     Logic behind Main Menu choice selection, and validating user's choice of one of the main menu options, and runs the script of the chosen one.
