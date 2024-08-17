@@ -15,7 +15,7 @@ class HTTPRequest:
 
     def random_user_agent(self):
         a = os.path.dirname(__file__)
-        with open(a + '/list-common-user-agents.txt', 'r') as ua_file:
+        with open(a + '/list_common_user_agents.txt', 'r') as ua_file:
             user_agents = ua_file.readlines()
         user_agents = [agent.strip() for agent in user_agents]
         return random.choice(user_agents)
@@ -89,7 +89,9 @@ PAGE CONTENT:
                 self.logger.write_log(f"""Website not supported - URL: {url}
 ----------------------------------------------------------------
 """)
-                print(f'The app currently only supports Amazon URLs. The following url could not be scraped: {url}')
+                # NOTE FROM EVA: I'm commenting this out for display purposes.
+                #                I have another error message displayed for the user with special format.
+                # print(f'The app currently only supports Amazon URLs. The following url could not be scraped: {url}')
                 continue
             
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
@@ -123,7 +125,9 @@ class AmazonWebScraper(WebScraping):
         try:
             title = self.soup.find(id='productTitle').get_text().strip()
         except AttributeError:
-            print(f'Error loading title for {self.url}.')
+            # NOTE FROM EVA: I'm commenting this out for display purposes.
+            #                I have another error message displayed for the user with special format.
+            # print(f'Error loading title for {self.url}.')
             return None
         return title
 

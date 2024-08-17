@@ -1,3 +1,5 @@
+import time
+
 from front_end.user_config import current_user
 # FRONT END UTILS
 from front_end.ft_end_ascii_decorators import *
@@ -63,72 +65,80 @@ def opt_1_track_new_dialogue():
     Dialogue and logic of the [1] option of Main Menu.
     :return:
     """
-    print("""           Please paste the product's Amazon url:\n""")
-    print("[or Type 0 to go back to Main Menu]".center(60))
+    colours.question("""           Please paste the product's Amazon url:""")
+    print(f"  (or Type 0 to go back to Main Menu)\n".center(60))
     all_correct = False
     while not all_correct: # To ensure the obtained product details are correct until user is happy
-        url = input("""       ->""")
+        try:
+            url = input(f"""{colours.main_colour()}->  """)
+            print(f"{colours.dialogue()}")
 
-        if url == "0": # Exit function & back to Main Menu
-            return False
-        print("\n")
-        print("""           We are extracting the products details""")
-        loading()
-        product_data = get_product_data(url)
+            if url == "0": # Exit function & back to Main Menu
+                return False
+            print("""           We are extracting the products details""")
+            loading()
+            product_data = get_product_data(url)
+            print("\n\n")
+            colours.question("----------------- ** ----------------- ".center(60))
+            print(f"""\n  *> Product title:   {product_data['title'][:32]}(...)
+        
+  *> Current price:   {product_data['currency']}{product_data['price']}\n""")
+            colours.question("----------------- ** ----------------- ".center(60))
+            colours.question("""                    Are these correct?\n""")
+            correct_details = None # To enter loop without error message
+            while not choice_validation(correct_details, str):
+                # If answer is not either "yes" or "no" (or alternatives) then keep asking the user
+                correct_details = get_user_input("y_n")
 
-        print(f"""\n\n        *> Product title:   {product_data['title'][:40]}(...)
-    
-        *> Current price:   {product_data['currency']}{product_data['price']}\n""")
-        print("""                       Are these correct?\n""")
-        correct_details = None # To enter loop without error message
-        while not choice_validation(correct_details, str):
-            # If answer is not either "yes" or "no" (or alternatives) then keep asking the user
-            correct_details = get_user_input("y_n")
+            if correct_details == "y":
+                all_correct = True
 
-        if correct_details == "y":
-            all_correct = True
+            else:
+                print("""                   Okay let's try again.""")
+                colours.question("""           Please paste the product's Amazon url:""")
 
-        else:
-            print("""                      Okay let's try again.
-              Please paste the product's Amazon url:""".center(60))
+        except IndexError:
+            # Reusable for either when URL invalid or Error when retrieving data
+            error_printout("""        We could not extract the product information.
+                      Please try again.""")
+            colours.question("""           Please paste the product's Amazon url:""")
 
-    print("""\n               Would you like to add this product
-                     into your email list?\n""")
+    colours.question("""\n            Would you like to add this product
+                  into your email list?\n""")
     notify = get_user_input("y_n")
 
-    if notify == "y": # If "n" then do nothing as default is 'False'
+    if notify == "y":
         product_data['email_notif'] = True
-        print("""          Please enter the minimum price drop you would 
-                      like to be notified for:
+        colours.question("""       Please enter the minimum price drop you would 
+                like to be notified for:""")
     
-             (e.g. if you say "5" we will email you when
-                 the price has dropped a min of £5)\n""")
+        print("""        (e.g. if you say "5" we will email you when
+            the price has dropped a min of £5)\n""")
 
         product_threshold = None
-        while not choice_validation(product_threshold, int):
+        while not choice_validation(product_threshold, int, exit_option=False):
             product_threshold = get_user_input("num")
-            product_data['prod_threshold'] = int(product_threshold)
+            product_data['price_threshold'] = int(product_threshold)
             print(f"Great! You will get an email if the price of".center(60))
             print(f"'{product_data['title'][:40]}'".center(60))
             print(f"drops by {product_data['currency']}{product_threshold}".center(60))
     else:
+        # Product's email_notif is False and prod_threshold is 0
         print("""              If you change your mind, you can set
               email notifications for this product
                 on the Email Notifications page""")
-        # email_notif is False and prod_threshold is NULL
+
 
     # Adding product data/settings to DB
     add_new_tracking(product_data)
-    print("""\n               > ** PRODUCT ADDED TO ACCOUNT ** <\n""")
+    colours.notification("""\n             > ** PRODUCT ADDED TO ACCOUNT ** <\n""")
     sleep(2.5)
 
     ## TRACK ANOTHER ITEM LOOP or return to Main Menu
-    print("""                ** * ** * ** * ** * ** * ** * **
-
-                        Choose an option:
-
-                  [ 1 ]  Track another item
-                  [ 0 ]  Return to Main Menu""")
+    print("""              ** * ** * ** * ** * ** * ** * **""")
+    colours.question("Choose an option:".center(60))
+    print("""               [ 1 ]  Track another item
+               [ 0 ]  Return to Main Menu""")
 
     # Needed to enter the choice loop without showing "non-valid answer" message
     final_choice = None
@@ -144,36 +154,51 @@ def opt_1_track_new_dialogue():
 
 
 def print_price_history(produc_id, history_choice):
+    """
+    Prints out a graph and the history log of the given product(by ID) and the history length (7-day/Full)
+    :param produc_id: int
+    :param history_choice: 1 | 2
+    :return:
+    """
     match history_choice:
         case "1": # prints 7-day price history chart
             prod_price_history = get_price_history(produc_id, full_history=False)
+            colours.notification("*> 7 DAY PRICE HISTORY <*".center(60))
             print(f"""{data_viz(prod_price_history)}""")
         case "2": # prints full price history chart
             prod_price_history = get_price_history(produc_id, full_history=True)
+            colours.notification("*> FULL PRICE HISTORY <*".center(60))
+            print(f"""{data_viz(prod_price_history)}""")
     return
 
 
 def opt2_1_price_history():
-    print("Please select one from the list:")
+    colours.question("Please select one from the list:".center(60))
     all_products = get_all_tracked_prod()
-    print_products(all_products)
+    print_products(all_products, "num")
     # Needed to enter the choice loop without showing "non-valid answer" message
     user_prod_choice = None
     # Creates a loop until the user_choice is the correct one
     while not choice_validation(user_prod_choice, int, num_choices=len(all_products), exit_option=False):
         user_prod_choice = get_user_input("num")
-    selected_product = all_products[user_prod_choice]
-    print(f"""            SELECTED:
-            **> {selected_product['title'][:40]}""")
-    print("""                            Choose an option:
 
-                      [ 1 ]  7-day price history
-                      [ 2 ]  All price history""")
+    selected_product = all_products[int(user_prod_choice)-1]
+    colours.notification(f"""            SELECTED:
+            **> {selected_product['title'][:40]}\n""")
+
+    print("""              ** * ** * ** * ** * ** * ** * **""")
+    colours.question("Choose an option:".center(60))
+    print("""               [ 1 ]  7-day price history
+               [ 2 ]  Full price history""")
+
     history_choice = None
     # Creates a loop until the user_choice is the correct one
     while not choice_validation(history_choice, int, num_choices=2, exit_option=False):
         history_choice = get_user_input("num")
     print_price_history(selected_product['id'], history_choice)
+    print("\n")
+    colours.notification("THATS ALL FOR NOW AMIGOS")
+    time.sleep(10)
 
   #TODO  #####################################
 
@@ -182,14 +207,14 @@ def opt2_1_price_history():
 def opt_2_tracked_prod_dialogue():
     print("These are your currently tracked products:\n".center(60))
     all_products = get_all_tracked_prod()
-    print_products(all_products)
-    print("""              ** * ** * ** * ** * ** * ** * **
+    print_products(all_products, "star")
 
-                 Choose an option:
-
-               [ 1 ]  See a product price history
+    print("""              ** * ** * ** * ** * ** * ** * **""")
+    colours.question("Choose an option:".center(60))
+    print("""               [ 1 ]  See a product price history
                [ 2 ]  Delete a product from my list
-               [ 0 ]  Return to Main Menu""")
+               [ 0 ]  Return to Main Menu\n""")
+
     # Needed to enter the choice loop without showing "non-valid answer" message
     opt_1_choice = None
     repeat_choice = True

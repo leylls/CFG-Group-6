@@ -147,4 +147,4 @@ def get_price_history(produc_id, full_history=False):
     :return:
     """
 
-    return [TBC] #TODO ask Ikram the data type she needs to then make data viz
+    return #TODO ask Ikram the data type she needs to then make data viz

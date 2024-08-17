@@ -17,5 +17,25 @@ def get_product_data(url):
 
 def data_viz(prod_price_history): #TODO Ikram
 
-    return "" # Something that I can print()
+    # Something that I can print()
+    return """
+
+            |
+            |
+            |
+            |                    *
+            |            *     *
+            |         *     *
+            |       *
+            |    *
+            ----------------------------------
+
+            (*) 14/08/24 -> £199.99
+            (*) 13/08/24 -> £198.99
+            (*) 12/08/24 -> £197.50
+            (*) 11/08/24 -> £198.99
+            (*) 10/08/24 -> £197.50
+            (*) 09/08/24 -> £195.50
+            (*) 08/08/24 -> £194.99 """
+
 

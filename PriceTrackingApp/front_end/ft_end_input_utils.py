@@ -1,5 +1,6 @@
 from time import sleep
 import webbrowser
+from front_end.ft_end_ascii_decorators import colours
 
 
 def clean(string):
@@ -9,15 +10,17 @@ def clean(string):
     :param string: str - raw user's input
     :return: cleaned_string as str - trimmed or refactor answer as str
     """
-    to_remove = [".", "-", "*", "\\", "/", " ", '"', ",", "!","?",":",";","'","#","@"]
+    to_remove = [".", "-", "*", "\\", "/", " ", '"', ",", "!","?",":",";","'","#","@", "[", "]"]
     cleaned_string = string.strip().lower()
+    valid_answers_yes = ["yes", "yea", "ye", "yess"]
+    valid_answers_no = ["no", "nope", "noo"]
 
     for char in to_remove:
         cleaned_string = cleaned_string.replace(char, '')
 
-    if cleaned_string == "yes":
+    if cleaned_string in valid_answers_yes:
         return "y"
-    elif cleaned_string == "no":
+    elif cleaned_string in valid_answers_no:
         return "n"
 
     return cleaned_string
@@ -41,26 +44,23 @@ def choice_validation(user_input, required_data_type, num_choices=0, exit_option
             if required_data_type == str:
                 user_answer = user_input
                 valid_answers = ["n","y"]
-                if user_answer not in valid_answers:
-                    raise ValueError
 
             elif required_data_type == int:
                 user_answer = int(user_input) # If cannot be turned into and int then it will raise ValueError
-                valid_answers = [num for num in range(num_choices)]
                 if not exit_option:
                     # To remove "0" as a valid choice if there is not exit [ 0 ] option
-                    valid_answers = valid_answers[1:]
-                elif num_choices > 0 and user_answer not in valid_answers:
-                    raise ValueError
-                elif num_choices == 0:
+                    valid_answers = [num+1 for num in range(num_choices)]
+                elif exit_option:
+                    valid_answers = [num for num in range(num_choices)]
+                if num_choices == 0:
                     # Allows any number >0 to be inserted
                     return True
-            else:
-                raise TypeError("Incorrect datatype argument given")
-                # This is for apps development, if Exception is raised then it means the data_type parameter is wrong
+
+            if user_answer not in valid_answers:
+                raise ValueError
 
         except ValueError:
-            print("Please only type one of the given options!") # Invalid Answer message
+            print(f"{colours.error()}Please only type one of the given options!{colours.dialogue()}") # Invalid Answer message
             return False
         except TypeError:
             return False
@@ -74,9 +74,10 @@ def get_user_input(suggestion=None):
     :param suggestion: [str] -> y_n | num | blank
     :return: None
     """
-    input_suggestions = {"y_n": "  Type either Y or N", "num": "   Type a number", None: ""}
+    input_suggestions = {"y_n": f"{colours.main_colour()}  Type either Y or N", "num": f"{colours.main_colour()}   Type a number", None: ""}
     print(input_suggestions[suggestion])
     user_answer = clean(input("->  "))
+    print(f"{colours.dialogue()}")
     return user_answer
 
 
