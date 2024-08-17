@@ -73,7 +73,7 @@ def db_exists():
     path = 'front_end/temporary_db_testing.json'     #Temporary file for testing logic before DB is set up
     # TODO replace with actual DB file path
     if os.path.isfile(path):
-        return True
+        return False
     else:
         return False
 

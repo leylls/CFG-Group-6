@@ -1,5 +1,3 @@
-import time
-
 from front_end.user_config import current_user
 # FRONT END UTILS
 from front_end.ft_end_ascii_decorators import *
@@ -15,32 +13,36 @@ def new_user_setup_dialogue(): #TODO To reformat & TEST
     Full CLI dialogue to set up the main details of the new user (user_name + email_pref + user_email).
     :return: None
     """
+    colours.question("Hello there! 👋".center(60))
     print("""            I see that you are new around here.
-          How about we set up a few things first?""")
+          How about we set up a few things first?\n""")
 
     colours.question("For example, what is your name?\n".center(60))
-    user_name = colours.question(input("->  ").title())
-    print(f"Great! Nice to meet you {user_name}.\n".center(60))
+    user_name = input(f"{colours.main_colour()}  ->  ").title()
+    print("\n")
+    colours.question(f"Great! Nice to meet you {user_name}.\n".center(60))
     sleep(2)
-    print("""                Our app has been created to 
-         help you track the price of any product 
-         and assess when is the best time to shop!\n""")
+    print("""               Our app has been created to 
+     help you track the price of any AMAZON product 
+    and help you assess when is the best time to shop!\n""")
     sleep(5)
     # APP INSTRUCTIONS #
-    print("""       Do you want to know how to use this app?
-            [ Y ] Yes please!
-            [ N ] No thank you, I already know how it works.""")
+    colours.question("Do you want to know how to use this app?".center(60))
+    print("""            [ Y ] Yes, please!
+            [ N ] No thank you, I already know how it works.\n""")
     get_app_instructions()
+    sleep(3)
     # EMAIL SECTION #
-    print("""** @ **\n""".center(60))
+    colours.question("""** @ **\n""".center(60))
+    sleep(1)
     print("""         We can notify you by email of any price drop
-                within the range of your choice.
-
-                    Does this interest you?\n""")
-    print("""                        [ Y ] Yes please
-            [ N ] No thank you, I will check manually.\n""")
+              within the range of your choice.\n""")
+    sleep(3.5)
+    colours.question("Does this interest you?".center(60))
+    print("""            [ Y ] Yes, it does.
+            [ N ] No thank you, I will check the app manually.\n""")
     user_email_settings = set_up_email_notifications()
-    print("""** @ **\n""".center(60))
+    colours.question("""** @ **\n""".center(60))
     sleep(4)
     print("We are now creating your account".center(60))
     loading()
@@ -49,12 +51,13 @@ def new_user_setup_dialogue(): #TODO To reformat & TEST
                 'email_pref': f'{user_email_settings["email_pref"]}',
                 'user_email': f'{user_email_settings["user_email"]}'}
     update_user_details(new_user)
-
-    print("""\n
-                    > ** ACCOUNT CREATED! ** <\n""")
-    print("""               it's time to jump into business!
+    print("\n")
+    colours.notification("*> ACCOUNT CREATED! <*\n".center(60))
+    sleep(2.5)
+    colours.question("""               It's time to jump into business!
 
                        € * £ * ¥ * $""")
+    sleep(2.5)
     return
 
 
@@ -349,6 +352,7 @@ def get_main_menu_choice():
         case "5":
             while repeat_choice:
                 repeat_choice = opt_5_help_dialogue()
+                # remember!! -> get_app_instructions()
         case "0":
             return True
     return False

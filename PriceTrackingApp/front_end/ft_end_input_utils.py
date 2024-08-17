@@ -104,12 +104,14 @@ def set_up_email_notifications():
         # While the answer cannot be validated, then keep asking the user until valid answer
         email_pref = get_user_input("y_n")
     if email_pref == "y":
-        print("Very well, please provide an email:".center(60))
+        print("We thought it would.".center(60))
         is_correct = False
         while not is_correct:
-            user_email = input("->   ")
-            print("Is this email correct?".center(60))
-            print(f"{user_email}".center(60))
+            colours.question("Please provide us with your email:".center(60))
+            user_email = input(f"{colours.main_colour()}\n->  ")
+            print("\n")
+            colours.question("Is this email correct?".center(60))
+            print(f"{user_email}\n".center(60))
             answer = get_user_input("y_n")
             if answer == "y":
                 is_correct = True
@@ -117,7 +119,7 @@ def set_up_email_notifications():
                 print("Okay let's try again\n".center(60))
     elif email_pref == "n":
         print("""\n                   If you change your mind,\n        you can always set up email notifications
-         later on the [4]Email notifications page.\n""")
+           later on the "Email notifications" page.\n""")
 
     return {"email_pref": email_pref, "user_email": user_email}
 
@@ -132,11 +134,11 @@ def get_app_instructions():
         answer = get_user_input("y_n")
     if answer == "y":
         webbrowser.open_new_tab("https://github.com/evapchiri/evapchiri/blob/main/README.md")
-        print("""
-                Now that you know everything,""")
-        print("do you want to continue?".center(60))
+        sleep(2)
+        colours.question("""                Now that you know everything,
+                do you want to continue?""")
         print("""            [ Y ] Yes, I am ready!
-            [ N ] No, I need to see that again.""")
+            [ N ] No, I need to see that again.\n""")
         new_answer = None
         is_ready = False
         while not is_ready:
@@ -148,4 +150,5 @@ def get_app_instructions():
                 else:
                     webbrowser.open_new_tab("https://github.com/evapchiri/evapchiri/blob/main/README.md")
     else:
-        print("""\n      You can always find the app's instructions\n             in the 'Help' page if needed.""".center(60))
+        print("You can always find the app's instructions".center(60))
+        print("in the 'Help' page if needed.\n".center(60))
