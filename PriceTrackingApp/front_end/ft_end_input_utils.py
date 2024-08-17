@@ -123,6 +123,7 @@ def set_up_email_notifications():
 
     return {"email_pref": email_pref, "user_email": user_email}
 
+
 def get_app_instructions():
     """
     Logic to open PriceTrackingApp's README from Github and ensure user feels ready to use the app.
@@ -139,7 +140,6 @@ def get_app_instructions():
                 do you want to continue?""")
         print("""            [ Y ] Yes, I am ready!
             [ N ] No, I need to see that again.\n""")
-        new_answer = None
         is_ready = False
         while not is_ready:
             proceed = None
@@ -149,6 +149,7 @@ def get_app_instructions():
                     is_ready = True
                 else:
                     webbrowser.open_new_tab("https://github.com/evapchiri/evapchiri/blob/main/README.md")
+                    #TODO change url with actual app's README url when finished
     else:
         print("You can always find the app's instructions".center(60))
         print("in the 'Help' page if needed.\n".center(60))
