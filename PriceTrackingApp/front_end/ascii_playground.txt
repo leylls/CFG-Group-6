@@ -312,9 +312,51 @@
 
 
   .................  \\      [ 3 ]      //  .................
-                       ** APP SETTINGS **
+                     ** MY ACCOUNT DETAILS **
 
+        These are your current details:
 
+        *> USERNAME:
+        *> EMAIL:
+
+              ** * ** * ** * ** * ** * ** * **
+
+                 Choose an option:
+
+               [ 1 ]  Update details
+               [ 0 ]  Return to Main Menu
+
+    Type a number
+       ->
+
+                What would you like to update?
+               [ 1 ]  USERNAME
+               [ 2 ]  EMAIL
+
+    Type a number
+       ->
+
+                Please provide your new {}:
+
+       ->
+
+                     Is this correct?
+                       {new whatevs}
+
+  Type either Y or N
+       ->
+
+               *> YOUR {} HAS BEEN UPDATED <*
+
+              ** * ** * ** * ** * ** * ** * **
+
+                 Choose an option:
+
+               [ 1 ]  Update something else
+               [ 0 ]  Return to Main Menu
+
+    Type a number
+       ->
 
   ...........................................................
 

@@ -44,10 +44,16 @@ def get_username():
         username = "visitor"
     return username
 
+def get_user_details():
+    """
+    Retrieves username and user_email from DB.
+    :return: dict | {'username', 'user_email'}
+    """
+    return {'username': 'Eva', 'user_email': 'eva@cfg.com'}
 
 def update_user_details(user_details):
     """
-    Inserts user_details into de DB.
+    Inserts updated user_details into de DB.
     :param user_details: dict
     :return:
     """
@@ -147,4 +153,15 @@ def get_price_history(produc_id, full_history=False):
     :return:
     """
 
-    return [TBC] #TODO ask Ikram the data type she needs to then make data viz
+    return #TODO ask Ikram the data type she needs to then make data viz
+
+
+def stop_tracking(product_id):
+    """
+    Deletes the product from the user's list of tracked products.
+    :param product_id: int
+    :return:
+    """
+
+    return
+

@@ -1,5 +1,6 @@
 from time import sleep
 import webbrowser
+from front_end.ft_end_ascii_decorators import colours
 
 
 def clean(string):
@@ -9,15 +10,17 @@ def clean(string):
     :param string: str - raw user's input
     :return: cleaned_string as str - trimmed or refactor answer as str
     """
-    to_remove = [".", "-", "*", "\\", "/", " ", '"', ",", "!","?",":",";","'","#","@"]
+    to_remove = [".", "-", "*", "\\", "/", " ", '"', ",", "!","?",":",";","'","#","@", "[", "]"]
     cleaned_string = string.strip().lower()
+    valid_answers_yes = ["yes", "yea", "ye", "yess"]
+    valid_answers_no = ["no", "nope", "noo"]
 
     for char in to_remove:
         cleaned_string = cleaned_string.replace(char, '')
 
-    if cleaned_string == "yes":
+    if cleaned_string in valid_answers_yes:
         return "y"
-    elif cleaned_string == "no":
+    elif cleaned_string in valid_answers_no:
         return "n"
 
     return cleaned_string
@@ -41,26 +44,23 @@ def choice_validation(user_input, required_data_type, num_choices=0, exit_option
             if required_data_type == str:
                 user_answer = user_input
                 valid_answers = ["n","y"]
-                if user_answer not in valid_answers:
-                    raise ValueError
 
             elif required_data_type == int:
                 user_answer = int(user_input) # If cannot be turned into and int then it will raise ValueError
-                valid_answers = [num for num in range(num_choices)]
                 if not exit_option:
                     # To remove "0" as a valid choice if there is not exit [ 0 ] option
-                    valid_answers = valid_answers[1:]
-                elif num_choices > 0 and user_answer not in valid_answers:
-                    raise ValueError
-                elif num_choices == 0:
+                    valid_answers = [num+1 for num in range(num_choices)]
+                elif exit_option:
+                    valid_answers = [num for num in range(num_choices)]
+                if num_choices == 0:
                     # Allows any number >0 to be inserted
                     return True
-            else:
-                raise TypeError("Incorrect datatype argument given")
-                # This is for apps development, if Exception is raised then it means the data_type parameter is wrong
+
+            if user_answer not in valid_answers:
+                raise ValueError
 
         except ValueError:
-            print("Please only type one of the given options!") # Invalid Answer message
+            print(f"{colours.error()}Please only type one of the given options!{colours.dialogue()}") # Invalid Answer message
             return False
         except TypeError:
             return False
@@ -74,9 +74,10 @@ def get_user_input(suggestion=None):
     :param suggestion: [str] -> y_n | num | blank
     :return: None
     """
-    input_suggestions = {"y_n": "  Type either Y or N", "num": "   Type a number", None: ""}
+    input_suggestions = {"y_n": f"{colours.main_colour()}  Type either Y or N", "num": f"{colours.main_colour()}   Type a number", None: ""}
     print(input_suggestions[suggestion])
     user_answer = clean(input("->  "))
+    print(f"{colours.dialogue()}")
     return user_answer
 
 
@@ -103,12 +104,14 @@ def set_up_email_notifications():
         # While the answer cannot be validated, then keep asking the user until valid answer
         email_pref = get_user_input("y_n")
     if email_pref == "y":
-        print("Very well, please provide an email:".center(60))
+        print("We thought it would.".center(60))
         is_correct = False
         while not is_correct:
-            user_email = input("->   ")
-            print("Is this email correct?".center(60))
-            print(f"{user_email}".center(60))
+            colours.question("Please provide us with your email:".center(60))
+            user_email = input(f"{colours.main_colour()}\n->  ")
+            print("\n")
+            colours.question("Is this email correct?".center(60))
+            print(f"{user_email}\n".center(60))
             answer = get_user_input("y_n")
             if answer == "y":
                 is_correct = True
@@ -116,7 +119,7 @@ def set_up_email_notifications():
                 print("Okay let's try again\n".center(60))
     elif email_pref == "n":
         print("""\n                   If you change your mind,\n        you can always set up email notifications
-         later on the [4]Email notifications page.\n""")
+           later on the "Email notifications" page.\n""")
 
     return {"email_pref": email_pref, "user_email": user_email}
 
@@ -131,11 +134,11 @@ def get_app_instructions():
         answer = get_user_input("y_n")
     if answer == "y":
         webbrowser.open_new_tab("https://github.com/evapchiri/evapchiri/blob/main/README.md")
-        print("""
-                Now that you know everything,""")
-        print("do you want to continue?".center(60))
+        sleep(2)
+        colours.question("""                Now that you know everything,
+                do you want to continue?""")
         print("""            [ Y ] Yes, I am ready!
-            [ N ] No, I need to see that again.""")
+            [ N ] No, I need to see that again.\n""")
         new_answer = None
         is_ready = False
         while not is_ready:
@@ -147,4 +150,5 @@ def get_app_instructions():
                 else:
                     webbrowser.open_new_tab("https://github.com/evapchiri/evapchiri/blob/main/README.md")
     else:
-        print("""\n      You can always find the app's instructions\n             in the 'Help' page if needed.""".center(60))
+        print("You can always find the app's instructions".center(60))
+        print("in the 'Help' page if needed.\n".center(60))

@@ -12,7 +12,7 @@ def run():
 
     if not db_exists():
         new_user_setup_dialogue()
-        sleep(4.5)
+        sleep(1.5)
         main_menu_text(main_menu_options)
 
     else:
