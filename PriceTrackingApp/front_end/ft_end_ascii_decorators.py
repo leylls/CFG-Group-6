@@ -129,7 +129,7 @@ def main_menu_options():
     """
     print(f"""\n               [ 1 ]  Track a new product
                [ 2 ]  My tracked products
-               [ 3 ]  My account
+               [ 3 ]  My account details
                [ 4 ]  Email notifications
                [ 5 ]  Help
                [ 0 ]  Exit""".center(60))

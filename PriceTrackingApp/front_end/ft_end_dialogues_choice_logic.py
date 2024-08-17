@@ -18,7 +18,7 @@ def new_user_setup_dialogue(): #TODO To reformat & TEST
           How about we set up a few things first?\n""")
 
     colours.question("For example, what is your name?\n".center(60))
-    user_name = input(f"{colours.main_colour()}  ->  ").title()
+    user_name = input(f"{colours.main_colour()}->  ").title()
     print("\n")
     colours.question(f"Great! Nice to meet you {user_name}.\n".center(60))
     sleep(2)
@@ -61,7 +61,7 @@ def new_user_setup_dialogue(): #TODO To reformat & TEST
     return
 
 
-@menu_option_ascii(1, "Track a new product")
+@menu_option_ascii(1, "TRACK A NEW PRODUCT")
 def opt_1_track_new_dialogue():
     """
     Dialogue and logic of the [1] option of Main Menu.
@@ -233,6 +233,7 @@ def opt2_1_price_history():
     input(f"{colours.main_colour()}\nPress Enter to return to Main Menu\n  ->  ")
     return False
 
+
 def delete_tracked_product():
     correct = False
     while not correct:
@@ -274,7 +275,7 @@ def delete_tracked_product():
     return False
 
 
-@menu_option_ascii(2, "My tracked products")
+@menu_option_ascii(2, "MY TRACKED PRODUCTS")
 def opt_2_tracked_prod_dialogue():
     print("These are your currently tracked products:\n".center(60))
     all_products = get_all_tracked_prod()
@@ -299,21 +300,102 @@ def opt_2_tracked_prod_dialogue():
         case "2":
             while repeat_choice:
                 repeat_choice = delete_tracked_product()
-            pass
         case "0": # Exits and goes back to Main Menu
             pass
+    return False
+
+def opt_3_1_updt_details(user_details):
+    colours.question("What would you like to update?".center(60))
+    print("""               [ 1 ]  USERNAME
+               [ 2 ]  EMAIL\n""")
+    detail_choice = None
+    while not choice_validation(detail_choice, int, num_choices=2, exit_option=False):
+        detail_choice = get_user_input("num")
+    is_correct = False
+    match detail_choice:
+        case "1":
+            while not is_correct:
+                colours.question(f"Please provide your new USERNAME:".center(60))
+                new_username = input(f"{colours.main_colour()}->  ").title()
+                print("\n")
+                colours.question("Is this correct?".center(60))
+                print(f"{new_username}\n".center(60))
+                answer = get_user_input("y_n")
+                if answer == "y":
+                    is_correct = True
+                    user_details['username'] = new_username
+                    update_user_details(user_details)
+                    colours.notification("*> YOUR USERNAME HAS BEEN UPDATED <*\n".center(60))
+                else:
+                    print("Okay let's try again\n".center(60))
+        case "2":
+            while not is_correct:
+                colours.question(f"Please provide your new EMAIL:".center(60))
+                new_email = input(f"{colours.main_colour()}->  ")
+                print("\n")
+                colours.question("Is this correct?".center(60))
+                print(f"{new_email}\n".center(60))
+                answer = get_user_input("y_n")
+                if answer == "y":
+                    is_correct = True
+                    user_details['user_email'] = new_email
+                    update_user_details(user_details)
+                    colours.notification("*> YOUR EMAIL HAS BEEN UPDATED <*\n".center(60))
+                else:
+                    print("Okay let's try again\n".center(60))
+
+    ## UPDATE ANOTHER DETAIL LOOP or return to Main Menu
+    print("""              ** * ** * ** * ** * ** * ** * **""")
+    colours.question("Choose an option:".center(60))
+    print("""               [ 1 ]  Update something else
+               [ 0 ]  Return to Main Menu""")
+
+    # Needed to enter the choice loop without showing "non-valid answer" message
+    final_choice = None
+    # Creates a loop until the user_choice is the correct one
+    while not choice_validation(final_choice, int, num_choices=2):
+        final_choice = get_user_input("num")
+    match final_choice:
+        case "1":  # Enters loop to update another user detail
+            print("These are your current details:\n".center(60))
+            current_user_details = get_user_details()
+            print(f"""{colours.main_colour()}        *> USERNAME: {user_details['username']}
+        *> EMAIL: {user_details['user_email']}\n{colours.dialogue()}""")
+            return True
+        case "0":  # Exits & Goes back to Main Menu
+            pass
+
+    return False
+
+
+@menu_option_ascii(3, "MY ACCOUNT DETAILS")
+def opt_3_app_settings_dialogue():
+
+    print("These are your current details:\n".center(60))
+    current_user_details = get_user_details()
+    print(f"""{colours.main_colour()}        *> USERNAME: {current_user_details['username']}
+        *> EMAIL: {current_user_details['user_email']}\n""")
+
+    print(f"""{colours.dialogue()}              ** * ** * ** * ** * ** * ** * **""")
+    colours.question("Choose an option:".center(60))
+    print("""               [ 1 ]  Update details
+               [ 0 ]  Return to Main Menu\n""")
+    user_answer = None
+    while not choice_validation(user_answer, int, num_choices=2):
+        user_answer = get_user_input("num")
+    repeat_choice = True
+    match user_answer:
+        case "1":
+            while repeat_choice:
+                repeat_choice = opt_3_1_updt_details(current_user_details)
+        case "0":
+            pass
+
     return False
 
 
 
 
-# opt_2_tracked_prod_dialogue()
-
-#
-# @menu_option_ascii(3, "App settings")
-# def opt_3_app_settings_dialoge():
-#     print(""" """) #TODO Set up options for this task
-#     pass
 #
 # @menu_option_ascii(4, "Email notifications")
 # def opt_4_email_notifications_dialogue():
@@ -345,7 +427,7 @@ def get_main_menu_choice():
                 repeat_choice = opt_2_tracked_prod_dialogue()
         case "3":
             while repeat_choice:
-                repeat_choice = opt_3_app_settings_dialoge()
+                repeat_choice = opt_3_app_settings_dialogue()
         case "4":
             while repeat_choice:
                 repeat_choice = opt_4_email_notifications_dialogue()

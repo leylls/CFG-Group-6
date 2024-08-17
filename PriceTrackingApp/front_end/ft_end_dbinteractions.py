@@ -44,10 +44,16 @@ def get_username():
         username = "visitor"
     return username
 
+def get_user_details():
+    """
+    Retrieves username and user_email from DB.
+    :return: dict | {'username', 'user_email'}
+    """
+    return {'username': 'Eva', 'user_email': 'eva@cfg.com'}
 
 def update_user_details(user_details):
     """
-    Inserts user_details into de DB.
+    Inserts updated user_details into de DB.
     :param user_details: dict
     :return:
     """
@@ -73,7 +79,7 @@ def db_exists():
     path = 'front_end/temporary_db_testing.json'     #Temporary file for testing logic before DB is set up
     # TODO replace with actual DB file path
     if os.path.isfile(path):
-        return False
+        return True
     else:
         return False
 
