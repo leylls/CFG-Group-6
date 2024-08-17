@@ -10,16 +10,16 @@ from front_end.ft_end_dbinteractions import *
 
 
 @new_user_ascii
-def new_user_setup_dialogue():
+def new_user_setup_dialogue(): #TODO To reformat & TEST
     """
     Full CLI dialogue to set up the main details of the new user (user_name + email_pref + user_email).
     :return: None
     """
     print("""            I see that you are new around here.
-          How about we set up a few things first?
+          How about we set up a few things first?""")
 
-              For example, what is your name?\n""")
-    user_name = input("->  ").title()
+    colours.question("For example, what is your name?\n".center(60))
+    user_name = colours.question(input("->  ").title())
     print(f"Great! Nice to meet you {user_name}.\n".center(60))
     sleep(2)
     print("""                Our app has been created to 
@@ -45,7 +45,6 @@ def new_user_setup_dialogue():
     print("We are now creating your account".center(60))
     loading()
 
-    #TODO Write new user details into DB
     new_user = {'username': f'{user_name}',
                 'email_pref': f'{user_email_settings["email_pref"]}',
                 'user_email': f'{user_email_settings["user_email"]}'}
@@ -55,7 +54,7 @@ def new_user_setup_dialogue():
                     > ** ACCOUNT CREATED! ** <\n""")
     print("""               it's time to jump into business!
 
-                       € * £ * ¥ * $""") #TODO perhaps apps name will change?
+                       € * £ * ¥ * $""")
     return
 
 
@@ -157,7 +156,7 @@ def print_price_history(produc_id, history_choice):
     """
     Prints out a graph and the history log of the given product(by ID) and the history length (7-day/Full)
     :param produc_id: int
-    :param history_choice: 1 | 2
+    :param history_choice: str:  1 | 2
     :return:
     """
     match history_choice:
@@ -196,11 +195,38 @@ def opt2_1_price_history():
     while not choice_validation(history_choice, int, num_choices=2, exit_option=False):
         history_choice = get_user_input("num")
     print_price_history(selected_product['id'], history_choice)
-    print("\n")
-    colours.notification("THATS ALL FOR NOW AMIGOS")
-    time.sleep(10)
+    match history_choice:
+        case "1":  # User originally chose 7-day - show alternative opt (Full price) again
+            print("\n")
+            print("""              ** * ** * ** * ** * ** * ** * **""")
+            colours.question("Choose an option:".center(60))
+            print("""               [ 1 ]  See product Full price history
+               [ 0 ]  Return to Main Menu\n""")
+        case "2":  # User originally chose Full price history - show alternative opt (7-day) again
+            print("\n")
+            print("""              ** * ** * ** * ** * ** * ** * **""")
+            colours.question("Choose an option:".center(60))
+            print("""               [ 1 ]  See product 7-day price history
+               [ 0 ]  Return to Main Menu\n""")
 
-  #TODO  #####################################
+    final_choice = None
+    while not choice_validation(final_choice, int, num_choices=2, exit_option=True):
+        final_choice = get_user_input("num")
+
+    match final_choice:
+        case "1":
+            if history_choice == "1":
+                # User originally chose 7-day price history - so Full price history will be now shown
+                print_price_history(selected_product['id'], "2")
+            elif history_choice == "2":
+                # User originally chose Full-day price history - so 7-day price history will be now shown
+                print_price_history(selected_product['id'], "1")
+        case "0":
+            return False
+
+    print("""              ** * ** * ** * ** * ** * ** * **""")
+    input(f"{colours.main_colour()}\nPress Enter to return to Main Menu\n  ->  ")
+    return False
 
 
 @menu_option_ascii(2, "My tracked products")
@@ -209,7 +235,7 @@ def opt_2_tracked_prod_dialogue():
     all_products = get_all_tracked_prod()
     print_products(all_products, "star")
 
-    print("""              ** * ** * ** * ** * ** * ** * **""")
+    print("\n\n")
     colours.question("Choose an option:".center(60))
     print("""               [ 1 ]  See a product price history
                [ 2 ]  Delete a product from my list
