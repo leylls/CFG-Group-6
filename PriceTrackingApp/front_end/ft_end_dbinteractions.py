@@ -148,3 +148,14 @@ def get_price_history(produc_id, full_history=False):
     """
 
     return #TODO ask Ikram the data type she needs to then make data viz
+
+
+def stop_tracking(product_id):
+    """
+    Deletes the product from the user's list of tracked products.
+    :param product_id: int
+    :return:
+    """
+
+    return
+

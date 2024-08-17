@@ -104,7 +104,9 @@ def opt_1_track_new_dialogue():
 
     colours.question("""\n            Would you like to add this product
                   into your email list?\n""")
-    notify = get_user_input("y_n")
+    notify = None
+    while not choice_validation(notify, str):
+        notify = get_user_input("y_n")
 
     if notify == "y":
         product_data['email_notif'] = True
@@ -194,7 +196,7 @@ def opt2_1_price_history():
     # Creates a loop until the user_choice is the correct one
     while not choice_validation(history_choice, int, num_choices=2, exit_option=False):
         history_choice = get_user_input("num")
-    print_price_history(selected_product['id'], history_choice)
+    print_price_history(int(selected_product['id']), history_choice)
     match history_choice:
         case "1":  # User originally chose 7-day - show alternative opt (Full price) again
             print("\n")
@@ -217,15 +219,55 @@ def opt2_1_price_history():
         case "1":
             if history_choice == "1":
                 # User originally chose 7-day price history - so Full price history will be now shown
-                print_price_history(selected_product['id'], "2")
+                print_price_history(int(selected_product['id']), "2")
             elif history_choice == "2":
                 # User originally chose Full-day price history - so 7-day price history will be now shown
-                print_price_history(selected_product['id'], "1")
+                print_price_history(int(selected_product['id']), "1")
         case "0":
             return False
 
     print("""              ** * ** * ** * ** * ** * ** * **""")
     input(f"{colours.main_colour()}\nPress Enter to return to Main Menu\n  ->  ")
+    return False
+
+def delete_tracked_product():
+    correct = False
+    while not correct:
+        colours.question("Please select one from the list:".center(60))
+        all_products = get_all_tracked_prod()
+        print_products(all_products, "num")
+        # Needed to enter the choice loop without showing "non-valid answer" message
+        user_prod_choice = None
+        # Creates a loop until the user_choice is the correct one
+        while not choice_validation(user_prod_choice, int, num_choices=len(all_products), exit_option=False):
+            user_prod_choice = get_user_input("num")
+
+        selected_product = all_products[int(user_prod_choice) - 1]
+        colours.notification(f"""            SELECTED:
+            **> {selected_product['title'][:40]}\n""")
+
+        print("""              ** * ** * ** * ** * ** * ** * **\n""")
+        colours.question("Are you sure you want to delete this product?:\n".center(60))
+        user_answer = None
+        while not choice_validation(user_answer, str):
+            user_answer = get_user_input("y_n")
+        if user_answer == "y":
+            stop_tracking(int(selected_product['id']))
+            correct = True
+            colours.notification(f"*> {selected_product['title'][:40]} HAS BEEN DELETED <*\n".center(60))
+            sleep(2)
+            colours.question("Do you want to delete any other product?\n".center(60))
+            repeat = None
+            while not choice_validation(repeat, str):
+                repeat = get_user_input("y_n")
+            if repeat == "y":
+                return True
+            else:
+                print("We are taking you now to the Main Menu\n".center(60))
+                sleep(2)
+        else:
+            pass
+
     return False
 
 
@@ -235,7 +277,7 @@ def opt_2_tracked_prod_dialogue():
     all_products = get_all_tracked_prod()
     print_products(all_products, "star")
 
-    print("\n\n")
+    print("""              ** * ** * ** * ** * ** * ** * **""")
     colours.question("Choose an option:".center(60))
     print("""               [ 1 ]  See a product price history
                [ 2 ]  Delete a product from my list
@@ -252,8 +294,8 @@ def opt_2_tracked_prod_dialogue():
             while repeat_choice:
                 repeat_choice = opt2_1_price_history()
         case "2":
-            # while repeat_choice:
-                #repeat_choice = delete_tracked_product()
+            while repeat_choice:
+                repeat_choice = delete_tracked_product()
             pass
         case "0": # Exits and goes back to Main Menu
             pass
