@@ -123,33 +123,3 @@ def set_up_email_notifications():
 
     return {"email_pref": email_pref, "user_email": user_email}
 
-
-def get_app_instructions():
-    """
-    Logic to open PriceTrackingApp's README from Github and ensure user feels ready to use the app.
-    :return:
-    """
-    answer = None
-    while not choice_validation(answer, str):
-        # While the answer cannot be validated, then keep asking the user until valid answer
-        answer = get_user_input("y_n")
-    if answer == "y":
-        webbrowser.open_new_tab("https://github.com/evapchiri/evapchiri/blob/main/README.md")
-        sleep(2)
-        colours.question("""                Now that you know everything,
-                do you want to continue?""")
-        print("""            [ Y ] Yes, I am ready!
-            [ N ] No, I need to see that again.\n""")
-        is_ready = False
-        while not is_ready:
-            proceed = None
-            while not choice_validation(proceed,str):
-                proceed = get_user_input("y_n")
-                if proceed == "y":
-                    is_ready = True
-                else:
-                    webbrowser.open_new_tab("https://github.com/evapchiri/evapchiri/blob/main/README.md")
-                    #TODO change url with actual app's README url when finished
-    else:
-        print("You can always find the app's instructions".center(60))
-        print("in the 'Help' page if needed.\n".center(60))

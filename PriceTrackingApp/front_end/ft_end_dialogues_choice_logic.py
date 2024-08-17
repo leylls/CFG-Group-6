@@ -6,6 +6,36 @@ from front_end.ft_end_input_utils import *
 from front_end.ft_end_backend_interactions import *
 from front_end.ft_end_dbinteractions import *
 
+def get_app_instructions():
+    """
+    Logic to open PriceTrackingApp's README from Github and ensure user feels ready to use the app.
+    :return:
+    """
+    answer = None
+    while not choice_validation(answer, str):
+        # While the answer cannot be validated, then keep asking the user until valid answer
+        answer = get_user_input("y_n")
+    if answer == "y":
+        webbrowser.open_new_tab("https://github.com/evapchiri/evapchiri/blob/main/README.md")
+        sleep(2)
+        colours.question("""                Now that you know everything,
+                do you want to continue?""")
+        print("""            [ Y ] Yes, I am ready!
+            [ N ] No, I need to see that again.\n""")
+        is_ready = False
+        while not is_ready:
+            proceed = None
+            while not choice_validation(proceed,str):
+                proceed = get_user_input("y_n")
+                if proceed == "y":
+                    is_ready = True
+                else:
+                    webbrowser.open_new_tab("https://github.com/evapchiri/evapchiri/blob/main/README.md")
+                    #TODO change url with actual app's README url when finished
+    else:
+        print("You can always find the app's instructions".center(60))
+        print("in the 'Help' page if needed.\n".center(60))
+
 
 @new_user_ascii
 def new_user_setup_dialogue(): #TODO To reformat & TEST
@@ -469,7 +499,6 @@ def get_main_menu_choice():
         case "5":
             while repeat_choice:
                 repeat_choice = opt_5_help_dialogue()
-                # remember!! -> get_app_instructions()
         case "0":
             return True
     return False
