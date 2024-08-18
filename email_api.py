@@ -7,10 +7,7 @@ class PriceAlert:
 
     @staticmethod
     def format_price(price, curr):
-        if curr in ['$', '£', '€', '¥', '₹', '₩', '₣']:
-            return f"{curr}{price:.2f}"
-        else:
-            return f"{curr}{price:.2f}"
+        return f"{curr}{price:.2f}"
 
     def send_alert(self, recipient_email, name, product_name, current_price, threshold_price, product_url, currency):
         subject = f"Price Alert: {product_name}"
@@ -97,10 +94,10 @@ class PriceAlert:
         </html>
         """
 
-# if __name__ == "__main__":
-#     api_key = 'your_api_key'
-#     api_secret = 'your_api_secret'
-#     sender_email = "group6.cfgdegree24@gmail.com"
-#
-#     price_alert = PriceAlert(api_key, api_secret, sender_email)
-#     price_alert.send_alert("recipienttest6@gmail.com", "Valued Customer", "Example Product", 30.00, 40.00, "https://www.amazon.co.uk/", "£")
+if __name__ == "__main__":
+    api_key = 'your_api_key'
+    api_secret = 'your_secret_key'
+    sender_email = "group6.cfgdegree24@gmail.com"
+
+    price_alert = PriceAlert(api_key, api_secret, sender_email)
+    price_alert.send_alert("recipienttest6@gmail.com", "Valued Customer", "Example Product", 30.00, 40.00, "https://www.amazon.co.uk/", "£")
