@@ -35,10 +35,11 @@ class HTTPRequest:
         response = requests.get(self.url, headers=self.headers)
 
         if response.status_code != 200:
-            self.logger.write_log(f'Error connecting to the url - ERROR: {response.status_code} - URL: {url}')
-            raise Exception(f"""{response.status_code} - Error connecting to the url provided.
+            self.logger.write_log(f"""Error connecting to the url - ERROR: {response.status_code} - URL: {url}')
 ----------------------------------------------------------------
 """)
+            raise Exception
+
         return BeautifulSoup(response.content, 'html.parser')
 
 class Logger: #to keep logs of errors, disabled to users per default
@@ -70,7 +71,7 @@ class WebScraping:
         index = 1
         for url in self.url_list:
 
-            if 'amazon' in url.lower():
+            if 'amazon' in url.lower() or 'evapchiri' in url.lower(): #added evapchiri to include our mock wesite
                 scraper = AmazonWebScraper(url, self.logger)
                 title, price, currency = scraper.get_all()
                 if title is None or price is None or currency is None:
@@ -89,9 +90,6 @@ PAGE CONTENT:
                 self.logger.write_log(f"""Website not supported - URL: {url}
 ----------------------------------------------------------------
 """)
-                # NOTE FROM EVA: I'm commenting this out for display purposes.
-                #                I have another error message displayed for the user with special format.
-                # print(f'The app currently only supports Amazon URLs. The following url could not be scraped: {url}')
                 continue
             
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
@@ -104,11 +102,6 @@ PAGE CONTENT:
 
             index += 1
         return self.web_scraping_results
-             
-    def results_for_db(self):
-        results = self.get_product_data() #get results as list of dictionaries
-        results_tuple = [(result['title'], result['currency'], result['price'], result['timestamp'], result['url']) for result in results] #convert to list of tuples to pass to DB
-        return results_tuple
 
 class AmazonWebScraper(WebScraping):
     def __init__(self, url, logger):
@@ -125,9 +118,6 @@ class AmazonWebScraper(WebScraping):
         try:
             title = self.soup.find(id='productTitle').get_text().strip()
         except AttributeError:
-            # NOTE FROM EVA: I'm commenting this out for display purposes.
-            #                I have another error message displayed for the user with special format.
-            # print(f'Error loading title for {self.url}.')
             return None
         return title
 
@@ -138,7 +128,6 @@ class AmazonWebScraper(WebScraping):
             currency = self.soup.find('span', class_ = 'a-price-symbol').text
 
         except AttributeError:
-            print(f'Error loading price for {self.url}.')
             return None, None
         
         else:
@@ -147,14 +136,8 @@ class AmazonWebScraper(WebScraping):
         
         return price, currency
 
-# Variable url would come as an input from the FE side, hard-coded for testing
-url_list = [
-    'https://www.amazon.es/Ordenador-Port%C3%A1til-Ultrafino-i5-1335U-Graphics/dp/B0D6ZKJVSB'
-    ]
 
-if __name__ == "__main__":
-    ws = WebScraping(url_list)
-    ws_results_FE = ws.get_product_data()
-    print(ws_results_FE)
-    ws_results_DB = ws.results_for_db()
-    print(ws_results_DB)
+# if __name__ == "__main__":
+#     ws = WebScraping(['https://evapchiri.github.io/test_websiteCFG/'])
+#     ws_results_FE = ws.get_product_data()
+#     print(ws_results_FE)
