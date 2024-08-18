@@ -1,14 +1,105 @@
-from front_end.user_config import current_user
 # FRONT END UTILS
-from front_end.ft_end_ascii_decorators import *
+from front_end.ft_end_ascii_prints import *
 from front_end.ft_end_input_utils import *
 # BACK END IMPLEMENTATION
 from front_end.ft_end_backend_interactions import *
 from front_end.ft_end_dbinteractions import *
 
+def get_app_instructions():
+    """
+    Logic to open PriceTrackingApp's README from Github and ensure user feels ready to use the app.
+    :return:
+    """
+    answer = None
+    while not choice_validation(answer, str):
+        # While the answer cannot be validated, then keep asking the user until valid answer
+        answer = get_user_input("y_n")
+    if answer == "y":
+        webbrowser.open_new_tab("https://github.com/evapchiri/evapchiri/blob/main/README.md")
+        sleep(2)
+        colours.question("""                Now that you know everything,
+                do you want to continue?""")
+        print("""            [ Y ] Yes, I am ready!
+            [ N ] No, I need to see that again.\n""")
+        is_ready = False
+        while not is_ready:
+            proceed = None
+            while not choice_validation(proceed,str):
+                proceed = get_user_input("y_n")
+                if proceed == "y":
+                    is_ready = True
+                else:
+                    webbrowser.open_new_tab("https://github.com/evapchiri/evapchiri/blob/main/README.md")
+                    #TODO change url with actual app's README url when finished
+    else:
+        print("You can always find the app's instructions".center(60))
+        print("in the 'Help' page if needed.\n".center(60))
+
+
+def set_up_email_notifications():
+    """
+    ** This will need proper docs*** lol
+    :return:
+    """
+    email_pref = None  # To enter the first loop without getting error message for invalid choice
+    user_email = None  # Unless email_pref is "y" then will change to user's email
+    while not choice_validation(email_pref, str):
+        # While the answer cannot be validated, then keep asking the user until valid answer
+        email_pref = get_user_input("y_n")
+    if email_pref == "y":
+        print("We thought it would.".center(60))
+        is_correct = False
+        while not is_correct:
+            colours.question("Please provide us with your email:".center(60))
+            user_email = input(f"{colours.main_colour()}\n->  ")
+            print("\n")
+            colours.question("Is this email correct?".center(60))
+            print(f"{user_email}\n".center(60))
+            answer = get_user_input("y_n")
+            if answer == "y":
+                is_correct = True
+            else:
+                print("Okay let's try again\n".center(60))
+    elif email_pref == "n":
+        print("""\n                   If you change your mind,\n        you can always set up email notifications
+           later on the "Email notifications" page.\n""")
+
+    return {"email_pref": email_pref, "user_email": user_email}
+
+
+def get_app_instructions():
+    """
+    Logic to open PriceTrackingApp's README from Github and ensure user feels ready to use the app.
+    :return:
+    """
+    answer = None
+    while not choice_validation(answer, str):
+        # While the answer cannot be validated, then keep asking the user until valid answer
+        answer = get_user_input("y_n")
+    if answer == "y":
+        webbrowser.open_new_tab("https://github.com/evapchiri/evapchiri/blob/main/README.md")
+        sleep(2)
+        colours.question("""                Now that you know everything,
+                do you want to continue?""")
+        print("""            [ Y ] Yes, I am ready!
+            [ N ] No, I need to see that again.\n""")
+        is_ready = False
+        while not is_ready:
+            proceed = None
+            while not choice_validation(proceed,str):
+                proceed = get_user_input("y_n")
+                if proceed == "y":
+                    is_ready = True
+                else:
+                    webbrowser.open_new_tab("https://github.com/evapchiri/evapchiri/blob/main/README.md")
+                    #TODO change url with actual app's README url when finished
+    else:
+        print("You can always find the app's instructions".center(60))
+        print("in the 'Help' page if needed.\n".center(60))
+
 
 @new_user_ascii
-def new_user_setup_dialogue(): #TODO To reformat & TEST
+def new_user_setup_dialogue():
     """
     Full CLI dialogue to set up the main details of the new user (user_name + email_pref + user_email).
     :return: None
@@ -369,7 +460,7 @@ def opt_3_1_updt_details(user_details):
 
 
 @menu_option_ascii(3, "MY ACCOUNT DETAILS")
-def opt_3_app_settings_dialogue():
+def opt_3_acc_details_dialogue():
 
     print("These are your current details:\n".center(60))
     current_user_details = get_user_details()
@@ -462,14 +553,13 @@ def get_main_menu_choice():
                 repeat_choice = opt_2_tracked_prod_dialogue()
         case "3":
             while repeat_choice:
-                repeat_choice = opt_3_app_settings_dialogue()
+                repeat_choice = opt_3_acc_details_dialogue()
         case "4":
             while repeat_choice:
                 repeat_choice = opt_4_email_notifications_dialogue()
         case "5":
             while repeat_choice:
                 repeat_choice = opt_5_help_dialogue()
-                # remember!! -> get_app_instructions()
         case "0":
             return True
     return False
