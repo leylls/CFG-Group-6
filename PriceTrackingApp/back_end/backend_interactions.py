@@ -1,4 +1,4 @@
-from web_scraping import WebScraping
+# from back_end.web_scraping import WebScraping
 import sqlite3
 
 # Get all urls user is monitoring from DB

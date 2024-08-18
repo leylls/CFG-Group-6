@@ -35,7 +35,7 @@ class HTTPRequest:
         response = requests.get(self.url, headers=self.headers)
 
         if response.status_code != 200:
-            self.logger.write_log(f"""Error connecting to the url - ERROR: {response.status_code} - URL: {url}')
+            self.logger.write_log(f"""Error connecting to the url - ERROR: {response.status_code} - URL: {self.url}')
 ----------------------------------------------------------------
 """)
             raise Exception

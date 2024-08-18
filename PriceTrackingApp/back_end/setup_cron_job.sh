@@ -12,6 +12,6 @@ if [ ! -f "$EXECUTABLE_PATH" ]; then
 fi
 
 # Set up cron job to run at boot and to pass on the cron_job=true argument when running executable
-(crontab -l 2>/dev/null; echo "@reboot $EXECUTABLE_PATH cron_job=true") | crontab -
+(crontab -l 2>/dev/null; echo "@reboot $EXECUTABLE_PATH cron_job=True") | crontab -
 
 echo "Cron job set up to run $EXECUTABLE_PATH on system reboot with cron_job=true."
