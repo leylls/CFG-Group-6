@@ -169,3 +169,14 @@ def error_printout(text):
     print(f"{colours.error()}\n")
     print("⚠️".center(60))
     print(f"{text}\n")
+
+def loading():
+    """
+    Prints out a loading message to look like the app has a process running.
+    :return:
+    """
+    print("Please wait".center(60))
+    print(" ".center(25), end=' ')
+    for x in list("." * 4):
+        print(x, end=' ')
+        sleep(0.8)
