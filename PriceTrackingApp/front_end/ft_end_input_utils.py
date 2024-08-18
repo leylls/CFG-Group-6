@@ -1,6 +1,6 @@
 from time import sleep
 import webbrowser
-from front_end.ft_end_ascii_decorators import colours
+from front_end.ft_end_ascii_prints import colours
 
 
 def clean(string):
@@ -122,4 +122,3 @@ def set_up_email_notifications():
            later on the "Email notifications" page.\n""")
 
     return {"email_pref": email_pref, "user_email": user_email}
-
