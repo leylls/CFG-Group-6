@@ -1,24 +1,55 @@
 from mailjet_rest import Client
 
-def send_price_alert(recipient_email, name, product_name, current_price, threshold_price, product_url, currency):
+class PriceAlert:
+    def __init__(self, api_key, api_secret, sender_email):
+        self.mailjet = Client(auth=(api_key, api_secret), version='v3.1')
+        self.sender_email = sender_email
 
-    # MailJet API credentials
-    api_key = 'your_api_key' # replace with your own api key
-    api_secret = 'your_api_secret' # replace with your own api secret key
-
-    mailjet = Client(auth=(api_key, api_secret), version='v3.1')
-
-    # function to retrieve the currency from webscraping
+    @staticmethod
     def format_price(price, curr):
         if curr in ['$', '£', '€', '¥', '₹', '₩', '₣']:
             return f"{curr}{price:.2f}"
         else:
-            return f"{price:.2f}{curr}"
+            return f"{curr}{price:.2f}"
 
-    # email content
-    subject = f"Price Alert: {product_name}"
-    text_content = f"The price of {product_name} has fallen below your price threshold!\n\nCurrent price: ${current_price:.2f}\nYour price threshold: ${threshold_price:.2f}"
-    html_content = f"""
+    def send_alert(self, recipient_email, name, product_name, current_price, threshold_price, product_url, currency):
+        subject = f"Price Alert: {product_name}"
+        text_content = self._create_text_content(product_name, current_price, threshold_price)
+        html_content = self._create_html_content(name, product_name, current_price, threshold_price, product_url, currency, recipient_email)
+
+        data = {
+            'Messages': [
+                {
+                    "From": {
+                        "Email": self.sender_email,
+                        "Name": "Price Alert"
+                    },
+                    "To": [
+                        {
+                            "Email": recipient_email,
+                            "Name": "Valued Customer"
+                        }
+                    ],
+                    "Subject": subject,
+                    "TextPart": text_content,
+                    "HTMLPart": html_content
+                }
+            ]
+        }
+
+        result = self.mailjet.send.create(data=data)
+
+        if result.status_code == 200:
+            print(f"Email sent successfully to {recipient_email}")
+        else:
+            print(f"Failed to send email. Status code: {result.status_code}")
+            print(result.json())
+
+    def _create_text_content(self, product_name, current_price, threshold_price):
+        return f"The price of {product_name} has fallen below your price threshold!\n\nCurrent price: ${current_price:.2f}\nYour price threshold: ${threshold_price:.2f}"
+
+    def _create_html_content(self, name, product_name, current_price, threshold_price, product_url, currency, recipient_email):
+        return f"""
         <html>
         <head>
             <meta charset="utf-8">
@@ -37,11 +68,11 @@ def send_price_alert(recipient_email, name, product_name, current_price, thresho
                                     <table cellpadding="10" cellspacing="0" border="0" width="100%" style="background-color: #f8f8f8; border-radius: 4px;">
                                         <tr>
                                             <td><strong>Current price:</strong></td>
-                                            <td style="text-align: right;"><strong style="color: #1a5f7a; font-size: 18px;">{format_price(current_price, currency)}</strong></td>
+                                            <td style="text-align: right;"><strong style="color: #1a5f7a; font-size: 18px;">{self.format_price(current_price, currency)}</strong></td>
                                         </tr>
                                         <tr>
                                             <td><strong>Your threshold:</strong></td>
-                                            <td style="text-align: right;"><strong style="font-size: 18px;">{format_price(threshold_price, currency)}</strong></td>
+                                            <td style="text-align: right;"><strong style="font-size: 18px;">{self.format_price(threshold_price, currency)}</strong></td>
                                         </tr>
                                     </table>
                                     <p style="margin: 20px 0;">Don't miss this opportunity to save!</p>
@@ -66,40 +97,10 @@ def send_price_alert(recipient_email, name, product_name, current_price, thresho
         </html>
         """
 
-
-    # construct the email data
-    sender_email = "group6.cfgdegree24@gmail.com"
-    data = {
-        'Messages': [
-            {
-                "From": {
-                    "Email": sender_email,
-                    "Name": "Price Alert"
-                },
-                "To": [
-                    {
-                        "Email": recipient_email,
-                        "Name": "Valued Customer"
-                    }
-                ],
-                "Subject": subject,
-                "TextPart": text_content,
-                "HTMLPart": html_content
-            }
-        ]
-    }
-
-    # send the email
-    result = mailjet.send.create(data=data)
-
-    # check if the email was sent successfully
-    if result.status_code == 200:
-        print(f"Email sent successfully to {recipient_email}")
-    else:
-        print(f"Failed to send email. Status code: {result.status_code}")
-        print(result.json())
-
-
-# example to run the code
-if __name__ == "__main__":
-    send_price_alert("recipienttest6@gmail.com", "Valued Customer" , "Example Product", 30.00, 40.00, "https://www.amazon.co.uk/", "£")
+# if __name__ == "__main__":
+#     api_key = 'your_api_key'
+#     api_secret = 'your_api_secret'
+#     sender_email = "group6.cfgdegree24@gmail.com"
+#
+#     price_alert = PriceAlert(api_key, api_secret, sender_email)
+#     price_alert.send_alert("recipienttest6@gmail.com", "Valued Customer", "Example Product", 30.00, 40.00, "https://www.amazon.co.uk/", "£")
