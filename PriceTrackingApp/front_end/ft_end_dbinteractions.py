@@ -76,8 +76,7 @@ def db_exists():
     Checks if a DB exists (i.e. if there is an existing user). Returns True or False.
     :return: True | False
     """
-    path = 'front_end/temporary_db_testing.json'     #Temporary file for testing logic before DB is set up
-    # TODO replace with actual DB file path
+    path = 'back_end/price_tracker.db'
     if os.path.isfile(path):
         return True
     else:

@@ -1,4 +1,3 @@
-from front_end.user_config import current_user
 # FRONT END UTILS
 from front_end.ft_end_ascii_decorators import *
 from front_end.ft_end_input_utils import *
@@ -38,7 +37,7 @@ def get_app_instructions():
 
 
 @new_user_ascii
-def new_user_setup_dialogue(): #TODO To reformat & TEST
+def new_user_setup_dialogue():
     """
     Full CLI dialogue to set up the main details of the new user (user_name + email_pref + user_email).
     :return: None
@@ -399,7 +398,7 @@ def opt_3_1_updt_details(user_details):
 
 
 @menu_option_ascii(3, "MY ACCOUNT DETAILS")
-def opt_3_app_settings_dialogue():
+def opt_3_acc_details_dialogue():
 
     print("These are your current details:\n".center(60))
     current_user_details = get_user_details()
@@ -492,7 +491,7 @@ def get_main_menu_choice():
                 repeat_choice = opt_2_tracked_prod_dialogue()
         case "3":
             while repeat_choice:
-                repeat_choice = opt_3_app_settings_dialogue()
+                repeat_choice = opt_3_acc_details_dialogue()
         case "4":
             while repeat_choice:
                 repeat_choice = opt_4_email_notifications_dialogue()
