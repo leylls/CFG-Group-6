@@ -5,36 +5,6 @@ from front_end.ft_end_input_utils import *
 from front_end.ft_end_backend_interactions import *
 from front_end.ft_end_dbinteractions import *
 
-def get_app_instructions():
-    """
-    Logic to open PriceTrackingApp's README from Github and ensure user feels ready to use the app.
-    :return:
-    """
-    answer = None
-    while not choice_validation(answer, str):
-        # While the answer cannot be validated, then keep asking the user until valid answer
-        answer = get_user_input("y_n")
-    if answer == "y":
-        webbrowser.open_new_tab("https://github.com/evapchiri/evapchiri/blob/main/README.md")
-        sleep(2)
-        colours.question("""                Now that you know everything,
-                do you want to continue?""")
-        print("""            [ Y ] Yes, I am ready!
-            [ N ] No, I need to see that again.\n""")
-        is_ready = False
-        while not is_ready:
-            proceed = None
-            while not choice_validation(proceed,str):
-                proceed = get_user_input("y_n")
-                if proceed == "y":
-                    is_ready = True
-                else:
-                    webbrowser.open_new_tab("https://github.com/evapchiri/evapchiri/blob/main/README.md")
-                    #TODO change url with actual app's README url when finished
-    else:
-        print("You can always find the app's instructions".center(60))
-        print("in the 'Help' page if needed.\n".center(60))
-
 
 def set_up_email_notifications():
     """
@@ -86,13 +56,13 @@ def get_app_instructions():
         is_ready = False
         while not is_ready:
             proceed = None
-            while not choice_validation(proceed,str):
+            while not choice_validation(proceed, str):
                 proceed = get_user_input("y_n")
                 if proceed == "y":
                     is_ready = True
                 else:
                     webbrowser.open_new_tab("https://github.com/evapchiri/evapchiri/blob/main/README.md")
-                    #TODO change url with actual app's README url when finished
+                    # TODO change url with actual app's README url when finished
     else:
         print("You can always find the app's instructions".center(60))
         print("in the 'Help' page if needed.\n".center(60))
@@ -161,12 +131,12 @@ def opt_1_track_new_dialogue():
     colours.question("""           Please paste the product's Amazon url:""")
     print(f"  (or Type 0 to go back to Main Menu)\n".center(60))
     all_correct = False
-    while not all_correct: # To ensure the obtained product details are correct until user is happy
+    while not all_correct:  # To ensure the obtained product details are correct until user is happy
         try:
             url = input(f"""{colours.main_colour()}->  """)
             print(f"{colours.dialogue()}")
 
-            if url == "0": # Exit function & back to Main Menu
+            if url == "0":  # Exit function & back to Main Menu
                 return False
             print("""           We are extracting the products details""")
             loading()
@@ -174,11 +144,11 @@ def opt_1_track_new_dialogue():
             print("\n\n")
             colours.question("----------------- ** ----------------- ".center(60))
             print(f"""\n  *> Product title:   {product_data['title'][:32]}(...)
-        
+
   *> Current price:   {product_data['currency']}{product_data['price']}\n""")
             colours.question("----------------- ** ----------------- ".center(60))
             colours.question("""                    Are these correct?\n""")
-            correct_details = None # To enter loop without error message
+            correct_details = None  # To enter loop without error message
             while not choice_validation(correct_details, str):
                 # If answer is not either "yes" or "no" (or alternatives) then keep asking the user
                 correct_details = get_user_input("y_n")
@@ -206,7 +176,7 @@ def opt_1_track_new_dialogue():
         product_data['email_notif'] = True
         colours.question("""       Please enter the minimum price drop you would 
                 like to be notified for:""")
-    
+
         print("""        (e.g. if you say "5" we will email you when
             the price has dropped a min of £5)\n""")
 
@@ -222,7 +192,6 @@ def opt_1_track_new_dialogue():
         print("""              If you change your mind, you can set
               email notifications for this product
                 on the Email Notifications page""")
-
 
     # Adding product data/settings to DB
     add_new_tracking(product_data)
@@ -241,9 +210,9 @@ def opt_1_track_new_dialogue():
     while not choice_validation(final_choice, int, num_choices=2):
         final_choice = get_user_input("num")
     match final_choice:
-        case "1": # Enters TRACK NEW loop to keep adding products to track
+        case "1":  # Enters TRACK NEW loop to keep adding products to track
             return True
-        case "0": # Exits & Goes back to Main Menu
+        case "0":  # Exits & Goes back to Main Menu
             pass
     return False
 
@@ -256,11 +225,11 @@ def print_price_history(produc_id, history_choice):
     :return:
     """
     match history_choice:
-        case "1": # prints 7-day price history chart
+        case "1":  # prints 7-day price history chart
             prod_price_history = get_price_history(produc_id, full_history=False)
             colours.notification("*> 7 DAY PRICE HISTORY <*".center(60))
             print(f"""{data_viz(prod_price_history)}""")
-        case "2": # prints full price history chart
+        case "2":  # prints full price history chart
             prod_price_history = get_price_history(produc_id, full_history=True)
             colours.notification("*> FULL PRICE HISTORY <*".center(60))
             print(f"""{data_viz(prod_price_history)}""")
@@ -277,7 +246,7 @@ def opt2_1_price_history():
     while not choice_validation(user_prod_choice, int, num_choices=len(all_products), exit_option=False):
         user_prod_choice = get_user_input("num")
 
-    selected_product = all_products[int(user_prod_choice)-1]
+    selected_product = all_products[int(user_prod_choice) - 1]
     colours.notification(f"""            SELECTED:
             **> {selected_product['title'][:40]}\n""")
 
@@ -391,9 +360,10 @@ def opt_2_tracked_prod_dialogue():
         case "2":
             while repeat_choice:
                 repeat_choice = delete_tracked_product()
-        case "0": # Exits and goes back to Main Menu
+        case "0":  # Exits and goes back to Main Menu
             pass
     return False
+
 
 def opt_3_1_updt_details(user_details):
     colours.question("What would you like to update?".center(60))
@@ -461,7 +431,6 @@ def opt_3_1_updt_details(user_details):
 
 @menu_option_ascii(3, "MY ACCOUNT DETAILS")
 def opt_3_acc_details_dialogue():
-
     print("These are your current details:\n".center(60))
     current_user_details = get_user_details()
     print(f"""{colours.main_colour()}        *> USERNAME: {current_user_details['username']}
@@ -483,8 +452,6 @@ def opt_3_acc_details_dialogue():
             pass
 
     return False
-
-
 
 
 #
@@ -538,7 +505,7 @@ def get_main_menu_choice():
     Logic behind Main Menu choice selection, and validating user's choice of one of the main menu options, and runs the script of the chosen one.
     :return: None
     """
-    #Needed to enter the loop without showing "non-valid answer" message
+    # Needed to enter the loop without showing "non-valid answer" message
     user_choice = None
     # Creates a loop until the user_choice is the correct one
     while not choice_validation(user_choice, int, num_choices=6):
