@@ -1,4 +1,4 @@
-from back_end.web_scraping import WebScraping
+from web_scraping import WebScraping
 import sqlite3
 
 # Get all urls user is monitoring from DB
@@ -11,7 +11,7 @@ def get_monitored_urls():
         INNER JOIN price_history h ON p.product_id = h.product_id
         WHERE p.email_pref = 'True'
     ''')
-    cursor.close()
+    cur.close()
     conn.close()
     return monitored_urls  #check if this returns a list
 
@@ -29,7 +29,7 @@ def get_product_id_and_urls():
         SELECT product_id,url FROM products p
         WHERE p.email_pref = 'True'
     ''')
-    cursor.close()
+    cur.close()
     conn.close()
     return product_id_and_urls #check if this returns a list of lists
 
@@ -46,8 +46,8 @@ def insert_results_db(tuple_results):
     conn = sqlite3.connect('price_tracker.db') 
     cur = conn.cursor()
     cur.executemany('''
-                INSERT INTO price_history(product_id,price,currency,timestamp)
+                INSERT INTO price_history(product_id,price,currency,date_checked)
                 VALUES (?, ?, ?, ?)''', tuple_results)
     conn.commit()
-    cursor.close()
+    cur.close()
     conn.close()
