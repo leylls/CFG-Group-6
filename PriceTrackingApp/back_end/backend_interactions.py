@@ -1,5 +1,7 @@
 # from back_end.web_scraping import WebScraping
 import sqlite3
+# from email_api import PriceAlert
+# from email_api_db_interaction import notify_user_from_db
 
 # Get all urls user is monitoring from DB
 def get_monitored_urls():
@@ -51,3 +53,17 @@ def insert_results_db(tuple_results):
     conn.commit()
     cur.close()
     conn.close()
+
+def check_price_below_threshold(current_price, threshold_price):
+    return float(current_price) < float(threshold_price)
+
+def send_price_alert_email():
+    print("Activating price alert email notification...")
+    # initialise PriceAlert with API credentials
+    price_alert = PriceAlert(
+        api_key= 'your_api_key',
+        api_secret='your_api_secret',
+        sender_email='group6.cfgdegree24@gmail.com'
+    )
+    notify_user_from_db(price_alert)
+    print("Price alert email process completed.")
