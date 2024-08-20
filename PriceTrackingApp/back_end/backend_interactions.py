@@ -1,41 +1,43 @@
-# from back_end.web_scraping import WebScraping
+from web_scraping import WebScraping
 import sqlite3
 # from email_api import PriceAlert
 # from email_api_db_interaction import notify_user_from_db
 
-# Get all urls user is monitoring from DB
-def get_monitored_urls():
+
+def get_monitored_urls():                                   # Get all urls user is monitoring from DB
     conn = sqlite3.connect('price_tracker.db') 
     cur = conn.cursor()
-    monitored_urls= cur.execute(
+    cur.execute(
     '''
-        SELECT p.url FROM products p
+        SELECT p.url FROM product_details p
         INNER JOIN price_history h ON p.product_id = h.product_id
-        WHERE p.email_pref = 'True'
+        WHERE p.email_notif = True OR p.email_notif = 1;
     ''')
+    monitored_urls = cur.fetchall()
     cur.close()
     conn.close()
-    return monitored_urls  #check if this returns a list
+    return [url[0] for url in monitored_urls]
 
-# Web scrape url_list
-def get_ws_results(url_list):
+
+def get_ws_results(url_list):                               # Web scrape url_list
     ws = WebScraping(url_list)
     web_scraping_results = ws.get_product_data()
     return web_scraping_results
 
-def get_product_id_and_urls():
+def get_product_id_and_urls():                              # Obtain corresponding product_id for each url
     conn = sqlite3.connect('price_tracker.db')
     cur = conn.cursor()
-    product_id_and_urls = cur.execute(
+    cur.execute(
     '''
-        SELECT product_id,url FROM products p
-        WHERE p.email_pref = 'True'
+        SELECT product_id, url FROM product_details
+        WHERE email_notif = True or email_notif = 1;
     ''')
+    product_id_and_urls = cur.fetchall()
     cur.close()
     conn.close()
-    return product_id_and_urls #check if this returns a list of lists
+    return [list(item) for item in product_id_and_urls]
 
-def prepare_results_for_db(ws_results, product_id_and_urls):
+def prepare_results_for_db(ws_results, product_id_and_urls):  # Map each url to it product_id
     tuple_results = []
     for result in ws_results:
         for product_id, url in product_id_and_urls:
@@ -44,11 +46,11 @@ def prepare_results_for_db(ws_results, product_id_and_urls):
         tuple_results.append((result['product_id'], result['price'], result['currency'], result['timestamp']))
     return tuple_results
 
-def insert_results_db(tuple_results):
+def insert_results_db(tuple_results):                       # Insert results into DB
     conn = sqlite3.connect('price_tracker.db') 
     cur = conn.cursor()
     cur.executemany('''
-                INSERT INTO price_history(product_id,price,currency,date_checked)
+                INSERT INTO price_history(product_id, price, currency, timestamp)
                 VALUES (?, ?, ?, ?)''', tuple_results)
     conn.commit()
     cur.close()
@@ -67,3 +69,12 @@ def send_price_alert_email():
     )
     notify_user_from_db(price_alert)
     print("Price alert email process completed.")
+
+
+#   FOR TESTING PURPOSES - TO BE RUN FROM MAIN
+
+# url_list = get_monitored_urls()
+# ws_results = get_ws_results(url_list)
+# product_id_and_urls = get_product_id_and_urls()
+# tuple_results = prepare_results_for_db(ws_results, product_id_and_urls)
+# insert_results_db(tuple_results)
