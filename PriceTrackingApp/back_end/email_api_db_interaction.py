@@ -1,5 +1,5 @@
 import sqlite3
-# from email_api_v005 import PriceAlert
+# from email_api import PriceAlert
 from utils import check_price_below_threshold # replace utils with cron-jobs/backend_interactions file
 
 def get_user_data():
