@@ -181,12 +181,20 @@ def opt_1_track_new_dialogue():
             the price has dropped a min of £5)\n""")
 
         product_threshold = None
-        while not choice_validation(product_threshold, int, exit_option=False):
+        valid_threshold = False
+        while not choice_validation(product_threshold, int, exit_option=False) or not valid_threshold:
             product_threshold = get_user_input("num")
-            product_data['price_threshold'] = int(product_threshold)
-            print(f"Great! You will get an email if the price of".center(60))
-            print(f"'{product_data['title'][:40]}'".center(60))
-            print(f"drops by {product_data['currency']}{product_threshold}".center(60))
+            if float(product_threshold) < float(product_data['price']):
+                product_data['target_price'] = float(product_data['price']) - float(product_threshold)
+                print(f"Great! You will get an email if the price of".center(60))
+                print(f"'{product_data['title'][:40]}'".center(60))
+                print(f"drops to {product_data['currency']}{product_data['target_price']}".center(60))
+                valid_threshold = True
+            else:
+                print(f"{colours.error()}Your threshold cannot be more than current price".center(60))
+                print(f"{colours.error()}Please provide a valid number.\n".center(60))
+
+
     else:
         # Product's email_notif is False and prod_threshold is 0
         print("""              If you change your mind, you can set

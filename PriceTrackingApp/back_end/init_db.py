@@ -28,6 +28,7 @@ def init_db():
         CREATE TABLE IF NOT EXISTS product_details (
             product_id INTEGER PRIMARY KEY AUTOINCREMENT,
             product_title VARCHAR(1000) NOT NULL,
+            currency VARCHAR (1) NOT NULL,
             url TEXT UNIQUE NOT NULL,
             target_price DECIMAL(10, 2),
             email_notif BOOLEAN DEFAULT 0  
