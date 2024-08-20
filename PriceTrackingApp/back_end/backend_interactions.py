@@ -1,4 +1,4 @@
-from web_scraping import WebScraping
+from back_end.web_scraping import WebScraping
 import sqlite3
 # from email_api import PriceAlert
 # from email_api_db_interaction import notify_user_from_db

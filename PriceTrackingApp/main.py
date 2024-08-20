@@ -11,6 +11,7 @@ def run(cron_job = False):
         product_id_and_url = get_product_id_and_urls()
         tuple_results = prepare_results_for_db (web_scraping, product_id_and_url)
         insert_results_db(tuple_results)
+        print('done')
 
         # Check if new prices are below users threshold
         # Send email with all products with prices below threshold
