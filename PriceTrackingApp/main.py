@@ -1,22 +1,13 @@
 from front_end.ft_end_dialogues_choice_logic import *
 from front_end.ft_end_dbinteractions import *
 import front_end.user_config as temp_user_config
-from back_end.backend_interactions import *
+from back_end.cron_price_tracking_and_email_notif import cron_job_run
 import sys
 
 def run(cron_job = False):
     if cron_job:
-        url_list = get_monitored_urls()
-        web_scraping = get_ws_results(url_list)
-        product_id_and_url = get_product_id_and_urls()
-        tuple_results = prepare_results_for_db (web_scraping, product_id_and_url)
-        insert_results_db(tuple_results)
-        print('done')
-
-        # Check if new prices are below users threshold
-        # Send email with all products with prices below threshold
+        cron_job_run()
         return
-    
     
     """
     App's central script.

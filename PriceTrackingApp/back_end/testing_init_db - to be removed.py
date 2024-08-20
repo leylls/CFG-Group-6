@@ -11,7 +11,7 @@ def init_db():
     """
 
     # Connecting to the SQLite database or creating the database file if it doesn't exist)
-    conn = sqlite3.connect('price_tracker.db')
+    conn = sqlite3.connect('back_end/price_tracker.db')
     cursor = conn.cursor()
 
     # Creating User Details Table
@@ -91,7 +91,7 @@ def init_db():
 
 # VISUALIZE TABLES
 def display_table(table_name):
-    conn = sqlite3.connect('price_tracker.db')
+    conn = sqlite3.connect('back_end/price_tracker.db')
     cur= conn.cursor()
     cur.execute(f"SELECT * FROM {table_name}")
     rows = cur.fetchall()
