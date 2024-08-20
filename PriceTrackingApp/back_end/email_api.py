@@ -9,14 +9,6 @@ class PriceAlert:
     def format_price(price, curr):
         return f"{curr}{price:.2f}"
 
-    @staticmethod
-    def is_valid_email(email):
-        if "@" in email:
-            username, domain = email.split("@", 1)
-            if len(username) > 0 and "." in domain and len(domain.split(".")[-1]) > 1:
-                return True
-        raise ValueError(f"The email address '{email}' is not valid.")
-
     def send_alert(self, recipient_email, name, product_name, current_price, threshold_price, product_url, currency):
         subject = f"Price Alert: {product_name}"
         text_content = self._create_text_content(product_name, current_price, threshold_price)
