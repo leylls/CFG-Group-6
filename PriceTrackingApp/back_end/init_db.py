@@ -52,12 +52,6 @@ def init_db():
     conn.close()
 
 
-# Example Use:
-# from init_db import init_db
-
-# init_db()
-
-
 
 
 
