@@ -13,9 +13,9 @@ class PriceAlert:
     def is_valid_email(email):
         if "@" in email:
             username, domain = email.split("@", 1)
-            if "." in domain and len(username) > 0 and len(domain.split(".")[-1]) > 1:
+            if len(username) > 0 and "." in domain and len(domain.split(".")[-1]) > 1:
                 return True
-        return False
+        raise ValueError(f"The email address '{email}' is not valid.")
 
     def send_alert(self, recipient_email, name, product_name, current_price, threshold_price, product_url, currency):
         subject = f"Price Alert: {product_name}"
@@ -90,7 +90,6 @@ class PriceAlert:
                                     </table>
                                     <p style="font-size: 12px; text-align: center; color: #666; margin-top: 40px;">
                                         This email was sent to: {recipient_email}<br>
-                                        If you no longer wish to receive these alerts, please update your preferences in the app.
                                     </p>
                                 </td>
                             </tr>
@@ -102,10 +101,11 @@ class PriceAlert:
         </html>
         """
 
-if __name__ == "__main__":
-    api_key = 'your_api_key'
-    api_secret = 'your_secret_key'
-    sender_email = "group6.cfgdegree24@gmail.com"
-
-    price_alert = PriceAlert(api_key, api_secret, sender_email)
-    price_alert.send_alert("recipienttest6@gmail.com", "Valued Customer", "Example Product", 30.00, 40.00, "https://www.amazon.co.uk/", "£")
+# run lines 105-111 to check this code works
+# if __name__ == "__main__":
+#     api_key = 'your_api_key'
+#     api_secret = 'your_secret_key'
+#     sender_email = "group6.cfgdegree24@gmail.com"
+#
+#     price_alert = PriceAlert(api_key, api_secret, sender_email)
+#     price_alert.send_alert("recipienttest6@gmail.com", "Valued Customer", "Example Product", 30.00, 40.00, "https://www.amazon.co.uk/", "£")
