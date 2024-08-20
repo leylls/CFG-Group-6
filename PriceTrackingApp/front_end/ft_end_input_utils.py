@@ -79,3 +79,11 @@ def get_user_input(suggestion=None):
     user_answer = clean(input("->  "))
     print(f"{colours.dialogue()}")
     return user_answer
+
+
+def is_valid_email(email):
+    if "@" in email:
+        username, domain = email.split("@", 1)
+        if len(username) > 0 and "." in domain and len(domain.split(".")[-1]) > 1:
+            return True
+    raise ValueError(f"The email address '{email}' is not valid.")
