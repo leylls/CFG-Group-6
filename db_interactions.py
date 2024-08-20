@@ -1,67 +1,57 @@
+
+import os.path
 import sqlite3
 
-def fetch_data(sql_query):
+
+# 1. Connects and interacts with the database
+def get_db_data(sql_query: str):
     fetched_data = ""
     try:
-        conn = sqlite3.connect("price_tracker.db")  # Use your actual database name here
+        conn = sqlite3.connect("price_tracker.db")  # Connect to the correct database file
         cur = conn.cursor()
-        cur.execute(sql_query)  # For example, 'SELECT username FROM users' to get usernames
+        cur.execute(sql_query)
         fetched_data = cur.fetchall()
+        conn.close()
     except sqlite3.Error as e:
-        print(f"SQLite error: {e}")
-    finally:
-        if conn:
-            conn.close()
+        print(f" Connection Database error, please check file: {e}")
     return fetched_data
 
-# Example
-# sql_query = "SELECT username FROM users"
-# result = fetch_data(sql_query)
-# print(result)
 
-"""
-Specific DB interaction to obtain user's username
-:return: str
-"""
-
+# 2. Fetches the user's username from the user_details table.
 def get_username():
-
     try:
-        sql_query = "SELECT username FROM users"  # Actual DB column/table names
-        fetched_data = fetch_data(sql_query)
+        sql_query = "SELECT username FROM user_details"
+        fetched_data = get_db_data(sql_query)
         if fetched_data:
-            username = str(fetched_data[0][0]).title()  # Access the first result
+            username = str(fetched_data[0][0]).title()
         else:
             username = "visitor"
     except ValueError:
-        print("ValueError: Could not retrieve user's name, the user's name has been set as 'visitor'")
+        print("ValueError: Could not retrieve,user's name has been set as 'visitor'")
         username = "visitor"
     return username
 
-# Example
-# username = get_username()
-# print(username)  # Output: First username from the users table or 'visitor'
 
-"""
-Inserts a new user into the DB.
-:param user_details: dict
-:return: None
-"""
+# 3. Fetches the user's username and email from the user_details table.
+def get_user_details():
+    sql_query = "SELECT username, user_email FROM user_details"
+    fetched_data = get_db_data(sql_query)
+    if fetched_data:
+        return {'username': fetched_data[0][0], 'user_email': fetched_data[0][1]}
+    return {}
 
+
+# 4. Updates the user_details table
 def update_user_details(user_details):
 
     try:
         conn = sqlite3.connect("price_tracker.db")
         cur = conn.cursor()
-
-        # Prepare and execute the SQL query
         sql_query = """
-        INSERT INTO users (username, email)
+        INSERT INTO user_details (username, user_email)
         VALUES (?, ?)
         """
         cur.execute(sql_query, (user_details['username'], user_details['user_email']))
-
-        # Commit changes and close the connection
         conn.commit()
     except sqlite3.Error as e:
         print(f"SQLite error: {e}")
@@ -69,183 +59,106 @@ def update_user_details(user_details):
         if conn:
             conn.close()
 
-# Example
-# new_user_details = {'username': 'NewUser', 'user_email': 'newuser@example.com'}
-# update_user_details(new_user_details)
-# print("User details updated")
 
-"""
-Checking to see if a DB exists (i.e. if there is an existing user). Returns True or False.
-:return: True | False
-"""
 
-import os
-
+# 5. Checking DB exits
 def db_exists():
-
-    path = 'price_tracker.db'  # Actual DB file path
+    path = 'price_tracker.db'
     return os.path.isfile(path)
 
-# Example
-# if db_exists():
-#     print("Database exists")
-# else:
-#     print("Database does not exist")
 
-"""
-Sets email notifications as TRUE for a specific product given the product_id to turn on the notifications
-:param product_id: int
-:return: None
-"""
 
+# 6. Gets a product's ID from the product_details using URL
+def get_product_id(product_url: str):
+    sql_query = f"SELECT product_id FROM product_details WHERE url = '{product_url}'"
+    fetched_data = get_db_data(sql_query)
+    if fetched_data:
+        return fetched_data[0][0]
+    return None
+
+
+# 7. email_notif to ON.
 def email_notifications_on(product_id: int):
-
     try:
         conn = sqlite3.connect("price_tracker.db")
         cur = conn.cursor()
-
-        sql_query = "UPDATE products SET email_pref = 1 WHERE product_id = ?"
-        cur.execute(sql_query, (product_id,))
-
+        cur.execute("UPDATE product_details SET email_notif = 1 WHERE product_id = ?", (product_id,))
         conn.commit()
+        conn.close()
     except sqlite3.Error as e:
-        print(f"SQLite error: {e}")
-    finally:
-        if conn:
-            conn.close()
+        print(f"Database  error: {e}")
 
-# Example
-# email_notifications_on(1)
-# print("Email notifications turned on for product ID 1")
 
-"""
-Sets email notifications as FALSE for a specific product given the product_id to turn off notifications
-:param product_id: int
-:return: None
-"""
-
+# 8.  email_notif to FALSE.
 def email_notifications_off(product_id: int):
-
     try:
         conn = sqlite3.connect("price_tracker.db")
         cur = conn.cursor()
-
-        sql_query = "UPDATE products SET email_pref = 0 WHERE product_id = ?"
-        cur.execute(sql_query, (product_id,))
-
+        cur.execute("UPDATE product_details SET email_notif = 0 WHERE product_id = ?", (product_id,))
         conn.commit()
+        conn.close()
     except sqlite3.Error as e:
-        print(f"SQLite error: {e}")
-    finally:
-        if conn:
-            conn.close()
-
-# Example
-# email_notifications_off(1)
-# print("Email notifications turned off for product ID 1")
+        print(f"Database  error: {e}")
 
 
-"""
-Adding a new product into the DB.
-:param product_data: dict
-:return: None
-"""
-
-def add_new_tracking(product_data):
-
+# 9. all tracked products
+def get_all_tracked_prod():
+    """
+    Returns a dictionaries for all products tracked and their details.
+    :return: dicts
+    """
+    tracked_products = []
     try:
-        conn = sqlite3.connect("price_tracker.db")
-        cur = conn.cursor()
-
+        # Select all product details from the product_details table
         sql_query = """
-        INSERT INTO products (product_title, currency, current_price, timestamp, url)
-        VALUES (?, ?, ?, ?, ?)
+        SELECT product_id, product_title, url, target_price, email_notif
+        FROM product_details
         """
-        cur.execute(sql_query, (
-            product_data['title'],
-            product_data['currency'],
-            product_data['price'],
-            product_data['timestamp'],
-            product_data['url']
-        ))
+        fetched_data = get_db_data(sql_query)
+        for row in fetched_data:
+            tracked_products.append({
+                'id': row[0],
+                'title': row[1],
+                'url': row[2],
+                'target_price': row[3],
+                'email_notif': bool(row[4])
+            })
+    except Exception as e:
+        print(f"Database error: {e}")
+    return tracked_products
 
+# 10. Adds a new product to the product_details table.
+def add_new_tracking(product_data):
+    try:
+        conn = sqlite3.connect("price_tracker.db")
+        cur = conn.cursor()
+        cur.execute('''INSERT INTO product_details (product_title, url, target_price, email_notif) 
+                       VALUES (?, ?, ?, ?)''',
+                       (product_data['title'], product_data['url'], product_data['price'], product_data.get('email_notif', 0)))
         conn.commit()
-    except sqlite3.Error as e:
-        print(f"SQLite error: {e}")
-    finally:
-        if conn:
-            conn.close()
-
-# Example
-# new_product = {
-#     'title': 'New_Product',
-#     'currency': '£',
-#     'price': '49.99',
-#     'timestamp': '2024-08-08 19:26',
-#     'url': 'https://www.example.com/product'
-# }
-# add_new_tracking(new_product)
-# print("New product added to tracking")
-
-
-"""
-Gets a product's ID from the database using the product URL.
-:param product_url: str
-:return: product_id: int
-"""
-def get_product_id(product_url: str) -> int:
-
-    product_id = None  # Initialize product_id to None
-    try:
-        conn = sqlite3.connect('price_tracker.db')
-        cur = conn.cursor()
-        sql_query = """SELECT product_id FROM products WHERE url = ?"""
-        cur.execute(sql_query, (product_url,))
-        fetched_data = cur.fetchone()
-        if fetched_data:
-            product_id = fetched_data[0]
         conn.close()
     except sqlite3.Error as e:
-        print(f"SQLite error: {e}")
-    return product_id
-
-# Example
-# product_url = 'https://www.amazon.co.uk/dp/B0BL6GJVZS'
-# product_id = get_product_id(product_url)
-# print(f"Product ID for the URL '{product_url}' is: {product_id}")
+        print(f"Database error: {e}")
 
 
-"""
-Retrieves the product price history log.
-:param product_id: int
-:param full_history: if False -> a partial 7-day history to be returned
-:return: list of tuples (price, date_checked)
-"""
+# 11. Retrieves the price history for a product. - 7DAYS
+def get_price_history(product_id, full_history=False):
+    if full_history:
+        sql_query = f"SELECT * FROM price_history WHERE product_id = {product_id}"
+    else:
+        sql_query = f"SELECT * FROM price_history WHERE product_id = {product_id} AND timestamp >= datetime('now', '-7 days')"
+    return get_db_data(sql_query)
 
-def get_price_history(product_id: int, full_history: bool = False):
 
-    price_history = []
+# 12. Stops tracking a product
+def stop_tracking(product_id):
     try:
-        conn = sqlite3.connect('price_tracker.db')
+        conn = sqlite3.connect("price_tracker.db")
         cur = conn.cursor()
-
-        if full_history:
-            sql_query = """SELECT price, date_checked FROM price_history WHERE product_id = ? ORDER BY date_checked DESC"""
-            cur.execute(sql_query, (product_id,))
-        else:
-            sql_query = """SELECT price, date_checked FROM price_history WHERE product_id = ? 
-                           AND date_checked >= datetime('now', '-7 days') ORDER BY date_checked DESC"""
-            cur.execute(sql_query, (product_id,))
-
-        price_history = cur.fetchall()
+        cur.execute("DELETE FROM product_details WHERE product_id = ?", (product_id,))
+        conn.commit()
         conn.close()
     except sqlite3.Error as e:
-        print(f"SQLite error: {e}")
-
-    return price_history
+        print(f"Database error: {e}")
 
 
-# Example
-# product_id = 1  # Replace with a valid product ID
-# history = get_price_history(product_id, full_history=True)
-# print(f"Full price history for product ID {product_id}: {history}")
