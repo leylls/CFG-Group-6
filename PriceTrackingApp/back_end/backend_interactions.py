@@ -9,7 +9,7 @@ def get_monitored_urls():                                   # Get all urls user 
     cur = conn.cursor()
     cur.execute(
     '''
-        SELECT p.url FROM product_details p
+        SELECT DISTINCT p.url FROM product_details p
         INNER JOIN price_history h ON p.product_id = h.product_id
         WHERE p.email_notif = True OR p.email_notif = 1;
     ''')
