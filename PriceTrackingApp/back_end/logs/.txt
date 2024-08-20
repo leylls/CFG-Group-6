@@ -1,0 +1,9 @@
+
+Error connecting to the url - ERROR: 400 - URL: https://invalidurl.com')
+----------------------------------------------------------------
+
+Error connecting to the url - ERROR: 400 - URL: https://invalidurl.com')
+----------------------------------------------------------------
+
+Error connecting to the url - ERROR: 400 - URL: https://invalidurl.com')
+----------------------------------------------------------------

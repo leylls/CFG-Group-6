@@ -1,0 +1,18 @@
+
+Website not supported - URL: google.com
+----------------------------------------------------------------
+
+Website not supported - URL: codefirstgirls.com
+----------------------------------------------------------------
+
+WebScraping.get_products_data - Information could not be retrieved.
+URL: amazon.co.uk/example, TITLE: title, PRICE: price_example, CURRENCY: None
+----------------------------------------------------------------
+
+WebScraping.get_products_data - Information could not be retrieved.
+URL: amazon.co.uk/example, TITLE: title, PRICE: None, CURRENCY: €
+----------------------------------------------------------------
+
+WebScraping.get_products_data - Information could not be retrieved.
+URL: amazon.co.uk/example, TITLE: None, PRICE: price_example, CURRENCY: €
+----------------------------------------------------------------

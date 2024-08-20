@@ -1,0 +1,15 @@
+
+URL: amazon.co.uk/example
+PAGE CONTENT: 
+<MagicMock name='AmazonWebScraper().soup' id='2580104361120'>
+----------------------------------------------------------------
+
+URL: amazon.co.uk/example
+PAGE CONTENT: 
+<MagicMock name='AmazonWebScraper().soup' id='2580104659696'>
+----------------------------------------------------------------
+
+URL: amazon.co.uk/example
+PAGE CONTENT: 
+<MagicMock name='AmazonWebScraper().soup' id='2580050756528'>
+----------------------------------------------------------------
