@@ -7,7 +7,7 @@ import sqlite3
 def get_db_data(sql_query: str):
     fetched_data = ""
     try:
-        conn = sqlite3.connect("price_tracker.db")  # Connect to the correct database file
+        conn = sqlite3.connect("back_end/price_tracker.db")  # Connect to the correct database file
         cur = conn.cursor()
         cur.execute(sql_query)
         fetched_data = cur.fetchall()
