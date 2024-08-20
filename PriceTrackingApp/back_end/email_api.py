@@ -90,6 +90,7 @@ class PriceAlert:
                                     </table>
                                     <p style="font-size: 12px; text-align: center; color: #666; margin-top: 40px;">
                                         This email was sent to: {recipient_email}<br>
+                                        If you no longer wish to receive these alerts, please update your preferences in the app.
                                     </p>
                                 </td>
                             </tr>
