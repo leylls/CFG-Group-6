@@ -3,7 +3,7 @@ from front_end.ft_end_ascii_prints import *
 from front_end.ft_end_input_utils import *
 # BACK END IMPLEMENTATION
 from front_end.ft_end_backend_interactions import *
-from front_end.ft_end_dbinteractions import *
+from back_end.db_interactions import *
 
 
 def set_up_email_notifications():
