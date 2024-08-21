@@ -24,12 +24,13 @@ def send_price_alert_email(price_alert, check_price_below_threshold):
 
 
 def cron_job_run():
+    # Web scraping functions
     url_list = WebscrapingDbInteractions.get_monitored_urls()                   # Web scrape url_list
     web_scraping = get_ws_results(url_list)                                     # Get all urls user is monitoring from DB
     product_id_and_url = WebscrapingDbInteractions.get_product_id_and_urls()    # Obtain corresponding product_id for each url
     tuple_results = prepare_results_for_db (web_scraping, product_id_and_url)   # Map each url to it product_id & include pricing information retrieved
-    WebscrapingDbInteractions.insert_ws_results_db(tuple_results)                  # Store new web scraping results in DB
-    # email notification functions
+    WebscrapingDbInteractions.insert_ws_results_db(tuple_results)               # Store new web scraping results in DB
+    # Email notification functions
     price_alert = PriceAlert(                                                   # Initialise with API credentials
         api_key='your_api_key',
         api_secret='your_api_secret',
