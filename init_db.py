@@ -25,9 +25,10 @@ def init_db():
         CREATE TABLE IF NOT EXISTS product_details (
             product_id INTEGER PRIMARY KEY AUTOINCREMENT,
             product_title VARCHAR(1000) NOT NULL,
-            url TEXT NOT NULL,
+            url  VARCHAR(200) UNIQUE,
             target_price DECIMAL(10, 2),
             email_notif BOOLEAN DEFAULT 0  
+            FOREIGN KEY (product_id) REFERENCES products(product_id)
         )
     ''')
 
@@ -38,7 +39,7 @@ def init_db():
             product_id INTEGER,
             timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
             currency VARCHAR(3),
-            price REAL NOT NULL,
+            price DECIMAL(10, 2),
             FOREIGN KEY (product_id) REFERENCES product_details (product_id)  
         )
     ''')
