@@ -185,7 +185,7 @@ def opt_1_track_new_dialogue():
         while not choice_validation(product_threshold, int, exit_option=False) or not valid_threshold:
             product_threshold = get_user_input("num")
             if float(product_threshold) < float(product_data['price']):
-                product_data['target_price'] = float(product_data['price']) - float(product_threshold)
+                product_data['target_price'] = round((float(product_data['price']) - float(product_threshold)), 3)
                 print(f"Great! You will get an email if the price of".center(60))
                 print(f"'{product_data['title'][:40]}'".center(60))
                 print(f"drops to {product_data['currency']}{product_data['target_price']}".center(60))
@@ -325,7 +325,7 @@ def delete_tracked_product():
         while not choice_validation(user_answer, str):
             user_answer = get_user_input("y_n")
         if user_answer == "y":
-            stop_tracking(int(selected_product['id']))
+            stop_tracking(int(selected_product['product_id']))
             correct = True
             colours.notification(f"*> {selected_product['title'][:40]} HAS BEEN DELETED <*\n".center(60))
             sleep(2)
