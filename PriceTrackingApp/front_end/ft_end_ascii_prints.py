@@ -152,7 +152,7 @@ def print_products(product_list, index_type, collapsed=False):
     if not collapsed:
         for product in product_list:
             print(f"""      [ {index[i]} ]  {product['title'][:40]}(...)
-                   *> Current price: {product['currency']}{product['price']}\n""")
+                   *> Current price: {product['currency']}{product['current_price']}\n""")
             i+=1
     else:
         for product in product_list:

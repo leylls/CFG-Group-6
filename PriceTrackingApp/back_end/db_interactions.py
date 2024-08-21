@@ -107,35 +107,88 @@ def get_all_tracked_prod(): #  TODO ISSUE: it retrieves the target price, not th
     Returns a dictionaries for all products tracked and their details.
     :return: dicts
     """
-    tracked_products = []
-    try:
-        # Select all product details from the product_details table
-        sql_query = """
-        SELECT product_id, product_title, currency, url, target_price, email_notif
-        FROM product_details
-        """
-        fetched_data = get_db_data(sql_query)
-        for row in fetched_data:
-            tracked_products.append({
-                'id': row[0],
-                'title': row[1],
-                'currency': row[2],
-                'url': row[3],
-                'target_price': row[4],
-                'email_notif': bool(row[5])
-            })
-    except Exception as e:
-        print(f"Database error: {e}")
-    return tracked_products
+    # tracked_products = []
+    # try:
+    #     # Select all product details from the product_details table
+    #     sql_query = """
+    #     SELECT product_id, product_title, currency, url, target_price, email_notif
+    #     FROM product_details
+    #     """
+    #     fetched_data = get_db_data(sql_query)
+    #     for row in fetched_data:
+    #         tracked_products.append({
+    #             'id': row[0],
+    #             'title': row[1],
+    #             'currency': row[2],
+    #             'url': row[3],
+    #             'target_price': row[4],
+    #             'email_notif': bool(row[5])
+    #         })
+    # except Exception as e:
+    #     print(f"Database error: {e}")
+    # return tracked_products
+    """
+    REUSING PART OF GET_USER_DATA() @ EMAIL_API_DB_INTERACTIONS.PY
+    """
+    conn = sqlite3.connect('back_end/price_tracker.db')
+    cur = conn.cursor()
 
-# 10. Adds a new product to the product_details table.
+    # Query 2: retrieve product details with the latest price and currency
+    cur.execute('''
+            SELECT 
+                pd.product_id, 
+                pd.product_title, 
+                pd.url, 
+                pd.target_price,
+                ph.currency,
+                ph.price AS current_price
+            FROM product_details pd
+            LEFT JOIN price_history ph ON pd.product_id = ph.product_id
+            WHERE pd.email_notif = 1
+            AND ph.timestamp = (
+                SELECT MAX(timestamp)
+                FROM price_history
+                WHERE product_id = pd.product_id
+            )
+        ''')
+    product_data = cur.fetchall()
+
+    cur.close()
+    conn.close()
+
+    # Prepare the user data structure
+    all_tracked_products = []
+
+    # Add product details to the user data structure
+    for product in product_data:
+        product_id, product_title, url, target_price, currency, current_price = product
+        all_tracked_products.append({
+            'product_id': product_id,
+            'title': product_title,
+            'url': url,
+            'target_price': target_price,
+            'currency': currency,
+            'current_price': current_price})
+
+    return all_tracked_products
+
+
+    # 10. Adds a new product to the product_details table.
 def add_new_tracking(product_data):
     try:
         conn = sqlite3.connect("back_end/price_tracker.db")
         cur = conn.cursor()
-        cur.execute('''INSERT INTO product_details (product_title, currency, url, target_price, email_notif) 
+        # Inserting product_data into product_details table - autoincrementing product_id
+        cur.execute(
+            '''INSERT INTO product_details (product_title, currency, url, target_price, email_notif) 
                        VALUES (?, ?, ?, ?, ?)''',
-                       (product_data['title'], product_data['currency'], product_data['url'], product_data['target_price'], product_data.get('email_notif', 0)))
+            (product_data['title'], product_data['currency'], product_data['url'], product_data['target_price'], product_data.get('email_notif', 0)))
+        # Obtaining the product_id of the last entered product in product_details (as it is autoincrement)
+        last_product_id = cur.lastrowid
+        # Logging first webscraping log into price_history with the last inserted product's product_id
+        cur.execute(
+            '''INSERT INTO price_history (product_id, timestamp, currency, price) VALUES (?, ?, ?, ?)''',
+            (last_product_id, product_data['timestamp'], product_data['currency'],product_data['price']))
         conn.commit()
         conn.close()
     except sqlite3.Error as e:

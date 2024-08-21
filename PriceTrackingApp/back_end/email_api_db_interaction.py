@@ -3,7 +3,7 @@ import sqlite3
 from utils import check_price_below_threshold # replace utils with cron-jobs/backend_interactions file
 
 def get_user_data():
-    conn = sqlite3.connect('price_tracker.db')
+    conn = sqlite3.connect('back_end/price_tracker.db')
     cur = conn.cursor()
 
     # Query 1: retrieve user details
