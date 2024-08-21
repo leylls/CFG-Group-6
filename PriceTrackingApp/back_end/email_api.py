@@ -7,7 +7,10 @@ class PriceAlert:
 
     @staticmethod
     def format_price(price, curr):
-        return f"{curr}{price:.2f}"
+        if curr in ['$', '£', '€', '¥', '₹', '₩', '₣']:
+            return f"{curr}{price:.2f}"
+        else:
+            return f"{curr}{price:.2f}"
 
     def send_alert(self, recipient_email, name, product_name, current_price, threshold_price, product_url, currency):
         subject = f"Price Alert: {product_name}"
