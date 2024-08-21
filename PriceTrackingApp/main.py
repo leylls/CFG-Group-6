@@ -1,12 +1,19 @@
 from front_end.ft_end_dialogues_choice_logic import *
 from back_end.db_interactions import *
 from back_end.init_db import init_db
+from back_end.cron_price_tracking_and_email_notif import cron_job_run
+import sys
 
-def run():
+def run(cron_job = False):
+    if cron_job:
+        cron_job_run()
+        return
+    
     """
     App's central script.
     :return:
     """
+    app_welcome_ascii()
     wants_to_exit = False
 
     if not db_exists():
@@ -27,8 +34,9 @@ def run():
     return
 
 if __name__ == "__main__":
-    app_welcome_ascii()
-    run()
-
-
-
+    if len(sys.argv) > 1:                       #check if an argument is passed
+        argument = sys.argv[1].split('=',1)
+        if argument[0] == 'cron_job':
+            run(argument[1])
+    else:
+        run()

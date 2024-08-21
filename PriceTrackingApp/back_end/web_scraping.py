@@ -146,6 +146,6 @@ class AmazonWebScraper(WebScraping):
 
 
 # if __name__ == "__main__":
-#     ws = WebScraping(['https://evapchiri.github.io/test_websiteCFG/', 'invalid'])
+#     ws = WebScraping(['https://evapchiri.github.io/test_websiteCFG/'])
 #     ws_results_FE = ws.get_product_data()
 #     print(ws_results_FE)
