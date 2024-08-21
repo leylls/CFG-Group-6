@@ -7,7 +7,7 @@ import sqlite3
 def get_db_data(sql_query: str):
     fetched_data = ""
     try:
-        conn = sqlite3.connect("price_tracker.db")  # Connect to the correct database file
+        conn = sqlite3.connect("backend/price_tracker.db")  # Connect to the correct database file
         cur = conn.cursor()
         cur.execute(sql_query)
         fetched_data = cur.fetchall()
@@ -45,7 +45,7 @@ def get_user_details():
 def update_user_details(user_details):
 
     try:
-        conn = sqlite3.connect("price_tracker.db")
+        conn = sqlite3.connect("backend/price_tracker.db")
         cur = conn.cursor()
         sql_query = """
         INSERT INTO user_details (username, user_email)
@@ -63,7 +63,7 @@ def update_user_details(user_details):
 
 # 5. Checking DB exits
 def db_exists():
-    path = 'price_tracker.db'
+    path = 'backend/price_tracker.db'
     return os.path.isfile(path)
 
 
@@ -80,7 +80,7 @@ def get_product_id(product_url: str):
 # 7. email_notif to ON.
 def email_notifications_on(product_id: int):
     try:
-        conn = sqlite3.connect("price_tracker.db")
+        conn = sqlite3.connect("backend/price_tracker.db")
         cur = conn.cursor()
         cur.execute("UPDATE product_details SET email_notif = 1 WHERE product_id = ?", (product_id,))
         conn.commit()
@@ -92,7 +92,7 @@ def email_notifications_on(product_id: int):
 # 8.  email_notif to FALSE.
 def email_notifications_off(product_id: int):
     try:
-        conn = sqlite3.connect("price_tracker.db")
+        conn = sqlite3.connect("backend/price_tracker.db")
         cur = conn.cursor()
         cur.execute("UPDATE product_details SET email_notif = 0 WHERE product_id = ?", (product_id,))
         conn.commit()
@@ -130,7 +130,7 @@ def get_all_tracked_prod():
 # 10. Adds a new product to the product_details table.
 def add_new_tracking(product_data):
     try:
-        conn = sqlite3.connect("price_tracker.db")
+        conn = sqlite3.connect("backend/price_tracker.db")
         cur = conn.cursor()
         cur.execute('''INSERT INTO product_details (product_title, url, target_price, email_notif) 
                        VALUES (?, ?, ?, ?)''',
@@ -150,12 +150,14 @@ def get_price_history(product_id, full_history=False):
     return get_db_data(sql_query)
 
 
-# 12. Stops tracking a product
+
+# 12. Stops tracking a product by removing it from the product_details table.
 def stop_tracking(product_id):
     try:
-        conn = sqlite3.connect("price_tracker.db")
+        conn = sqlite3.connect("backend/price_tracker.db")
         cur = conn.cursor()
         cur.execute("DELETE FROM product_details WHERE product_id = ?", (product_id,))
+        cur.execute(" DELETE FROM price_history WHERE product_id = ?", (price_history,))
         conn.commit()
         conn.close()
     except sqlite3.Error as e:
