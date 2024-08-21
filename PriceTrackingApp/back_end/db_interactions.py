@@ -146,29 +146,6 @@ def get_all_tracked_prod(): #  TODO ISSUE: it retrieves the target price, not th
     Returns a dictionaries for all products tracked and their details.
     :return: dicts
     """
-    # tracked_products = []
-    # try:
-    #     # Select all product details from the product_details table
-    #     sql_query = """
-    #     SELECT product_id, product_title, currency, url, target_price, email_notif
-    #     FROM product_details
-    #     """
-    #     fetched_data = get_db_data(sql_query)
-    #     for row in fetched_data:
-    #         tracked_products.append({
-    #             'id': row[0],
-    #             'title': row[1],
-    #             'currency': row[2],
-    #             'url': row[3],
-    #             'target_price': row[4],
-    #             'email_notif': bool(row[5])
-    #         })
-    # except Exception as e:
-    #     print(f"Database error: {e}")
-    # return tracked_products
-    """
-    REUSING PART OF GET_USER_DATA() @ EMAIL_API_DB_INTERACTIONS.PY
-    """
     conn = sqlite3.connect('back_end/price_tracker.db')
     cur = conn.cursor()
 
@@ -246,6 +223,7 @@ def stop_tracking(product_id):
         conn = sqlite3.connect("back_end/price_tracker.db")
         cur = conn.cursor()
         cur.execute("DELETE FROM product_details WHERE product_id = ?", (product_id,))
+        cur.execute(" DELETE FROM price_history WHERE product_id = ?", (product_id,))
         conn.commit()
         conn.close()
     except sqlite3.Error as e:
