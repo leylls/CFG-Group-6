@@ -1,14 +1,75 @@
-from front_end.user_config import current_user
 # FRONT END UTILS
-from front_end.ft_end_ascii_decorators import *
+from front_end.ft_end_ascii_prints import *
 from front_end.ft_end_input_utils import *
 # BACK END IMPLEMENTATION
 from front_end.ft_end_backend_interactions import *
-from front_end.ft_end_dbinteractions import *
+from back_end.db_interactions import *
+
+
+def set_up_email_notifications():
+    """
+    ** This will need proper docs*** lol
+    :return:
+    """
+    email_pref = None  # To enter the first loop without getting error message for invalid choice
+    user_email = None  # Unless email_pref is "y" then will change to user's email
+    while not choice_validation(email_pref, str):
+        # While the answer cannot be validated, then keep asking the user until valid answer
+        email_pref = get_user_input("y_n")
+    if email_pref == "y":
+        print("We thought it would.".center(60))
+        is_correct = False
+        while not is_correct:
+            colours.question("Please provide us with your email:".center(60))
+            user_email = input(f"{colours.main_colour()}\n->  ")
+            print("\n")
+            colours.question("Is this email correct?".center(60))
+            print(f"{user_email}\n".center(60))
+            answer = get_user_input("y_n")
+            if answer == "y":
+                is_correct = True
+            else:
+                print("Okay let's try again\n".center(60))
+    elif email_pref == "n":
+        print("""\n                   If you change your mind,\n        you can always set up email notifications
+           later on the "Email notifications" page.\n""")
+
+    return {"email_pref": email_pref, "user_email": user_email}
+
+
+def get_app_instructions():
+    """
+    Logic to open PriceTrackingApp's README from Github and ensure user feels ready to use the app.
+    :return:
+    """
+    answer = None
+    while not choice_validation(answer, str):
+        # While the answer cannot be validated, then keep asking the user until valid answer
+        answer = get_user_input("y_n")
+    if answer == "y":
+        webbrowser.open_new_tab("https://github.com/evapchiri/evapchiri/blob/main/README.md")
+        sleep(2)
+        colours.question("""                Now that you know everything,
+                do you want to continue?""")
+        print("""            [ Y ] Yes, I am ready!
+            [ N ] No, I need to see that again.\n""")
+        is_ready = False
+        while not is_ready:
+            proceed = None
+            while not choice_validation(proceed,str):
+                proceed = get_user_input("y_n")
+                if proceed == "y":
+                    is_ready = True
+                else:
+                    webbrowser.open_new_tab("https://github.com/evapchiri/evapchiri/blob/main/README.md")
+                    #TODO change url with actual app's README url when finished
+    else:
+        print("You can always find the app's instructions".center(60))
+        print("in the 'Help' page if needed.\n".center(60))
 
 
 @new_user_ascii
-def new_user_setup_dialogue(): #TODO To reformat & TEST
+def new_user_setup_dialogue():
     """
     Full CLI dialogue to set up the main details of the new user (user_name + email_pref + user_email).
     :return: None
@@ -50,7 +111,7 @@ def new_user_setup_dialogue(): #TODO To reformat & TEST
     new_user = {'username': f'{user_name}',
                 'email_pref': f'{user_email_settings["email_pref"]}',
                 'user_email': f'{user_email_settings["user_email"]}'}
-    update_user_details(new_user)
+    insert_new_user_details(new_user)
     print("\n")
     colours.notification("*> ACCOUNT CREATED! <*\n".center(60))
     sleep(2.5)
@@ -120,12 +181,20 @@ def opt_1_track_new_dialogue():
             the price has dropped a min of £5)\n""")
 
         product_threshold = None
-        while not choice_validation(product_threshold, int, exit_option=False):
+        valid_threshold = False
+        while not choice_validation(product_threshold, int, exit_option=False) or not valid_threshold:
             product_threshold = get_user_input("num")
-            product_data['price_threshold'] = int(product_threshold)
-            print(f"Great! You will get an email if the price of".center(60))
-            print(f"'{product_data['title'][:40]}'".center(60))
-            print(f"drops by {product_data['currency']}{product_threshold}".center(60))
+            if float(product_threshold) < float(product_data['price']):
+                product_data['target_price'] = round((float(product_data['price']) - float(product_threshold)), 3)
+                print(f"Great! You will get an email if the price of".center(60))
+                print(f"'{product_data['title'][:40]}'".center(60))
+                print(f"drops to {product_data['currency']}{product_data['target_price']}".center(60))
+                valid_threshold = True
+            else:
+                print(f"{colours.error()}Your threshold cannot be more than current price".center(60))
+                print(f"{colours.error()}Please provide a valid number.\n".center(60))
+
+
     else:
         # Product's email_notif is False and prod_threshold is 0
         print("""              If you change your mind, you can set
@@ -199,7 +268,7 @@ def opt2_1_price_history():
     # Creates a loop until the user_choice is the correct one
     while not choice_validation(history_choice, int, num_choices=2, exit_option=False):
         history_choice = get_user_input("num")
-    print_price_history(int(selected_product['id']), history_choice)
+    print_price_history(int(selected_product['product_id']), history_choice)
     match history_choice:
         case "1":  # User originally chose 7-day - show alternative opt (Full price) again
             print("\n")
@@ -222,10 +291,10 @@ def opt2_1_price_history():
         case "1":
             if history_choice == "1":
                 # User originally chose 7-day price history - so Full price history will be now shown
-                print_price_history(int(selected_product['id']), "2")
+                print_price_history(int(selected_product['product_id']), "2")
             elif history_choice == "2":
                 # User originally chose Full-day price history - so 7-day price history will be now shown
-                print_price_history(int(selected_product['id']), "1")
+                print_price_history(int(selected_product['product_id']), "1")
         case "0":
             return False
 
@@ -256,7 +325,7 @@ def delete_tracked_product():
         while not choice_validation(user_answer, str):
             user_answer = get_user_input("y_n")
         if user_answer == "y":
-            stop_tracking(int(selected_product['id']))
+            stop_tracking(int(selected_product['product_id']))
             correct = True
             colours.notification(f"*> {selected_product['title'][:40]} HAS BEEN DELETED <*\n".center(60))
             sleep(2)
@@ -324,7 +393,7 @@ def opt_3_1_updt_details(user_details):
                 if answer == "y":
                     is_correct = True
                     user_details['username'] = new_username
-                    update_user_details(user_details)
+                    update_user_detail(username=new_username)
                     colours.notification("*> YOUR USERNAME HAS BEEN UPDATED <*\n".center(60))
                 else:
                     print("Okay let's try again\n".center(60))
@@ -339,7 +408,7 @@ def opt_3_1_updt_details(user_details):
                 if answer == "y":
                     is_correct = True
                     user_details['user_email'] = new_email
-                    update_user_details(user_details)
+                    update_user_detail(user_email=new_email)
                     colours.notification("*> YOUR EMAIL HAS BEEN UPDATED <*\n".center(60))
                 else:
                     print("Okay let's try again\n".center(60))
@@ -369,7 +438,7 @@ def opt_3_1_updt_details(user_details):
 
 
 @menu_option_ascii(3, "MY ACCOUNT DETAILS")
-def opt_3_app_settings_dialogue():
+def opt_3_acc_details_dialogue():
 
     print("These are your current details:\n".center(60))
     current_user_details = get_user_details()
@@ -462,14 +531,13 @@ def get_main_menu_choice():
                 repeat_choice = opt_2_tracked_prod_dialogue()
         case "3":
             while repeat_choice:
-                repeat_choice = opt_3_app_settings_dialogue()
+                repeat_choice = opt_3_acc_details_dialogue()
         case "4":
             while repeat_choice:
                 repeat_choice = opt_4_email_notifications_dialogue()
         case "5":
             while repeat_choice:
                 repeat_choice = opt_5_help_dialogue()
-                # remember!! -> get_app_instructions()
         case "0":
             return True
     return False
