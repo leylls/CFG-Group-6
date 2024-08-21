@@ -1,7 +1,7 @@
 from back_end.web_scraping import WebScraping
 from back_end.web_scraping_db_interactions import WebscrapingDbInteractions
 from email_api import PriceAlert
-from email_api_db_interaction import notify_user_from_db
+from email_api_db_interaction import notify_user_from_db, check_price_below_threshold
 
 def get_ws_results(url_list):
     ws = WebScraping(url_list)
@@ -16,10 +16,6 @@ def prepare_results_for_db(ws_results, product_id_and_urls):
                 result['product_id'] = product_id
         tuple_results.append((result['product_id'], result['price'], result['currency'], result['timestamp']))
     return tuple_results
-
-
-def check_price_below_threshold(current_price, threshold_price):
-    return float(current_price) < float(threshold_price)
 
 def send_price_alert_email(price_alert, check_price_below_threshold):
     print("Activating price alert email notification...")
