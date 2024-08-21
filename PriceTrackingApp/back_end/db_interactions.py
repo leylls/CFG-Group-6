@@ -42,7 +42,7 @@ def get_user_details():
 
 
 # 4. Updates the user_details table
-def update_user_details(user_details):
+def insert_new_user_details(user_details):
 
     try:
         conn = sqlite3.connect("back_end/price_tracker.db")
@@ -52,6 +52,45 @@ def update_user_details(user_details):
         VALUES (?, ?, ?)
         """
         cur.execute(sql_query, (user_details['username'], user_details['user_email'], user_details['email_pref']))
+        conn.commit()
+    except sqlite3.Error as e:
+        print(f"SQLite error: {e}")
+    finally:
+        if conn:
+            conn.close()
+
+def update_user_detail(username = None, user_email = None, email_pref = None):
+    """
+    Updates one particular user_detail - given as the parameter.
+    :param username: str
+    :param user_email: str
+    :param email_pref: bool
+    :return:
+    """
+    try:
+        conn = sqlite3.connect("back_end/price_tracker.db")
+        cur = conn.cursor()
+        if username:
+            sql_query = """
+                    UPDATE user_details 
+                    SET username = ?
+                    """
+            cur.execute(sql_query, (username,))
+
+        if user_email:
+            sql_query = """
+                    UPDATE user_details 
+                    SET user_email = ?
+                    """
+            cur.execute(sql_query, (user_email,))
+
+        if email_pref is not None:
+            email_pref = 1 if email_pref else 0
+            sql_query = """
+                    UPDATE user_details 
+                    SET email_pref = ?
+                    """
+            cur.execute(sql_query, (email_pref,))
         conn.commit()
     except sqlite3.Error as e:
         print(f"SQLite error: {e}")
@@ -144,7 +183,6 @@ def get_all_tracked_prod(): #  TODO ISSUE: it retrieves the target price, not th
                 ph.price AS current_price
             FROM product_details pd
             LEFT JOIN price_history ph ON pd.product_id = ph.product_id
-            WHERE pd.email_notif = 1
             AND ph.timestamp = (
                 SELECT MAX(timestamp)
                 FROM price_history
@@ -155,7 +193,6 @@ def get_all_tracked_prod(): #  TODO ISSUE: it retrieves the target price, not th
 
     cur.close()
     conn.close()
-
     # Prepare the user data structure
     all_tracked_products = []
 
@@ -169,7 +206,6 @@ def get_all_tracked_prod(): #  TODO ISSUE: it retrieves the target price, not th
             'target_price': target_price,
             'currency': currency,
             'current_price': current_price})
-
     return all_tracked_products
 
 

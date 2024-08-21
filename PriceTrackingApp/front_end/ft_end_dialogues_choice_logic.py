@@ -111,7 +111,7 @@ def new_user_setup_dialogue():
     new_user = {'username': f'{user_name}',
                 'email_pref': f'{user_email_settings["email_pref"]}',
                 'user_email': f'{user_email_settings["user_email"]}'}
-    update_user_details(new_user)
+    insert_new_user_details(new_user)
     print("\n")
     colours.notification("*> ACCOUNT CREATED! <*\n".center(60))
     sleep(2.5)
@@ -268,7 +268,7 @@ def opt2_1_price_history():
     # Creates a loop until the user_choice is the correct one
     while not choice_validation(history_choice, int, num_choices=2, exit_option=False):
         history_choice = get_user_input("num")
-    print_price_history(int(selected_product['id']), history_choice)
+    print_price_history(int(selected_product['product_id']), history_choice)
     match history_choice:
         case "1":  # User originally chose 7-day - show alternative opt (Full price) again
             print("\n")
@@ -291,10 +291,10 @@ def opt2_1_price_history():
         case "1":
             if history_choice == "1":
                 # User originally chose 7-day price history - so Full price history will be now shown
-                print_price_history(int(selected_product['id']), "2")
+                print_price_history(int(selected_product['product_id']), "2")
             elif history_choice == "2":
                 # User originally chose Full-day price history - so 7-day price history will be now shown
-                print_price_history(int(selected_product['id']), "1")
+                print_price_history(int(selected_product['product_id']), "1")
         case "0":
             return False
 
@@ -393,7 +393,7 @@ def opt_3_1_updt_details(user_details):
                 if answer == "y":
                     is_correct = True
                     user_details['username'] = new_username
-                    update_user_details(user_details)
+                    update_user_detail(username=new_username)
                     colours.notification("*> YOUR USERNAME HAS BEEN UPDATED <*\n".center(60))
                 else:
                     print("Okay let's try again\n".center(60))
@@ -408,7 +408,7 @@ def opt_3_1_updt_details(user_details):
                 if answer == "y":
                     is_correct = True
                     user_details['user_email'] = new_email
-                    update_user_details(user_details)
+                    update_user_detail(user_email=new_email)
                     colours.notification("*> YOUR EMAIL HAS BEEN UPDATED <*\n".center(60))
                 else:
                     print("Okay let's try again\n".center(60))
