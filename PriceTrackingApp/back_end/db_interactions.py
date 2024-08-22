@@ -134,6 +134,16 @@ def product_email_notifications_toggle(product_details):
         print(f"Database  error: {e}")
 
 
+def product_change_target_price(product_details):
+    try:
+        conn = sqlite3.connect("back_end/price_tracker.db")
+        cur = conn.cursor()
+        cur.execute("UPDATE product_details SET target_price = ? WHERE product_id = ?", (product_details['target_price'], product_details['product_id'],))
+        conn.commit()
+        conn.close()
+    except sqlite3.Error as e:
+        print(f"Database  error: {e}")
+
 # 8.  email_notif to FALSE.
 # def email_notifications_off(product_id: int):
 #     try:
@@ -203,7 +213,7 @@ def add_new_tracking(product_data):
         cur.execute(
             '''INSERT INTO product_details (product_title, currency, url, target_price, email_notif) 
                        VALUES (?, ?, ?, ?, ?)''',
-            (product_data['title'], product_data['currency'], product_data['url'], product_data['target_price'], product_data.get('email_notif', 0)))
+            (product_data['title'], product_data['currency'], product_data['url'], product_data['target_price'], product_data['email_notif']))
         # Obtaining the product_id of the last entered product in product_details (as it is autoincrement)
         last_product_id = cur.lastrowid
         # Logging first webscraping log into price_history with the last inserted product's product_id

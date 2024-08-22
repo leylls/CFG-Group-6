@@ -205,6 +205,7 @@ def opt_1_track_new_dialogue():
 
     else:
         # Product's email_notif is False and prod_threshold is 0
+        product_data['email_notif'] = False
         print("""              If you change your mind, you can set
               email notifications for this product
                 on the Email Notifications page""")
@@ -501,18 +502,53 @@ def toggle_prod_notifications():
 
     return False
 
+
+def change_desired_price():
+    colours.question("Please select one from the list:".center(60))
+    all_products = get_all_tracked_prod()
+    print_products_with_target_price(all_products)
+    # Needed to enter the choice loop without showing "non-valid answer" message
+    user_prod_choice = None
+    # Creates a loop until the user_choice is the correct one
+    while not choice_validation(user_prod_choice, int, num_choices=len(all_products), exit_option=False):
+        user_prod_choice = get_user_input("num")
+    selected_product = all_products[int(user_prod_choice) - 1]
+    product_change_target_price(selected_product)
+    colours.notification(f"""      SELECTED:
+          **> {selected_product['title'][:40]}\n""")
+
+    colours.question("Please enter your desired price for this product:".center(60))
+    print("i.e.".center(60))
+    print("the minimum price you would like to be notified for\n".center(60))
+
+    desired_price = None
+    valid_threshold = False
+    while not choice_validation(desired_price, float, exit_option=False) or not valid_threshold:
+        desired_price = get_user_input("num")
+        if float(desired_price) < float(selected_product['current_price']):
+            selected_product['target_price'] = round(float(desired_price), 3)
+            product_email_notifications_toggle(selected_product)
+            colours.notification(f"*> PRODUCT DESIRED PRICE IS NOW -> {selected_product['target_price']} \n".center(60))
+            valid_threshold = True
+            sleep(2)
+        else:
+            print(f"{colours.error()}Your desired price cannot be more than current price".center(60))
+            print(f"{colours.error()}Please provide a valid number.\n".center(60))
+
+    return True
+
 @menu_option_ascii(4, "EMAIL NOTIFICATIONS")
 def opt_4_email_notifications_dialogue():
     user_details = get_user_details()
     if user_details['email_pref'] == 1:
         print("""              ** * ** * ** * ** * ** * ** * **""")
         colours.question("Choose an option:".center(60))
-        print("""            [ 1 ]  Deactivate email notifications
-            [ 2 ]  Toggle ON/OFF email notifications 
-                   from a product
-            [ 0 ]  Return to Main Menu\n""")
+        print("""     [ 1 ]  Deactivate email notifications
+     [ 2 ]  Toggle ON/OFF email notifications from a product
+     [ 3 ]  Change desired price from a product
+     [ 0 ]  Return to Main Menu\n""")
         first_choice = None
-        while not choice_validation(first_choice, int, num_choices=3):
+        while not choice_validation(first_choice, int, num_choices=4):
             first_choice = get_user_input("num")
             match first_choice:
                 case "1":
@@ -524,16 +560,29 @@ def opt_4_email_notifications_dialogue():
                 case "2":
                     toggle_prod_notifications()
                     return True
+                case "3":
+                    change_desired_price()
+                    pass
                 case "0":
                     pass
     else:
-        #TODO #############################
-        colours.question("Email notifications are deactivated in your account!".center(60))
+        colours.question("Email notifications are deactivated in your account!\n".center(60))
         print("""              ** * ** * ** * ** * ** * ** * **""")
         colours.question("Choose an option:".center(60))
         print("""               [ 1 ]  Activate email notifications
-                 [ 0 ]  Return to Main Menu\n""")
-
+               [ 0 ]  Return to Main Menu\n""")
+        first_choice = None
+        while not choice_validation(first_choice, int, num_choices=3):
+            first_choice = get_user_input("num")
+            match first_choice:
+                case "1":
+                    update_user_detail(email_pref=True)
+                    colours.notification("*> YOUR EMAIL PREFERENCE HAS BEEN UPDATED <*\n".center(60))
+                    sleep(2)
+                    print("We are taking you now to the Main Menu\n".center(60))
+                    sleep(2)
+                case "0":
+                    pass
     return False
 
 

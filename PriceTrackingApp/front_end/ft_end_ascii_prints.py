@@ -175,10 +175,30 @@ def print_products_with_email_notif(product_list):
             email_notif = 'ON'
         print(f"""      [ {index[i]} ]  {product['title'][:40]}(...)
                    *> Email notifications: {email_notif}\n""")
+        email_notif = 'OFF'
         i += 1
 
     return
 
+
+def print_products_with_target_price(product_list):
+    """
+        Prints out the title and target_price of a given list of products.
+        :param product_list: [list]
+        :return:
+        """
+    index = [str(num + 1) for num in range(len(product_list))]
+    i = 0
+    for product in product_list:
+        desired_price = f"{product['currency']}" + f"{product['target_price']}"
+        if product['target_price'] == 0:
+            desired_price = "Not set"
+        print(f"""      [ {index[i]} ]  {product['title'][:40]}(...)
+                       *> Current price: {product['currency']}{product['current_price']}
+                       *> Desired price: {desired_price}\n""")
+        i += 1
+
+    return
 
 
 
