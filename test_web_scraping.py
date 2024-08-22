@@ -165,6 +165,7 @@ class TestAmazonWebScraper(unittest.TestCase):
         scraper = AmazonWebScraper('https://www.amazon.com/test', mock.Mock())
         price = scraper.get_price()
         self.assertEqual(price, ('2399', '$'))
-    
+
+
 if __name__ == '__main__':
     unittest.main()
