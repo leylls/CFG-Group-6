@@ -21,7 +21,8 @@ class TestingInputValidation(unittest.TestCase):
         valid_test_cases = [{'input': "4", 'max_valid_opt': 5, 'exit_opt': True},
                             {'input': "2", 'max_valid_opt': 3, 'exit_opt': True},
                             {'input': "1", 'max_valid_opt': 2, 'exit_opt': True},
-                            {'input': "0", 'max_valid_opt': 2, 'exit_opt': True}]
+                            {'input': "0", 'max_valid_opt': 2, 'exit_opt': True},
+                            {'input': "1", 'max_valid_opt': 1, 'exit_opt': False}]
         invalid_test_cases = [
                               {'input': "5", 'max_valid_opt': 5, 'exit_opt': True},
                               {'input': "6", 'max_valid_opt': 5, 'exit_opt': False},

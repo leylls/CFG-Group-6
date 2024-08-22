@@ -138,27 +138,37 @@ def opt_1_track_new_dialogue():
 
             if url == "0": # Exit function & back to Main Menu
                 return False
-            print("""           We are extracting the products details""")
-            loading()
-            product_data = get_product_data(url)
-            print("\n\n")
-            colours.question("----------------- ** ----------------- ".center(60))
-            print(f"""\n  *> Product title:   {product_data['title'][:32]}(...)
-        
-  *> Current price:   {product_data['currency']}{product_data['price']}\n""")
-            colours.question("----------------- ** ----------------- ".center(60))
-            colours.question("""                    Are these correct?\n""")
-            correct_details = None # To enter loop without error message
-            while not choice_validation(correct_details, str):
-                # If answer is not either "yes" or "no" (or alternatives) then keep asking the user
-                correct_details = get_user_input("y_n")
 
-            if correct_details == "y":
-                all_correct = True
+            # Checking if the user already has this product in their DB - if so, goes back to top.
+            if check_product_exists(url):
+                error_printout("This product already exists in your database!".center(60))
+                sleep(2)
+                colours.question("""           Please paste the product's Amazon url:""")
+                print(f"  (or Type 0 to go back to Main Menu)\n".center(60))
+
 
             else:
-                print("""                   Okay let's try again.""")
-                colours.question("""           Please paste the product's Amazon url:""")
+                print("""           We are extracting the products details""")
+                loading()
+                product_data = get_product_data(url)
+                print("\n\n")
+                colours.question("----------------- ** ----------------- ".center(60))
+                print(f"""\n  *> Product title:   {product_data['title'][:32]}(...)
+            
+      *> Current price:   {product_data['currency']}{product_data['price']}\n""")
+                colours.question("----------------- ** ----------------- ".center(60))
+                colours.question("""                    Are these correct?\n""")
+                correct_details = None # To enter loop without error message
+                while not choice_validation(correct_details, str):
+                    # If answer is not either "yes" or "no" (or alternatives) then keep asking the user
+                    correct_details = get_user_input("y_n")
+
+                if correct_details == "y":
+                    all_correct = True
+
+                else:
+                    print("""                   Okay let's try again.""")
+                    colours.question("""           Please paste the product's Amazon url:""")
 
         except IndexError:
             # Reusable for either when URL invalid or Error when retrieving data
@@ -174,11 +184,9 @@ def opt_1_track_new_dialogue():
 
     if notify == "y":
         product_data['email_notif'] = True
-        colours.question("""       Please enter the minimum price drop you would 
-                like to be notified for:""")
-    
-        print("""        (e.g. if you say "5" we will email you when
-            the price has dropped a min of £5)\n""")
+        colours.question("Please enter your desired price for this product".center(60))
+        print("i.e.".center(60))
+        print("the minimum price you would like to be notified for:".center(60))
 
         product_threshold = None
         valid_threshold = False
@@ -191,7 +199,7 @@ def opt_1_track_new_dialogue():
                 print(f"drops to {product_data['currency']}{product_data['target_price']}".center(60))
                 valid_threshold = True
             else:
-                print(f"{colours.error()}Your threshold cannot be more than current price".center(60))
+                print(f"{colours.error()}Your desired price cannot be more than current price".center(60))
                 print(f"{colours.error()}Please provide a valid number.\n".center(60))
 
 
@@ -203,7 +211,15 @@ def opt_1_track_new_dialogue():
 
 
     # Adding product data/settings to DB
-    add_new_tracking(product_data)
+    try:
+        add_new_tracking(product_data)
+    except sqlite3.Error:
+        # If any errors arise when adding the product into the DB
+        # The user will get an error message and be prompted to start the process again
+        error_printout("We couldn't add your product to your account")
+        print(f"{colours.error()}Please try again.")
+        return True
+
     colours.notification("""\n             > ** PRODUCT ADDED TO ACCOUNT ** <\n""")
     sleep(2.5)
 
@@ -248,7 +264,7 @@ def print_price_history(produc_id, history_choice):
 def opt2_1_price_history():
     colours.question("Please select one from the list:".center(60))
     all_products = get_all_tracked_prod()
-    print_products(all_products, "num")
+    print_products_with_price(all_products, "num")
     # Needed to enter the choice loop without showing "non-valid answer" message
     user_prod_choice = None
     # Creates a loop until the user_choice is the correct one
@@ -308,7 +324,7 @@ def delete_tracked_product():
     while not correct:
         colours.question("Please select one from the list:".center(60))
         all_products = get_all_tracked_prod()
-        print_products(all_products, "num")
+        print_products_with_price(all_products, "num")
         # Needed to enter the choice loop without showing "non-valid answer" message
         user_prod_choice = None
         # Creates a loop until the user_choice is the correct one
@@ -348,7 +364,7 @@ def delete_tracked_product():
 def opt_2_tracked_prod_dialogue():
     print("These are your currently tracked products:\n".center(60))
     all_products = get_all_tracked_prod()
-    print_products(all_products, "star")
+    print_products_with_price(all_products, "star")
 
     print("""              ** * ** * ** * ** * ** * ** * **""")
     colours.question("Choose an option:".center(60))
@@ -463,14 +479,63 @@ def opt_3_acc_details_dialogue():
     return False
 
 
+def toggle_prod_notifications():
+    colours.question("Please select one from the list:".center(60))
+    all_products = get_all_tracked_prod()
+    print_products_with_email_notif(all_products)
+    # Needed to enter the choice loop without showing "non-valid answer" message
+    user_prod_choice = None
+    # Creates a loop until the user_choice is the correct one
+    while not choice_validation(user_prod_choice, int, num_choices=len(all_products), exit_option=False):
+        user_prod_choice = get_user_input("num")
 
+    selected_product = all_products[int(user_prod_choice) - 1]
+    product_email_notifications_toggle(selected_product)
+    colours.notification(f"""      SELECTED:
+      **> {selected_product['title'][:40]}\n""")
+    if selected_product['email_notif'] == 1:
+        colours.notification(f"*> PRODUCT EMAIL NOTIFICATIONS NOW -> OFF \n".center(60))
+    else:
+        colours.notification(f"*> PRODUCT EMAIL NOTIFICATIONS NOW -> ON \n".center(60))
+    sleep(3)
 
-#
-# @menu_option_ascii(4, "EMAIL NOTIFICATIONS")
-# def opt_4_email_notifications_dialogue():
-#     print(""" """) #TODO Set up options for this task
-#     pass
-#
+    return False
+
+@menu_option_ascii(4, "EMAIL NOTIFICATIONS")
+def opt_4_email_notifications_dialogue():
+    user_details = get_user_details()
+    if user_details['email_pref'] == 1:
+        print("""              ** * ** * ** * ** * ** * ** * **""")
+        colours.question("Choose an option:".center(60))
+        print("""            [ 1 ]  Deactivate email notifications
+            [ 2 ]  Toggle ON/OFF email notifications 
+                   from a product
+            [ 0 ]  Return to Main Menu\n""")
+        first_choice = None
+        while not choice_validation(first_choice, int, num_choices=3):
+            first_choice = get_user_input("num")
+            match first_choice:
+                case "1":
+                    update_user_detail(email_pref=False)
+                    colours.notification("*> YOUR EMAIL PREFERENCE HAS BEEN UPDATED <*\n".center(60))
+                    sleep(2)
+                    print("We are taking you now to the Main Menu\n".center(60))
+                    sleep(2)
+                case "2":
+                    toggle_prod_notifications()
+                    return True
+                case "0":
+                    pass
+    else:
+        #TODO #############################
+        colours.question("Email notifications are deactivated in your account!".center(60))
+        print("""              ** * ** * ** * ** * ** * ** * **""")
+        colours.question("Choose an option:".center(60))
+        print("""               [ 1 ]  Activate email notifications
+                 [ 0 ]  Return to Main Menu\n""")
+
+    return False
+
 
 @menu_option_ascii(5, "HELP")
 def opt_5_help_dialogue():
