@@ -500,7 +500,7 @@ def toggle_prod_notifications():
         colours.notification(f"*> PRODUCT EMAIL NOTIFICATIONS NOW -> ON \n".center(60))
     sleep(3)
 
-    return False
+    return
 
 
 def change_desired_price():
@@ -513,7 +513,7 @@ def change_desired_price():
     while not choice_validation(user_prod_choice, int, num_choices=len(all_products), exit_option=False):
         user_prod_choice = get_user_input("num")
     selected_product = all_products[int(user_prod_choice) - 1]
-    product_change_target_price(selected_product)
+
     colours.notification(f"""      SELECTED:
           **> {selected_product['title'][:40]}\n""")
 
@@ -527,7 +527,7 @@ def change_desired_price():
         desired_price = get_user_input("num")
         if float(desired_price) < float(selected_product['current_price']):
             selected_product['target_price'] = round(float(desired_price), 3)
-            product_email_notifications_toggle(selected_product)
+            product_change_target_price(selected_product)
             colours.notification(f"*> PRODUCT DESIRED PRICE IS NOW -> {selected_product['target_price']} \n".center(60))
             valid_threshold = True
             sleep(2)
@@ -535,7 +535,7 @@ def change_desired_price():
             print(f"{colours.error()}Your desired price cannot be more than current price".center(60))
             print(f"{colours.error()}Please provide a valid number.\n".center(60))
 
-    return True
+    return
 
 @menu_option_ascii(4, "EMAIL NOTIFICATIONS")
 def opt_4_email_notifications_dialogue():
@@ -562,7 +562,7 @@ def opt_4_email_notifications_dialogue():
                     return True
                 case "3":
                     change_desired_price()
-                    pass
+                    return True
                 case "0":
                     pass
     else:
