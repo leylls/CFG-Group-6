@@ -1,12 +1,7 @@
 from back_end.web_scraping import WebScraping
-# from back_end.web_scraping_db_interactions import WebscrapingDbInteractions
+from back_end.be_db_interactions import *
 from back_end.email_api import PriceAlert
-# from back_end.email_api_db_interaction import notify_user_from_db, check_price_below_threshold
 
-"""
-I have commented out some of the imports to avoid issues as these are in process of refactoring (change names)
-- Eva xx
-"""
 
 def get_ws_results(url_list):
     ws = WebScraping(url_list)
