@@ -135,7 +135,7 @@ def main_menu_options():
                [ 0 ]  Exit""".center(60))
 
 
-def print_products(product_list, index_type, collapsed=False):
+def print_products_with_price(product_list, index_type, collapsed=False):
     """
     Prints out the title (if not collapsed: and price) of a given list of products.
     :param type: str : 'num' | 'star'
@@ -159,6 +159,29 @@ def print_products(product_list, index_type, collapsed=False):
             print(f"""      [ {index[i]} ]  {product['title'][:40]}(...)""")
             i+=1
     return
+
+
+def print_products_with_email_notif(product_list):
+    """
+    Prints out the title and email_notif (ON/OFF) of a given list of products.
+    :param product_list: [list]
+    :return:
+    """
+    index = [str(num + 1) for num in range(len(product_list))]
+    i = 0
+    email_notif = 'OFF'
+    for product in product_list:
+        if product['email_notif'] == 1:
+            email_notif = 'ON'
+        print(f"""      [ {index[i]} ]  {product['title'][:40]}(...)
+                   *> Email notifications: {email_notif}\n""")
+        i += 1
+
+    return
+
+
+
+
 
 def error_printout(text):
     """
