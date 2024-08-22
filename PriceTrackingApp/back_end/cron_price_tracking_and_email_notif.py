@@ -1,7 +1,7 @@
 from back_end.web_scraping import WebScraping
 from back_end.web_scraping_db_interactions import WebscrapingDbInteractions
-from email_api import PriceAlert
-from email_api_db_interaction import notify_user_from_db, check_price_below_threshold
+from back_end.email_api import PriceAlert
+from back_end.email_api_db_interaction import notify_user_from_db, check_price_below_threshold
 
 def get_ws_results(url_list):
     ws = WebScraping(url_list)

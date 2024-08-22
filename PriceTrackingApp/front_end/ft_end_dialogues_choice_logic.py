@@ -184,16 +184,16 @@ def opt_1_track_new_dialogue():
 
     if notify == "y":
         product_data['email_notif'] = True
-        colours.question("Please enter your desired price for this product".center(60))
+        colours.question("Please enter your desired price for this product:".center(60))
         print("i.e.".center(60))
-        print("the minimum price you would like to be notified for:".center(60))
+        print("the minimum price you would like to be notified for\n".center(60))
 
-        product_threshold = None
+        desired_price = None
         valid_threshold = False
-        while not choice_validation(product_threshold, int, exit_option=False) or not valid_threshold:
-            product_threshold = get_user_input("num")
-            if float(product_threshold) < float(product_data['price']):
-                product_data['target_price'] = round((float(product_data['price']) - float(product_threshold)), 3)
+        while not choice_validation(desired_price, float, exit_option=False) or not valid_threshold:
+            desired_price = get_user_input("num")
+            if float(desired_price) < float(product_data['price']):
+                product_data['target_price'] = round(float(desired_price), 3)
                 print(f"Great! You will get an email if the price of".center(60))
                 print(f"'{product_data['title'][:40]}'".center(60))
                 print(f"drops to {product_data['currency']}{product_data['target_price']}".center(60))

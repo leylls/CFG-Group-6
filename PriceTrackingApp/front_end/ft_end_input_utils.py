@@ -32,7 +32,7 @@ def choice_validation(user_input, required_data_type, num_choices=0, exit_option
     Use user_input = None to enter the loop without getting Invalid Answer message.
     :param exit_option: True | False - Tells the func if [0] "Exit to Main Menu" is an available option.
     :param user_input: Any - This is the user's answer
-    :param required_data_type: str | int  - The required data type for the user input
+    :param required_data_type: str | int | float  - The required data type for the user input
     :param num_choices: int - The number of choices the user is given - depending on each menu's length.
     :return: True | False - If it's a valid answer or not
     """
@@ -44,6 +44,10 @@ def choice_validation(user_input, required_data_type, num_choices=0, exit_option
             if required_data_type == str:
                 user_answer = user_input
                 valid_answers = ["n","y"]
+
+            elif required_data_type == float:
+                float(user_input)
+                return True
 
             elif required_data_type == int:
                 user_answer = int(user_input) # If cannot be turned into and int then it will raise ValueError
