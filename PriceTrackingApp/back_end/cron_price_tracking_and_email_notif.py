@@ -1,7 +1,8 @@
 from back_end.web_scraping import WebScraping
 from back_end.be_db_interactions import *
 from back_end.email_api import PriceAlert
-
+from front_end.ft_end_ascii_prints import colours, error_printout
+from time import sleep
 
 def get_ws_results(url_list):
     ws = WebScraping(url_list)
@@ -25,7 +26,8 @@ def notify_user_from_db(price_alert):
     user_data = email_db.get_user_data()
 
     if not user_data:
-        print("No users found with email preferences enabled.")
+        print(f"{colours.error()}   Email notifications deactivated.".center(60))
+        print("No notifications sent.\n".center(60))
         return
 
     emails_sent = 0
@@ -47,17 +49,23 @@ def notify_user_from_db(price_alert):
                     )
                     emails_sent += 1
                 except Exception as e:
-                    print(f"Failed to send email to {email}: {str(e)}")
+                    error_printout(f"Failed to send email to {email}: {str(e)}".center(60))
 
     if emails_sent == 0:
-        print("No emails sent. Check if any products are below their target prices.")
+        print("\n")
+        colours.question("No current prices are below the desired prices.".center(60))
+        print("No emails were sent\n".center(60))
     else:
-        print(f"Total emails sent: {emails_sent}")
+        colours.question("Some product(s) were on your desired price bracket!".center(60))
+        colours.question(f"Total emails sent: {emails_sent}\n".center(60))
 
 def send_price_alert_email(price_alert):
-    print("Activating price alert email notification...")
+
+    # IM COMMENTING THESE OUT FOR UX FLOW - Eva
+
+    # print("Activating price alert email notification...\n".center(60))
     notify_user_from_db(price_alert)
-    print("Price alert email process completed.")
+    # print("Price alert email process completed.\n".center(60))
 
 
 def cron_job_run():
@@ -68,6 +76,9 @@ def cron_job_run():
     product_id_and_url = ws_db.get_product_id_and_urls()                        # Obtain corresponding product_id for each url
     tuple_results = prepare_results_for_db (web_scraping, product_id_and_url)   # Map each url to it product_id & include pricing information retrieved
     ws_db.insert_ws_results_db(tuple_results)                                   # Store new web scraping results in DB
+    print("\n") # For UX display
+    colours.notification("Manual price-drop check completed.".center(60))
+    sleep(2.5)
     # Email notification functions
     price_alert = PriceAlert(                                                   # Initialise with API credentials
         api_key='your_api_key',

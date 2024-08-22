@@ -4,6 +4,7 @@ from front_end.ft_end_input_utils import *
 # BACK END IMPLEMENTATION
 from front_end.ft_end_backend_interactions import *
 from back_end.db_interactions import *
+from back_end.cron_price_tracking_and_email_notif import cron_job_run
 
 
 def set_up_email_notifications():
@@ -371,13 +372,14 @@ def opt_2_tracked_prod_dialogue():
     colours.question("Choose an option:".center(60))
     print("""               [ 1 ]  See a product price history
                [ 2 ]  Delete a product from my list
+               [ 3 ]  Do a manual price-drop check
                [ 0 ]  Return to Main Menu\n""")
 
     # Needed to enter the choice loop without showing "non-valid answer" message
     opt_1_choice = None
     repeat_choice = True
     # Creates a loop until the user_choice is the correct one
-    while not choice_validation(opt_1_choice, int, num_choices=3):
+    while not choice_validation(opt_1_choice, int, num_choices=4):
         opt_1_choice = get_user_input("num")
     match opt_1_choice:
         case "1":
@@ -386,6 +388,13 @@ def opt_2_tracked_prod_dialogue():
         case "2":
             while repeat_choice:
                 repeat_choice = delete_tracked_product()
+        case "3":
+            colours.question("We are checking all your product's prices".center(60))
+            loading()
+            cron_job_run()
+            sleep(2)
+            print(f"{colours.dialogue()}We are taking you now to the Main Menu\n".center(60))
+            sleep(2.5)
         case "0": # Exits and goes back to Main Menu
             pass
     return False
