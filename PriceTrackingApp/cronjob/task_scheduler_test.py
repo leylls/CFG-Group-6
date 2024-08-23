@@ -11,9 +11,10 @@ class TaskSchedulerTest(unittest.TestCase):
         mock_task_name = "test_task"
         mock_command = "foo.exe"
 
-        result = create_task("test_task", ("minute", "1"), "foo.exe")
+        create_task(mock_task_name, ("minute", "1"), mock_command)
 
         mock_subprocess_run.assert_called_with(f"schtasks /Create /SC MINUTE /MO 1 /TN {mock_task_name} /TR {mock_command}")
+
 
 
 if __name__ == '__main__':
