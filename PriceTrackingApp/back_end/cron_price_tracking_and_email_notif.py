@@ -1,5 +1,5 @@
 from back_end.web_scraping import WebScraping
-from back_end.be_db_interactions import *
+from back_end.db_interactions import *
 from back_end.email_api import PriceAlert
 from front_end.ft_end_ascii_prints import colours, error_printout
 from time import sleep
@@ -82,7 +82,7 @@ def cron_job_run():
     # Email notification functions
     price_alert = PriceAlert(                                                   # Initialise with API credentials
         api_key='your_api_key',
-        api_secret='your_api_secret',
+        api_secret='your_secret_key',
         sender_email='group6.cfgdegree24@gmail.com'
     )
     send_price_alert_email(price_alert)                                         # Send email is latest price is below threshold price
