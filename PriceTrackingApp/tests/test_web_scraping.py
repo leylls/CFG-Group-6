@@ -64,6 +64,12 @@ class TestHTTPRequest(unittest.TestCase):
         logger = Logger("")
         httprequest = HTTPRequest('https://invalidurl.com', logger = logger)
         self.assertIsNone(httprequest.soup)
+    
+    @mock.patch('web_scraping.HTTPRequest.get_soup', return_value = None)
+    def test_check_url_validity(self, mocked_soup):
+        httprequest = HTTPRequest('amazon.co.uk/test', False)
+        amended_url = httprequest.url
+        self.assertEqual(amended_url,'https://amazon.co.uk/test')
 
 class TestWebScraping(unittest.TestCase):
 
@@ -82,7 +88,7 @@ class TestWebScraping(unittest.TestCase):
     @mock.patch('web_scraping.AmazonWebScraper')
     def test_get_product_data_scraper_error_currency(self, mocked_scraper):
         mocked_scaper_class = mocked_scraper.return_value
-        mocked_scaper_class.get_all.return_value = ['title', 'price_example', None]
+        mocked_scaper_class.get_all.return_value = ['title', '145.89', None]
         ws = WebScraping(['amazon.co.uk/example'])
         res = ws.get_product_data()
         self.assertEqual(res, [])
@@ -90,7 +96,7 @@ class TestWebScraping(unittest.TestCase):
     @mock.patch('web_scraping.AmazonWebScraper')
     def test_get_product_data_scraper_error_title(self, mocked_scraper):
         mocked_scaper_class = mocked_scraper.return_value
-        mocked_scaper_class.get_all.return_value = [None, 'price_example', '€']
+        mocked_scaper_class.get_all.return_value = [None, '13.23', '€']
         ws = WebScraping(['amazon.co.uk/example'])
         res = ws.get_product_data()
         self.assertEqual(res, [])
@@ -107,10 +113,10 @@ class TestWebScraping(unittest.TestCase):
     def test_get_product_data_scraper_success(self, mocked_scraper):
         expected_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
         mocked_scaper_class = mocked_scraper.return_value
-        mocked_scaper_class.get_all.return_value = ['title', 'price_example', '€']
+        mocked_scaper_class.get_all.return_value = ['Best Product', '56.99', '€']
         ws = WebScraping(['amazon.co.uk/example'])
         res = ws.get_product_data()
-        self.assertEqual(res, [{'title': 'title', 'price': 'price_example', 'currency': '€', 'timestamp':expected_timestamp, 'url': 'amazon.co.uk/example'}])
+        self.assertEqual(res, [{'title': 'Best Product', 'price': '56.99', 'currency': '€', 'timestamp':expected_timestamp, 'url': 'amazon.co.uk/example'}])
 
 class TestAmazonWebScraper(unittest.TestCase):
 
