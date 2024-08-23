@@ -38,8 +38,20 @@ class HTTPRequest:
         }
     
     def get_soup(self):
-        response = requests.get(self.url, headers=self.headers)
-
+        try:
+            response = requests.get(self.url, headers=self.headers, timeout=3)
+        except requests.exceptions.Timeout as e:
+            self.logger.write_log(f"""
+Time out - ERROR: {e} - URL: {self.url}')
+----------------------------------------------------------------
+""")
+            return None
+        except Exception as e:
+            self.logger.write_log(f"""
+ERROR: {e} - URL: {self.url}')
+----------------------------------------------------------------
+""")
+            return None
         if response.status_code != 200:
             self.logger.write_log(f"""
 Error connecting to the url - ERROR: {response.status_code} - URL: {self.url}')
@@ -159,6 +171,6 @@ class AmazonWebScraper(WebScraping):
 
 
 # if __name__ == "__main__":
-#     ws = WebScraping(['amazon.es/Joma-Combi-Camiseta-Hombre-Verde/dp/B00J28D7FG/ref=zg_bs_c_fashion_d_sccl_1/262-1968835-9419950?psc=1'])
+#     ws = WebScraping(['www.amazon.com/892373'])
 #     ws_results_FE = ws.get_product_data()
 #     print(ws_results_FE)
