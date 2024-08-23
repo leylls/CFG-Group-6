@@ -35,10 +35,11 @@ def create_task(name, frequency, command):
 
 # TODO: delete below this line \/
 def test_create_task_foo():
-    os.path.abspath("foo.py")
+    #os.path.abspath("foo.py")
     mock_task_name = "write_test_file"
-    mock_command = f"python {os.path.abspath("foo.py")}"
-    # mock_command = "\"python foo.py\""
+    # mock_command = f"C:\\Users\\evasa\\PycharmProjects\\CFGDegree\\Foundation_Exam\\PriceTrackingApp\\Scripts\\python.exe C:\\Users\\evasa\\Documents\\Git\\CFG-Group-6\\PriceTrackingApp\\cronjob\\foo.py"
+    # mock_command = "C:\\Users\\evasa\\Documents\\Git\\CFG-Group-6\\PriceTrackingApp\\cronjob\\job.bat"
+    mock_command = "C:\\Users\\evasa\\Documents\\Git\\CFG-Group-6\\PriceTrackingApp\\cronjob\\job_wrapper.vbs"
 
     create_task(mock_task_name, ("MINUTE", "1"), mock_command)
 
