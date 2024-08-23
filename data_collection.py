@@ -33,13 +33,13 @@ import matplotlib.pyplot as plt
 
 def fetch_data_for_visualization():
     db = WebscrapingDbInteractions()
-    data = db.get_all_ws_results()  # Adjust method name as needed
+    data = db.get_all_ws_results()  
     return data
 
 
 def prepare_data_for_plotting(data):
     df = pd.DataFrame(data)
-    df['timestamp'] = pd.to_datetime(df['timestamp'])  # Ensure the timestamp is in datetime format
+    df['timestamp'] = pd.to_datetime(df['timestamp'])  
     return df
 
 
