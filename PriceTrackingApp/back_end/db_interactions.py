@@ -4,13 +4,17 @@ import os.path
 class DatabaseActions:
 
     def __init__(self):
-        self.database = 'back_end/price_tracker.db'
+        self.database = os.path.join('back_end', 'price_tracker.db')
 
     def fetch_data(self, query):
         try:
-            conn = sqlite3.connect(self.database) 
+            print(f">>> fetch_data >>>> about to connect. DB is {self.database}")
+            conn = sqlite3.connect(self.database)
+            print(f">>> fetch_data >>>> conn is {conn}")
             cur = conn.cursor()
+            print(f">>> fetch_data >>>> cur is {cur}")
             cur.execute(query)
+            print(f">>> fetch_data >>>> cur is {cur}")
             results = cur.fetchall()
             cur.close()
             conn.close()

@@ -1,5 +1,11 @@
 from mailjet_rest import Client
 
+from cronjob.utils import track_sent_mail
+
+
+# from cronjob.utils import track_sent_mail
+
+
 class PriceAlert:
     def __init__(self, api_key, api_secret, sender_email):
         self.mailjet = Client(auth=(api_key, api_secret), version='v3.1')
@@ -36,6 +42,8 @@ class PriceAlert:
                 }
             ]
         }
+
+        track_sent_mail(data['Messages'][0])
 
         result = self.mailjet.send.create(data=data)
 

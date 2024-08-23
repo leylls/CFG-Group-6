@@ -1,8 +1,10 @@
 import sys
+
+from cronjob.utils import create_updates_job
 from front_end.ft_end_dialogues_choice_logic import *
 from back_end.db_interactions import FrontEndDbInteractions
 from back_end.init_db import init_db
-from back_end.cron_price_tracking_and_email_notif import cron_job_run
+# from cronjob.cron_price_tracking_and_email_notif import cron_job_run
 
 
 def run(cron_job = False):
@@ -36,9 +38,11 @@ def run(cron_job = False):
     return
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1:                       #check if an argument is passed
-        argument = sys.argv[1].split('=',1)
-        if argument[0] == 'cron_job':
-            run(argument[1])
-    else:
-        run()
+    # create_updates_job()
+    # if len(sys.argv) > 1:                       #check if an argument is passed
+    #     argument = sys.argv[1].split('=',1)
+    #     if argument[0] == 'cron_job':
+    #         run(argument[1])
+    # else:
+    #     run()
+    run()

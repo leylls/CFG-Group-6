@@ -1,10 +1,11 @@
 # FRONT END UTILS
+# from cronjob.utils import create_updates_job
 from front_end.ft_end_ascii_prints import *
 from front_end.ft_end_input_utils import *
 # BACK END IMPLEMENTATION
 from front_end.ft_end_backend_interactions import *
 from back_end.db_interactions import FrontEndDbInteractions
-from back_end.cron_price_tracking_and_email_notif import cron_job_run
+from cronjob.cron_price_tracking_and_email_notif import cron_job_run
 
 db = FrontEndDbInteractions()
 
@@ -199,6 +200,7 @@ def opt_1_track_new_dialogue():
                 print(f"Great! You will get an email if the price of".center(60))
                 print(f"'{product_data['title'][:40]}'".center(60))
                 print(f"drops to {product_data['currency']}{product_data['target_price']}".center(60))
+                # create_updates_job()
                 valid_threshold = True
             else:
                 print(f"{colours.error()}Your desired price cannot be more than current price".center(60))
