@@ -8,10 +8,16 @@ import os
 
 class HTTPRequest:
     def __init__(self, url, logger):
-        self.url = url
+        self.url = self.check_url_validity(url)
         self.headers = self.generate_header() # Identification string sent with the network request
         self.logger = logger
         self.soup = self.get_soup()
+
+    def check_url_validity(self, url):
+        if url is not None:
+            if not url.startswith('http'):
+                url = 'https://' + url
+        return url
 
     def random_user_agent(self):
         a = os.path.dirname(__file__)
@@ -32,8 +38,20 @@ class HTTPRequest:
         }
     
     def get_soup(self):
-        response = requests.get(self.url, headers=self.headers)
-
+        try:
+            response = requests.get(self.url, headers=self.headers, timeout=3)
+        except requests.exceptions.Timeout as e:
+            self.logger.write_log(f"""
+Time out - ERROR: {e} - URL: {self.url}')
+----------------------------------------------------------------
+""")
+            return None
+        except Exception as e:
+            self.logger.write_log(f"""
+ERROR: {e} - URL: {self.url}')
+----------------------------------------------------------------
+""")
+            return None
         if response.status_code != 200:
             self.logger.write_log(f"""
 Error connecting to the url - ERROR: {response.status_code} - URL: {self.url}')
@@ -52,8 +70,11 @@ class Logger:
 
     def __write(self, filename, msg):
         if self.enabled:
-            with open('back_end/logs/' + filename, 'a', encoding="utf-8") as log_file:
-                log_file.write(msg)
+            log_directory = 'back_end/logs/'
+            if not os.path.exists(log_directory):
+                os.makedirs(log_directory, exist_ok=True)               
+            with open(log_directory + filename, 'a', encoding="utf-8") as log_file:
+                log_file.write(msg) 
 
     def write_log(self, msg):
         self.__write(self.log_filename, msg)
@@ -72,9 +93,13 @@ class WebScraping:
         index = 1
         for url in self.url_list:
 
-            if 'amazon' in url.lower() or 'evapchiri' in url.lower():   #added evapchiri to include our mock wesite
+            if 'amazon' in url.lower() or 'evapchiri' in url.lower():   # Added evapchiri to include our mock wesite
                 scraper = AmazonWebScraper(url, self.logger)
                 title, price, currency = scraper.get_all()
+                try:
+                    float(price)
+                except TypeError:
+                    continue
                 if title is None or price is None or currency is None:
                     self.logger.write_log(f"""
 WebScraping.get_products_data - Information could not be retrieved.
@@ -146,6 +171,6 @@ class AmazonWebScraper(WebScraping):
 
 
 # if __name__ == "__main__":
-#     ws = WebScraping(['https://evapchiri.github.io/test_websiteCFG/'])
+#     ws = WebScraping(['www.amazon.com/892373'])
 #     ws_results_FE = ws.get_product_data()
 #     print(ws_results_FE)

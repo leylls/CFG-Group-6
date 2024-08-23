@@ -3,8 +3,10 @@ from front_end.ft_end_ascii_prints import *
 from front_end.ft_end_input_utils import *
 # BACK END IMPLEMENTATION
 from front_end.ft_end_backend_interactions import *
-from back_end.db_interactions import *
+from back_end.db_interactions import FrontEndDbInteractions
+from back_end.cron_price_tracking_and_email_notif import cron_job_run
 
+db = FrontEndDbInteractions()
 
 def set_up_email_notifications():
     """
@@ -111,7 +113,7 @@ def new_user_setup_dialogue():
     new_user = {'username': f'{user_name}',
                 'email_pref': f'{user_email_settings["email_pref"]}',
                 'user_email': f'{user_email_settings["user_email"]}'}
-    insert_new_user_details(new_user)
+    db.insert_new_user_details(new_user)
     print("\n")
     colours.notification("*> ACCOUNT CREATED! <*\n".center(60))
     sleep(2.5)
@@ -140,7 +142,7 @@ def opt_1_track_new_dialogue():
                 return False
 
             # Checking if the user already has this product in their DB - if so, goes back to top.
-            if check_product_exists(url):
+            if db.check_product_exists(url):
                 error_printout("This product already exists in your database!".center(60))
                 sleep(2)
                 colours.question("""           Please paste the product's Amazon url:""")
@@ -213,7 +215,7 @@ def opt_1_track_new_dialogue():
 
     # Adding product data/settings to DB
     try:
-        add_new_tracking(product_data)
+        db.add_new_tracking(product_data)
     except sqlite3.Error:
         # If any errors arise when adding the product into the DB
         # The user will get an error message and be prompted to start the process again
@@ -252,19 +254,19 @@ def print_price_history(produc_id, history_choice):
     """
     match history_choice:
         case "1": # prints 7-day price history chart
-            prod_price_history = get_price_history(produc_id, full_history=False)
+            prod_price_history = db.get_price_history(produc_id, full_history=False)
             colours.notification("*> 7 DAY PRICE HISTORY <*".center(60))
-            print(f"""{data_viz(prod_price_history)}""")
+            data_viz(prod_price_history)
         case "2": # prints full price history chart
-            prod_price_history = get_price_history(produc_id, full_history=True)
+            prod_price_history = db.get_price_history(produc_id, full_history=True)
             colours.notification("*> FULL PRICE HISTORY <*".center(60))
-            print(f"""{data_viz(prod_price_history)}""")
+            data_viz(prod_price_history)
     return
 
 
 def opt2_1_price_history():
     colours.question("Please select one from the list:".center(60))
-    all_products = get_all_tracked_prod()
+    all_products = db.get_all_tracked_prod()
     print_products_with_price(all_products, "num")
     # Needed to enter the choice loop without showing "non-valid answer" message
     user_prod_choice = None
@@ -324,7 +326,7 @@ def delete_tracked_product():
     correct = False
     while not correct:
         colours.question("Please select one from the list:".center(60))
-        all_products = get_all_tracked_prod()
+        all_products = db.get_all_tracked_prod()
         print_products_with_price(all_products, "num")
         # Needed to enter the choice loop without showing "non-valid answer" message
         user_prod_choice = None
@@ -342,7 +344,7 @@ def delete_tracked_product():
         while not choice_validation(user_answer, str):
             user_answer = get_user_input("y_n")
         if user_answer == "y":
-            stop_tracking(int(selected_product['product_id']))
+            db.stop_tracking(int(selected_product['product_id']))
             correct = True
             colours.notification(f"*> {selected_product['title'][:40]} HAS BEEN DELETED <*\n".center(60))
             sleep(2)
@@ -364,20 +366,21 @@ def delete_tracked_product():
 @menu_option_ascii(2, "MY TRACKED PRODUCTS")
 def opt_2_tracked_prod_dialogue():
     print("These are your currently tracked products:\n".center(60))
-    all_products = get_all_tracked_prod()
+    all_products = db.get_all_tracked_prod()
     print_products_with_price(all_products, "star")
 
     print("""              ** * ** * ** * ** * ** * ** * **""")
     colours.question("Choose an option:".center(60))
     print("""               [ 1 ]  See a product price history
                [ 2 ]  Delete a product from my list
+               [ 3 ]  Do a manual price-drop check
                [ 0 ]  Return to Main Menu\n""")
 
     # Needed to enter the choice loop without showing "non-valid answer" message
     opt_1_choice = None
     repeat_choice = True
     # Creates a loop until the user_choice is the correct one
-    while not choice_validation(opt_1_choice, int, num_choices=3):
+    while not choice_validation(opt_1_choice, int, num_choices=4):
         opt_1_choice = get_user_input("num")
     match opt_1_choice:
         case "1":
@@ -386,6 +389,13 @@ def opt_2_tracked_prod_dialogue():
         case "2":
             while repeat_choice:
                 repeat_choice = delete_tracked_product()
+        case "3":
+            colours.question("We are checking all your product's prices".center(60))
+            loading()
+            cron_job_run()
+            sleep(2)
+            print(f"{colours.dialogue()}We are taking you now to the Main Menu\n".center(60))
+            sleep(2.5)
         case "0": # Exits and goes back to Main Menu
             pass
     return False
@@ -410,7 +420,7 @@ def opt_3_1_updt_details(user_details):
                 if answer == "y":
                     is_correct = True
                     user_details['username'] = new_username
-                    update_user_detail(username=new_username)
+                    db.update_user_detail(username=new_username)
                     colours.notification("*> YOUR USERNAME HAS BEEN UPDATED <*\n".center(60))
                 else:
                     print("Okay let's try again\n".center(60))
@@ -425,7 +435,7 @@ def opt_3_1_updt_details(user_details):
                 if answer == "y":
                     is_correct = True
                     user_details['user_email'] = new_email
-                    update_user_detail(user_email=new_email)
+                    db.update_user_detail(user_email=new_email)
                     colours.notification("*> YOUR EMAIL HAS BEEN UPDATED <*\n".center(60))
                 else:
                     print("Okay let's try again\n".center(60))
@@ -444,7 +454,7 @@ def opt_3_1_updt_details(user_details):
     match final_choice:
         case "1":  # Enters loop to update another user detail
             print("These are your current details:\n".center(60))
-            current_user_details = get_user_details()
+            current_user_details = db.get_user_details()
             print(f"""{colours.main_colour()}        *> USERNAME: {user_details['username']}
         *> EMAIL: {user_details['user_email']}\n{colours.dialogue()}""")
             return True
@@ -458,7 +468,7 @@ def opt_3_1_updt_details(user_details):
 def opt_3_acc_details_dialogue():
 
     print("These are your current details:\n".center(60))
-    current_user_details = get_user_details()
+    current_user_details = db.get_user_details()
     print(f"""{colours.main_colour()}        *> USERNAME: {current_user_details['username']}
         *> EMAIL: {current_user_details['user_email']}\n""")
 
@@ -482,7 +492,7 @@ def opt_3_acc_details_dialogue():
 
 def toggle_prod_notifications():
     colours.question("Please select one from the list:".center(60))
-    all_products = get_all_tracked_prod()
+    all_products = db.get_all_tracked_prod()
     print_products_with_email_notif(all_products)
     # Needed to enter the choice loop without showing "non-valid answer" message
     user_prod_choice = None
@@ -491,7 +501,7 @@ def toggle_prod_notifications():
         user_prod_choice = get_user_input("num")
 
     selected_product = all_products[int(user_prod_choice) - 1]
-    product_email_notifications_toggle(selected_product)
+    db.product_email_notifications_toggle(selected_product)
     colours.notification(f"""      SELECTED:
       **> {selected_product['title'][:40]}\n""")
     if selected_product['email_notif'] == 1:
@@ -505,7 +515,7 @@ def toggle_prod_notifications():
 
 def change_desired_price():
     colours.question("Please select one from the list:".center(60))
-    all_products = get_all_tracked_prod()
+    all_products = db.get_all_tracked_prod()
     print_products_with_target_price(all_products)
     # Needed to enter the choice loop without showing "non-valid answer" message
     user_prod_choice = None
@@ -527,7 +537,7 @@ def change_desired_price():
         desired_price = get_user_input("num")
         if float(desired_price) < float(selected_product['current_price']):
             selected_product['target_price'] = round(float(desired_price), 3)
-            product_change_target_price(selected_product)
+            db.product_change_target_price(selected_product)
             colours.notification(f"*> PRODUCT DESIRED PRICE IS NOW -> {selected_product['target_price']} \n".center(60))
             valid_threshold = True
             sleep(2)
@@ -539,7 +549,7 @@ def change_desired_price():
 
 @menu_option_ascii(4, "EMAIL NOTIFICATIONS")
 def opt_4_email_notifications_dialogue():
-    user_details = get_user_details()
+    user_details = db.get_user_details()
     if user_details['email_pref'] == 1:
         print("""              ** * ** * ** * ** * ** * ** * **""")
         colours.question("Choose an option:".center(60))
@@ -552,7 +562,7 @@ def opt_4_email_notifications_dialogue():
             first_choice = get_user_input("num")
             match first_choice:
                 case "1":
-                    update_user_detail(email_pref=False)
+                    db.update_user_detail(email_pref=False)
                     colours.notification("*> YOUR EMAIL PREFERENCE HAS BEEN UPDATED <*\n".center(60))
                     sleep(2)
                     print("We are taking you now to the Main Menu\n".center(60))
@@ -576,7 +586,7 @@ def opt_4_email_notifications_dialogue():
             first_choice = get_user_input("num")
             match first_choice:
                 case "1":
-                    update_user_detail(email_pref=True)
+                    db.update_user_detail(email_pref=True)
                     colours.notification("*> YOUR EMAIL PREFERENCE HAS BEEN UPDATED <*\n".center(60))
                     sleep(2)
                     print("We are taking you now to the Main Menu\n".center(60))
