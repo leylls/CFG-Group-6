@@ -10,11 +10,18 @@ def clean(string):
     :param string: str - raw user's input
     :return: cleaned_string as str - trimmed or refactor answer as str
     """
+
+    try:
+        float(string)
+        return string
+    except ValueError:
+        pass
+
     to_remove = [".", "-", "*", "\\", "/", " ", '"', ",", "!","?",":",";","'","#","@", "[", "]"]
-    cleaned_string = string.strip().lower()
-    valid_answers_yes = ["yes", "yea", "ye", "yess"]
+    valid_answers_yes = ["yes", "yea", "yeah", "ye", "yess"]
     valid_answers_no = ["no", "nope", "noo"]
 
+    cleaned_string = string.strip().lower()
     for char in to_remove:
         cleaned_string = cleaned_string.replace(char, '')
 

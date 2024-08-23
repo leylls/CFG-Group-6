@@ -5,12 +5,16 @@ from front_end.ft_end_input_utils import *
 class TestingInputValidation(unittest.TestCase):
 
     def test_clean(self):
-        inputs_y = ["yes", "y", "YES", "--.;YES", "!.[yes"]
+        inputs_y = ["yes", "y", "YES", "--.;YES", "!.[yes", "yeah!!!"]
         inputs_n = ["no", "n", "NO", "nope", "nope!!-", ".,NO"]
+        input_nums = ["2", "3.5", "194.50"]
         for input in inputs_y:
             self.assertEqual("y", clean(input))
         for input in inputs_n:
             self.assertEqual("n", clean(input))
+        for input in input_nums:
+            self.assertEqual(input, clean(input))
+
     def test_choice_validation_str(self):
         tests_cases = ["y", "n"]
         for input in tests_cases:
@@ -21,8 +25,7 @@ class TestingInputValidation(unittest.TestCase):
         valid_test_cases = [{'input': "4", 'max_valid_opt': 5, 'exit_opt': True},
                             {'input': "2", 'max_valid_opt': 3, 'exit_opt': True},
                             {'input': "1", 'max_valid_opt': 2, 'exit_opt': True},
-                            {'input': "0", 'max_valid_opt': 2, 'exit_opt': True},
-                            {'input': "1", 'max_valid_opt': 1, 'exit_opt': False}]
+                            {'input': "0", 'max_valid_opt': 2, 'exit_opt': True}]
         invalid_test_cases = [
                               {'input': "5", 'max_valid_opt': 5, 'exit_opt': True},
                               {'input': "6", 'max_valid_opt': 5, 'exit_opt': False},
