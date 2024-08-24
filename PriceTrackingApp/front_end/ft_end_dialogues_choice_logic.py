@@ -49,7 +49,7 @@ def get_app_instructions():
         # While the answer cannot be validated, then keep asking the user until valid answer
         answer = get_user_input("y_n")
     if answer == "y":
-        webbrowser.open_new_tab("https://github.com/evapchiri/evapchiri/blob/main/README.md")
+        webbrowser.open_new_tab("https://github.com/leylls/CFG-Group-6/blob/main/README.md")
         sleep(2)
         colours.question("""                Now that you know everything,
                 do you want to continue?""")
@@ -63,7 +63,7 @@ def get_app_instructions():
                 if proceed == "y":
                     is_ready = True
                 else:
-                    webbrowser.open_new_tab("https://github.com/evapchiri/evapchiri/blob/main/README.md")
+                    webbrowser.open_new_tab("https://github.com/leylls/CFG-Group-6/blob/main/README.md")
                     #TODO change url with actual app's README url when finished
     else:
         print("You can always find the app's instructions".center(60))
@@ -608,7 +608,7 @@ def opt_5_help_dialogue():
         user_answer = get_user_input("y_n")
 
     if user_answer == "y":
-        webbrowser.open_new_tab("https://github.com/evapchiri/evapchiri/blob/main/README.md")
+        webbrowser.open_new_tab("https://github.com/leylls/CFG-Group-6/blob/main/README.md")
         sleep(2)
         print(f"""              ** * ** * ** * ** * ** * ** * **""")
         colours.question("Choose an option:".center(60))
@@ -624,7 +624,7 @@ def opt_5_help_dialogue():
                 if final_choice == "0":
                     is_ready = True
                 else:
-                    webbrowser.open_new_tab("https://github.com/evapchiri/evapchiri/blob/main/README.md")
+                    webbrowser.open_new_tab("https://github.com/leylls/CFG-Group-6/blob/main/README.md")
                     # TODO change url with actual app's README url when finished
     else:
         print("No worries!".center(60))
