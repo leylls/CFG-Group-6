@@ -38,7 +38,7 @@ def run(cron_job = False):
     return
 
 if __name__ == "__main__":
-    # create_updates_job()
+    create_updates_job()
     # if len(sys.argv) > 1:                       #check if an argument is passed
     #     argument = sys.argv[1].split('=',1)
     #     if argument[0] == 'cron_job':

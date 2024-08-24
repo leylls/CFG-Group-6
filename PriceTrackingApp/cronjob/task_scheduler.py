@@ -25,24 +25,13 @@ def create_task(name, frequency, command):
         case _:
             raise ValueError("uh oh")
 
+    # Ensuring to delete any other (possible) pre-existing task with the same name
+    subprocess.run(f"schtasks /Delete /TN {name} /F")
 
     process_to_execute = f"schtasks /Create /SC {SC} /MO {MO} /TN {name} /TR \"{command}\""
+    # TODO to delete the print-out of "SUCCESS"
     return subprocess.run(process_to_execute)
 
 # TODO: (if eva has time) write a delete_task function that takes a task's name and deletes it, to clean up the program :)
 
 # schtasks /Delete /TN trackmazon_update_task /F
-
-
-# TODO: delete below this line \/
-def test_create_task_foo():
-    #os.path.abspath("foo.py")
-    mock_task_name = "write_test_file"
-    # mock_command = f"C:\\Users\\evasa\\PycharmProjects\\CFGDegree\\Foundation_Exam\\PriceTrackingApp\\Scripts\\python.exe C:\\Users\\evasa\\Documents\\Git\\CFG-Group-6\\PriceTrackingApp\\cronjob\\foo.py"
-    # mock_command = "C:\\Users\\evasa\\Documents\\Git\\CFG-Group-6\\PriceTrackingApp\\cronjob\\job.bat"
-    mock_command = "C:\\Users\\evasa\\Documents\\Git\\CFG-Group-6\\PriceTrackingApp\\cronjob\\job_wrapper.vbs"
-
-    create_task(mock_task_name, ("MINUTE", "1"), mock_command)
-
-if __name__ == "__main__":
-    test_create_task_foo()

@@ -1,9 +1,9 @@
 @echo on
 
-cd C:\Users\evasa\Documents\Git\CFG-Group-6\PriceTrackingApp
+cd PROJECT_DIRECTORY
 
 @REM python cron_main.py
 
-C:\Users\evasa\PycharmProjects\CFGDegree\Foundation_Exam\PriceTrackingApp\Scripts\python.exe C:\Users\evasa\Documents\Git\CFG-Group-6\PriceTrackingApp\cron_main.py
+EXECUTE_JOB_COMMAND
 
-pause
+@REM pause
