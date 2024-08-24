@@ -21,7 +21,7 @@ class PriceAlert:
 
 
     def send_alert(self, recipient_email, name, product_name, current_price, threshold_price, product_url, currency):
-        subject = f"Price Alert: {product_name}"
+        subject = f"TrackMazon Price Alert: {product_name}"
         shortened_subject = PriceAlert.shorten_subject(subject)
         text_content = self._create_text_content(product_name, current_price, threshold_price)
         html_content = self._create_html_content(name, product_name, current_price, threshold_price, product_url, currency, recipient_email)
@@ -31,12 +31,12 @@ class PriceAlert:
                 {
                     "From": {
                         "Email": self.sender_email,
-                        "Name": "Price Alert"
+                        "Name": "TrackMazon"
                     },
                     "To": [
                         {
                             "Email": recipient_email,
-                            "Name": "Valued Customer"
+                            "Name": name
                         }
                     ],
                     "Subject": shortened_subject,
@@ -73,7 +73,7 @@ class PriceAlert:
                         <table cellpadding="0" cellspacing="0" border="0" width="600" style="background-color: #fff; border: 1px solid #ddd; border-radius: 4px;">
                             <tr>
                                 <td style="padding: 40px;">
-                                    <h1 style="color: #1a5f7a; font-size: 24px; margin: 0 0 20px; text-align: center;">Price Alert</h1>
+                                    <h1 style="color: #1a5f7a; font-size: 24px; margin: 0 0 20px; text-align: center;">TrackMazon Price Alert</h1>
                                     <p style="margin: 0 0 20px;">Dear {name},</p>
                                     <p style="margin: 0 0 20px;">Great news! The price of <strong>{product_name}</strong> has dropped below your set threshold.</p>
                                     <table cellpadding="10" cellspacing="0" border="0" width="100%" style="background-color: #f8f8f8; border-radius: 4px;">
@@ -108,7 +108,7 @@ class PriceAlert:
         </html>
         """
 
-# # run lines 105-111 to check this code works
+# run lines 105-111 to check this code works
 # if __name__ == "__main__":
 #     api_key = "your_api_key"
 #     api_secret = "your_secret"
@@ -116,4 +116,4 @@ class PriceAlert:
 #
 #     price_alert = PriceAlert(api_key, api_secret, sender_email)
 #     long_product_name = "'The Grubby Bag' for Software Engineers [2024 version] - Beige, 10L (more or less) - Max weight 10kg A nice (somewhat) sturdy bag suitable for software engineers. It can hold up to 2 pcs and all your favorite snacks for in between PR's!"
-#     price_alert.send_alert("recipienttest6@gmail.com", "Valued Customer", long_product_name, 42.50, 45.00, "https://evapchiri.github.io/test_websiteCFG/", "£")
+#     price_alert.send_alert("recipienttest6@gmail.com", "Alice", long_product_name, 42.50, 45.00, "https://evapchiri.github.io/test_websiteCFG/", "£")
