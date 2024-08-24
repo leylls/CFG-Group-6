@@ -2,3 +2,4 @@
 __pycache__/
 #not needed in the repository
 /cronjob/job_logs/
+/venv/

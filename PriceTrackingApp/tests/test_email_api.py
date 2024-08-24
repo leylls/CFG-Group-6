@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import MagicMock
-from email_api import PriceAlert
+from back_end.email_api import PriceAlert
 
 class TestPriceAlert(unittest.TestCase):
     def setUp(self):
