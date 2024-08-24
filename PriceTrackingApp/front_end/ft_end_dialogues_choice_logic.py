@@ -41,7 +41,7 @@ def set_up_email_notifications():
 
 def get_app_instructions():
     """
-    Logic to open PriceTrackingApp's README from Github and ensure user feels ready to use the app.
+    Logic to open TrackMazon's README from Github and ensure user feels ready to use the app.
     :return:
     """
     answer = None
@@ -373,7 +373,7 @@ def opt_2_tracked_prod_dialogue():
     colours.question("Choose an option:".center(60))
     print("""               [ 1 ]  See a product price history
                [ 2 ]  Delete a product from my list
-               [ 3 ]  Do a manual price-drop check
+               [ 3 ]  Do a Manual Price-drop check
                [ 0 ]  Return to Main Menu\n""")
 
     # Needed to enter the choice loop without showing "non-valid answer" message
