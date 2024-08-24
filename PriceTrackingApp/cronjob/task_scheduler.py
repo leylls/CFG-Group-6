@@ -6,6 +6,7 @@ import os.path
 import subprocess
 """
 schtasks /Create /SC MINUTE /MO 1 /TN test /TR c:\windows\system32\notepad.exe
+
 """
 
 def create_task(name, frequency, command):
@@ -33,5 +34,10 @@ def create_task(name, frequency, command):
     return subprocess.run(process_to_execute)
 
 # TODO: (if eva has time) write a delete_task function that takes a task's name and deletes it, to clean up the program :)
+
+def delete_cronjob_task(taskname):
+    process_to_execute = f"schtasks /Delete /TN {taskname} /F"
+    # TODO to delete the print-out of "SUCCESS"
+    return subprocess.run(process_to_execute)
 
 # schtasks /Delete /TN trackmazon_update_task /F
