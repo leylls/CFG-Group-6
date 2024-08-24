@@ -8,18 +8,27 @@ from cronjob.utils import track_sent_mail
 
 class PriceAlert:
     def __init__(self, api_key, api_secret, sender_email):
-        self.mailjet = Client(auth=(api_key, api_secret), version='v3.1')
+        self.mailjet = Client(auth=(api_key, api_secret), version="v3.1")
         self.sender_email = sender_email
 
     @staticmethod
     def format_price(price, curr):
-        if curr in ['$', '£', '€', '¥', '₹', '₩', '₣']:
+        if curr in ["$", "£", "€", "¥", "₹", "₩", "₣"]:
             return f"{curr}{price:.2f}"
         else:
             return f"{curr}{price:.2f}"
 
+    @staticmethod
+    def shorten_subject(subject, max_length=255):
+        if len(subject) <= max_length:
+            return subject
+        elif len(subject) > max_length:
+            return subject[:max_length-3] + "..."
+
+
     def send_alert(self, recipient_email, name, product_name, current_price, threshold_price, product_url, currency):
         subject = f"Price Alert: {product_name}"
+        shortened_subject = PriceAlert.shorten_subject(subject)
         text_content = self._create_text_content(product_name, current_price, threshold_price)
         html_content = self._create_html_content(name, product_name, current_price, threshold_price, product_url, currency, recipient_email)
 
@@ -36,7 +45,7 @@ class PriceAlert:
                             "Name": "Valued Customer"
                         }
                     ],
-                    "Subject": subject,
+                    "Subject": shortened_subject,
                     "TextPart": text_content,
                     "HTMLPart": html_content
                 }
@@ -45,13 +54,15 @@ class PriceAlert:
 
         track_sent_mail(data['Messages'][0])
 
-        result = self.mailjet.send.create(data=data)
-
-        if result.status_code == 200:
-            print(f"Email sent successfully to {recipient_email}")
-        else:
-            print(f"Failed to send email. Status code: {result.status_code}")
-            print(result.json())
+        try:
+            result = self.mailjet.send.create(data=data)
+            if result.status_code == 200:
+                print(f"Email sent successfully to {recipient_email}")
+            else:
+                print(f"Failed to send email. Status code: {result.status_code}")
+                print(result.json())
+        except Exception as e:
+            print(f"An error occurred while sending email: {str(e)}")
 
     def _create_text_content(self, product_name, current_price, threshold_price):
         return f"The price of {product_name} has fallen below your price threshold!\n\nCurrent price: ${current_price:.2f}\nYour price threshold: ${threshold_price:.2f}"
@@ -105,11 +116,12 @@ class PriceAlert:
         </html>
         """
 
-# run lines 105-111 to check this code works
+# # run lines 105-111 to check this code works
 # if __name__ == "__main__":
-#     api_key = 'your_api_key'
-#     api_secret = 'your_secret_key'
+#     api_key = "your_api_key"
+#     api_secret = "your_secret"
 #     sender_email = "group6.cfgdegree24@gmail.com"
 #
 #     price_alert = PriceAlert(api_key, api_secret, sender_email)
-#     price_alert.send_alert("recipienttest6@gmail.com", "Valued Customer", "Example Product", 30.00, 40.00, "https://www.amazon.co.uk/", "£")
+#     long_product_name = "'The Grubby Bag' for Software Engineers [2024 version] - Beige, 10L (more or less) - Max weight 10kg A nice (somewhat) sturdy bag suitable for software engineers. It can hold up to 2 pcs and all your favorite snacks for in between PR's!"
+#     price_alert.send_alert("recipienttest6@gmail.com", "Valued Customer", long_product_name, 42.50, 45.00, "https://evapchiri.github.io/test_websiteCFG/", "£")
