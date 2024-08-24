@@ -30,7 +30,7 @@ def create_updates_job():
     write_job_config_files(directory_for_project, cronjob_directory)
 
     # return create_task("trackmazon_update_task", ("MINUTE", "1"), os.path.abspath(os.path.join("cronjob","job.bat")))
-    return create_task("trackmazon_update_task", ("MINUTE", "1"), job_wrapper_vb_script_path)
+    return create_task("trackmazon_update_task", ("MINUTE", "1"), f"'{job_wrapper_vb_script_path}'")
 
 def write_job_config_files(directory_for_project, cronjob_directory):
 
@@ -40,7 +40,7 @@ def write_job_config_files(directory_for_project, cronjob_directory):
     replacements = {
         "PROJECT_DIRECTORY": directory_for_project,
         "BATCH_FILE_LOCATION": batch_file_path,
-        "EXECUTE_JOB_COMMAND": f"{sys.executable} {os.path.join(directory_for_project, "cron_main.py")}"
+        "EXECUTE_JOB_COMMAND": f"'{sys.executable}' '{os.path.join(directory_for_project, "cron_main.py")}'"
     }
 
     for filepath in [batch_file_path, job_wrapper_vb_script_path]:
