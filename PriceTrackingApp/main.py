@@ -1,5 +1,6 @@
-import sys
+import argparse
 
+from config.config import config
 from cronjob.utils import create_updates_job
 from front_end.ft_end_dialogues_choice_logic import *
 from back_end.db_interactions import FrontEndDbInteractions
@@ -7,16 +8,11 @@ from back_end.init_db import init_db
 # from cronjob.cron_price_tracking_and_email_notif import cron_job_run
 
 
-def run(cron_job = False):
+def run():
     """
        App's central script.
        :return:
     """
-
-    # if cron_job:
-    #     cron_job_run()
-    #     return
-
 
     app_welcome_ascii()
     wants_to_exit = False
@@ -41,12 +37,18 @@ def run(cron_job = False):
 
     return
 
+
 if __name__ == "__main__":
     create_updates_job()
-    # if len(sys.argv) > 1:                       #check if an argument is passed
-    #     argument = sys.argv[1].split('=',1)
-    #     if argument[0] == 'cron_job':
-    #         run(argument[1])
-    # else:
-    #     run()
-    run()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-p", "--prod", help="run program in production mode", action="store_true")
+    parser.add_argument("-c", "--cron", help="run the cron job instead of the main application", action="store_true")
+    args = parser.parse_args()
+
+    config.set_runtime_config(is_production_mode=args.prod, is_cron_only=args.cron)
+
+    if config.is_cron_only:
+        cron_job_run()
+
+    else:
+        run()

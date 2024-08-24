@@ -4,10 +4,9 @@ docs: https://learn.microsoft.com/en-us/windows/win32/taskschd/schtasks
 """
 import os.path
 import subprocess
-"""
-schtasks /Create /SC MINUTE /MO 1 /TN test /TR c:\windows\system32\notepad.exe
 
-"""
+# schtasks /Create /SC MINUTE /MO 1 /TN test /TR c:\windows\system32\notepad.exe
+
 
 def create_task(name, frequency, command):
 # TODO: @eva to write pydoc for this function to explain the parameters

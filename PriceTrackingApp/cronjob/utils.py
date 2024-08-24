@@ -2,6 +2,7 @@ import datetime
 import os.path
 import sys
 
+from config.config import config
 from cronjob.task_scheduler import create_task
 
 
@@ -32,15 +33,19 @@ def create_updates_job():
     # return create_task("trackmazon_update_task", ("MINUTE", "1"), os.path.abspath(os.path.join("cronjob","job.bat")))
     return create_task("trackmazon_update_task", ("MINUTE", "1"), f"'{job_wrapper_vb_script_path}'")
 
-def write_job_config_files(directory_for_project, cronjob_directory):
 
+def write_job_config_files(directory_for_project, cronjob_directory):
     batch_file_path = os.path.join(cronjob_directory, "job.bat")
     job_wrapper_vb_script_path = os.path.join(cronjob_directory, "job_wrapper.vbs")
 
     replacements = {
         "PROJECT_DIRECTORY": directory_for_project,
-        "BATCH_FILE_LOCATION": batch_file_path,
-        "EXECUTE_JOB_COMMAND": f"'{sys.executable}' '{os.path.join(directory_for_project, "cron_main.py")}'"
+        "BATCH_FILE_LOCATION": f"'{batch_file_path}'",
+        "EXECUTE_JOB_COMMAND": f"'{sys.executable}' --cron --prod"
+    } if config.is_production_mode else {
+        "PROJECT_DIRECTORY": directory_for_project,
+        "BATCH_FILE_LOCATION": f"'{batch_file_path}'",
+        "EXECUTE_JOB_COMMAND": f"'{sys.executable}' --cron"
     }
 
     for filepath in [batch_file_path, job_wrapper_vb_script_path]:
