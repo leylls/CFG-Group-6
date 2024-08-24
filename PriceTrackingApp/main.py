@@ -8,20 +8,23 @@ from back_end.init_db import init_db
 
 
 def run(cron_job = False):
-    if cron_job:
-        cron_job_run()
-        return
-    
     """
-    App's central script.
-    :return:
+       App's central script.
+       :return:
     """
+
+    # if cron_job:
+    #     cron_job_run()
+    #     return
+
+
     app_welcome_ascii()
     wants_to_exit = False
     db = FrontEndDbInteractions()
 
     if not db.db_exists():
         init_db()
+        create_updates_job()
         new_user_setup_dialogue()
         sleep(1.5)
         main_menu_text(main_menu_options)
@@ -35,6 +38,7 @@ def run(cron_job = False):
             goodbye()
         else:
             main_menu_text(main_menu_options)
+
     return
 
 if __name__ == "__main__":

@@ -5,7 +5,7 @@ from front_end.ft_end_input_utils import *
 # BACK END IMPLEMENTATION
 from front_end.ft_end_backend_interactions import *
 from back_end.db_interactions import FrontEndDbInteractions
-from cronjob.cron_price_tracking_and_email_notif import cron_job_run
+from cronjob.trackmazon_task import cron_job_run
 
 db = FrontEndDbInteractions()
 
