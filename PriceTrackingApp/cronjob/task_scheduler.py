@@ -31,6 +31,7 @@ def create_task(name, frequency, command):
 
 # TODO: (if eva has time) write a delete_task function that takes a task's name and deletes it, to clean up the program :)
 
+# schtasks /Delete /TN trackmazon_update_task /F
 
 
 # TODO: delete below this line \/
