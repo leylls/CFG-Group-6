@@ -20,7 +20,6 @@ for Amazon products, and offers users the ability to receive an email notificati
 - Running on Windows
 - Requirements 
 - Project Files 
-- Email API
 - Helpful Tips 
 - Acknowledgements 
 
