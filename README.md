@@ -105,8 +105,8 @@ Front End
 * db_interactions.py - Database operations, storing and retrieving product price data and user information.
 * init_db.py - Initializes the database by creating tables and setting up the necessary schema and initial data.
 * list_common_user_agents.txt - A file listing various user-agent strings to rotate during web scraping and avoid detection.
-* Web_Scraping.py - Handles the extraction of product price information from websites using web scraping techniques.
-* Email_Api.py - Provides functionality to send email notifications, using an external email API.
+* web_scraping.py - Handles the extraction of product price information from websites using web scraping techniques.
+* email_api.py - Provides functionality to send email notifications, using an external email API.
 
 
 
