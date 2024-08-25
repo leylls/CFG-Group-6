@@ -59,6 +59,10 @@ mailjet_rest
 sqlite3
 
 ```
+3. Running on Mac: Run main.py and make sure to update the API keys in the file.
+
+4. Running on Windows: Run the executable to automatically schedule the cron job. (Note the following limitations: the path cannot contain whitespaces, the computer must be plugged in, and it needs to be turned on at the scheduled time.)
+
 
 ## Requirements
 1. Application is developed in Python 3.12
@@ -73,20 +77,19 @@ sqlite3
 
 ## Project Files Description
 Front End
-* ascii_playground.txt - Used for storing or experimenting with ASCII art designs and text formatting.
+
 * ft_end_ascii_prints.py - Functions for ASCII art and stylized text output to enhance interface. 
 * ft_end_backend_interactions.py - Interactions between the front end and the back end. 
 * ft_end_dialogues_choice_logic.py - Logic for handling user choices/ dialogue flows in interface.
 * ft_end_input_utils.py - Provides utility functions for processing and validating user input in the terminal interface.
 
  Back End
-* cron_price_tracking_and_email_notif.py - Track product prices and send email notifications for price drops. 
+* trackmazon_task.py - Track product prices and send email notifications for price drops. 
 * db_interactions.py - Database operations, storing and retrieving product price data and user information.
 * init_db.py - Initializes the database by creating tables and setting up the necessary schema and initial data.
 * list_common_user_agents.txt - A file listing various user-agent strings to rotate during web scraping and avoid detection.
-* Setup_cron_job.sh - A shell script to automate the setup of a cron job for periodic execution of the price tracking and email notification script.
 * Web_Scraping.py - Handles the extraction of product price information from websites using web scraping techniques.
-* Email_Api.py - Provides functionality to send email notifications, likely using an external email API.
+* Email_Api.py - Provides functionality to send email notifications, using an external email API.
 
 
 
@@ -99,10 +102,6 @@ MailJet API - Please register for an account to access the API.
 https://dev.mailjet.com/email/guides/
 ```
 ## Helpful Tips
-
-How to run on Mac: Run main.py and make sure to update the API keys in the file.
-
-How to run on Windows: Run the executable to automatically schedule the cron job. (Note the following limitations: the path cannot contain whitespaces, the computer must be plugged in, and it needs to be turned on at the scheduled time.)
 
 To stop using the app and remove the scheduled task on Windows 10, follow these instructions:
 
