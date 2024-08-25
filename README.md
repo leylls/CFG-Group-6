@@ -60,8 +60,9 @@ sqlite3
 
 ```
 3. Running on Mac: Run main.py and make sure to update the API keys in the file.
+   Users using Mac will need to use "Manual Price-Drop Check" for task automation. 
 
-4. Running on Windows: Run the executable to automatically schedule the cron job. (Note the following limitations: the path cannot contain whitespaces, the computer must be plugged in, and it needs to be turned on at the scheduled time.)
+5. Running on Windows: Run (.exe file) for task automation. (Note the following limitations: the path cannot contain whitespaces, the computer must be plugged in, and it needs to be turned on at the scheduled time.)
 
 
 ## Requirements
