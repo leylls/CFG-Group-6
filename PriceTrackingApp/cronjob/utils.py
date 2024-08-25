@@ -2,8 +2,16 @@ import datetime
 import os.path
 import sys
 
-from config.config import config
 from cronjob.task_scheduler import create_task
+
+
+def is_bundled_application():
+    """
+    function to determine during runtime if the app is running as an executable built by PyInstaller or through python. PyInstaller provide this code in their docs:
+    https://pyinstaller.org/en/stable/runtime-information.html#run-time-information
+    :return: Boolean - whether the app is running as an executable bundle or just with python
+    """
+    return getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS')
 
 
 def track_sent_mail(sent_mail):
@@ -24,14 +32,15 @@ def create_updates_job():
     Interacts with Window's Task Scheduler to the cron-job task
     :return:
     """
+    # current_dir = os.path.dirname(os.path.abspath(__file__))
     directory_for_project = os.getcwd()
-    cronjob_directory = os.path.join(directory_for_project, "cronjob")
+    cronjob_directory = os.path.dirname(os.path.abspath(__file__)) #os.path.join(directory_for_project, "_internal", "cronjob") if is_bundled_application() else os.path.join(directory_for_project, "cronjob")
     job_wrapper_vb_script_path = os.path.join(cronjob_directory, "job_wrapper.vbs")
 
     write_job_config_files(directory_for_project, cronjob_directory)
 
     # return create_task("trackmazon_update_task", ("MINUTE", "1"), os.path.abspath(os.path.join("cronjob","job.bat")))
-    return create_task("trackmazon_update_task", ("MINUTE", "1"), f"'{job_wrapper_vb_script_path}'")
+    return create_task("trackmazon_update_task", ("MINUTE", "1"), f"{job_wrapper_vb_script_path}")
 
 
 def write_job_config_files(directory_for_project, cronjob_directory):
@@ -40,15 +49,16 @@ def write_job_config_files(directory_for_project, cronjob_directory):
 
     replacements = {
         "PROJECT_DIRECTORY": directory_for_project,
-        "BATCH_FILE_LOCATION": f"'{batch_file_path}'",
-        "EXECUTE_JOB_COMMAND": f"'{sys.executable}' --cron --prod"
-    } if config.is_production_mode else {
+        "BATCH_FILE_LOCATION": f"{batch_file_path}",
+        "EXECUTE_JOB_COMMAND": f"{sys.executable} --cron"
+    } if is_bundled_application() else {
         "PROJECT_DIRECTORY": directory_for_project,
-        "BATCH_FILE_LOCATION": f"'{batch_file_path}'",
-        "EXECUTE_JOB_COMMAND": f"'{sys.executable}' --cron"
+        "BATCH_FILE_LOCATION": f"{batch_file_path}",
+        "EXECUTE_JOB_COMMAND": f"{sys.executable} --cron"
     }
 
     for filepath in [batch_file_path, job_wrapper_vb_script_path]:
+        print(f">>> replacing file {filepath}")
         file_lines = []
         with open(filepath, 'r') as file:
             for line in file:

@@ -2,9 +2,9 @@ import sqlite3
 import os.path
 
 class DatabaseActions:
-
     def __init__(self):
-        self.database = os.path.join('back_end', 'price_tracker.db')
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        self.database = os.path.join(current_dir, 'price_tracker.db')
 
     def fetch_data(self, query):
         try:

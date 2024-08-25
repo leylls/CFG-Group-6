@@ -94,7 +94,7 @@ def goodbye():
                         PriceTrackingApp!
                             *   *   *""")
     sleep(4)
-    quit()
+    exit()
 
 
 @main_menu_ascii
