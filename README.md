@@ -12,11 +12,11 @@ for Amazon products, and offers users the ability to receive an email notificati
 ## Table of Contents
 
 - Description
-- Getting
-Started
-- Specification and Design / Requirements
-- [Design and architecture / what software was used](  # contributing)
--  [Video Demo](  # license)
+- Why TRACKMAZON
+- Getting Started 
+- Requirements 
+- Project Files (Can be taken out)
+- Video Demo?
 
 
 
