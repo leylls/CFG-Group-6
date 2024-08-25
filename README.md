@@ -1,7 +1,10 @@
 <img width="783" alt="Screenshot 2024-08-25 at 14 04 53" src="https://github.com/user-attachments/assets/0f11220d-6c08-4eae-b59f-3ff03676b868">
 
+
+
 # TRACKMAZON
-Our app is a
+Our
+app is a
 price - tracking
 app
 for Amazon products, and offers users the ability to receive an email notification when a desired  product falls within their preferred price.
@@ -14,8 +17,9 @@ for Amazon products, and offers users the ability to receive an email notificati
 - Why TRACKMAZON
 - Getting Started 
 - Requirements 
-- Project Files (Can be taken out)
-- Video Demo?
+- Project Files 
+- Email API
+- Helpful Tips 
 
 
 
@@ -37,9 +41,8 @@ Our goal was to create an app that would provide users with the best possible de
  git clone https://github.com/leylls/CFG-Group-6.git
 ```
 
-2.
-Install
-dependencie/external libraries:
+2.  Install
+dependencies/external libraries:
 ```bash
 beautifulsoup4 == 4.12.3
 certifi == 2024.7.4
@@ -64,33 +67,47 @@ sqlite3
 
 ## Project Files Description
 Front End
-* ascii_playground.txt -
-* ft_end_ascii_prints.py -
-* ft_end_backend_interactions.py -
-* ft_end_dialogues_choice_logic.py -
-* ft_end_input_utils.py -
+* ascii_playground.txt - used for storing or experimenting with ASCII art designs and text formatting.
+* ft_end_ascii_prints.py - functions and methods for ASCII art and stylized text output to enhance interface. 
+* ft_end_backend_interactions.py - In teractions between the front end and the back end. 
+* ft_end_dialogues_choice_logic.py - Implements logic for handling user choices and dialogue flows in the application's user interface.
+* ft_end_input_utils.py - Provides utility functions for processing and validating user input in the terminal interface.
 
  Back End
-* cron_price_tracking_and_email_notif.py -
-* db_interactions.py -
-* init_db.py -
-* list_common_user_agents.txt -
-* Setup_cron_job.sh -
-* Web_Scraping.py - Used for
-* Email_Api.py - Used for
-
-## Video Demo
+* cron_price_tracking_and_email_notif.py - Track product prices and send email notifications for price drops. 
+* db_interactions.py - Database operations, storing and retrieving product price data and user information.
+* init_db.py - Initializes the database by creating tables and setting up the necessary schema and initial data.
+* list_common_user_agents.txt - A file listing various user-agent strings to rotate during web scraping and avoid detection.
+* Setup_cron_job.sh - A shell script to automate the setup of a cron job for periodic execution of the price tracking and email notification script.
+* Web_Scraping.py - Handles the extraction of product price information from websites using web scraping techniques.
+* Email_Api.py - Provides functionality to send email notifications, likely using an external email API.
 
 
 
 
+
+## Email API
+
+MailJet API - Register for an account in order to access the API 
+```
+https://dev.mailjet.com/email/guides/
+```
+## Helpful Tips
+
+To stop using the app and remove the scheduled task on Windows 10, follow these instructions:
+
+* Open Task Scheduler: Press Win + S, type "Task Scheduler," and press Enter.
+
+* Locate the Task: In the Task Scheduler window, navigate to Task Scheduler Library in the left pane to find the scheduled task associated with the app.
+
+* Delete the Task: Right-click the task you want to remove and select Delete from the context menu.
+
+* Confirm Deletion: Confirm the deletion when prompted to ensure the task is removed.
 
 
 ## Authors
 
-Ikram Ahmed
-Shaira Jiwany, 
-Leyla Bush, Violeta Pereda, Eva Perez Chirinos
+Ikram Ahmed, Leyla Bush, Violeta Pereda, Eva Perez Chirinos, Shaira Jiwany
 
 
 
@@ -104,5 +121,4 @@ This project is open source.
 This app is created as a final project for Summer 2024 Software Engineering CFG Degree.
 
 The development of this project has stopped completely as we have submitted and presented this project.
-
 
