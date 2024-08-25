@@ -26,10 +26,8 @@ TrackMazon is a price-tracking app for Amazon products that alerts users via ema
 
 
  ## Why TRACKMAZON
- 
- We wanted to create an app that would:
-    1) Allow users to get the best deal on Amazon products
-    2) Having an App where you get email notifications when its best to purchase your wished product.
+
+Our goal was to create an app that would provide users with the best possible deals on Amazon products. We aimed to offer a convenient and user-friendly experience where users could track prices and receive email notifications when it was the optimal time to purchase their desired items. This feature was intended to help users save money by informing them of the best deals as soon as they became available, making the shopping experience more efficient and cost-effective.
 
 
 
@@ -42,18 +40,17 @@ TrackMazon is a price-tracking app for Amazon products that alerts users via ema
 
 2.
 Install
-dependencies:
+dependencie/external libraries:
 ```bash
 beautifulsoup4 == 4.12.3
-bs4 == 0.0.2
 certifi == 2024.7.4
-charset - normalizer == 3.3.2
+charset-normalizer==3.3.2
 idna == 3.8
-mailjet - rest == 1.3.4
+mailjet-rest==1.3.4
 requests == 2.32.3
 soupsieve == 2.6
-urllib3 == 2.2.2
-sqllite
+urllib3==2.2.2
+sqlite3
 ```
 
 ## Requirements
