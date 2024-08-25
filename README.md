@@ -20,6 +20,7 @@ for Amazon products, and offers users the ability to receive an email notificati
 - Project Files 
 - Email API
 - Helpful Tips 
+- Acknowledgements 
 
 
 
@@ -52,7 +53,11 @@ mailjet-rest==1.3.4
 requests == 2.32.3
 soupsieve == 2.6
 urllib3==2.2.2
+time.sleep
+os.path 
+mailjet_rest 
 sqlite3
+
 ```
 
 ## Requirements
@@ -60,17 +65,18 @@ sqlite3
 
 2. You can install the packages using the requirements.txt file.
  
-```pip install -r requirements.txt  ```
+     
+                       ```pip install -r requirements.txt  ```
 
 
 
 
 ## Project Files Description
 Front End
-* ascii_playground.txt - used for storing or experimenting with ASCII art designs and text formatting.
-* ft_end_ascii_prints.py - functions and methods for ASCII art and stylized text output to enhance interface. 
-* ft_end_backend_interactions.py - In teractions between the front end and the back end. 
-* ft_end_dialogues_choice_logic.py - Implements logic for handling user choices and dialogue flows in the application's user interface.
+* ascii_playground.txt - Used for storing or experimenting with ASCII art designs and text formatting.
+* ft_end_ascii_prints.py - Functions for ASCII art and stylized text output to enhance interface. 
+* ft_end_backend_interactions.py - Interactions between the front end and the back end. 
+* ft_end_dialogues_choice_logic.py - Logic for handling user choices/ dialogue flows in interface.
 * ft_end_input_utils.py - Provides utility functions for processing and validating user input in the terminal interface.
 
  Back End
@@ -88,11 +94,13 @@ Front End
 
 ## Email API
 
-MailJet API - Register for an account in order to access the API 
+MailJet API - Please register for an account to access the API.
 ```
 https://dev.mailjet.com/email/guides/
 ```
 ## Helpful Tips
+
+At the moment, this can only be ran on Windows and not MacOS.
 
 To stop using the app and remove the scheduled task on Windows 10, follow these instructions:
 
@@ -105,10 +113,12 @@ To stop using the app and remove the scheduled task on Windows 10, follow these 
 * Confirm Deletion: Confirm the deletion when prompted to ensure the task is removed.
 
 
+You may get a warning from your computer when running the exe. file, please do not be alarmed! Continue and run the program anyway. 
+
+
 ## Authors
 
-Ikram Ahmed, Leyla Bush, Violeta Pereda, Eva Perez Chirinos, Shaira Jiwany
-
+Shaira Jiwany, Ikram Ahmed, Leyla Bush, Violeta Pereda, Eva Perez Chirinos. 
 
 
 ## License
@@ -121,4 +131,13 @@ This project is open source.
 This app is created as a final project for Summer 2024 Software Engineering CFG Degree.
 
 The development of this project has stopped completely as we have submitted and presented this project.
+
+
+## Acknowledgements 
+Thank you CodeFirstGirls, our instructors and the data/software engineering team. 
+
+
+
+
+
 
