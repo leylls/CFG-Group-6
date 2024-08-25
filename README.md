@@ -35,11 +35,8 @@ We wanted to create an app that would:
 
 ## Getting Started
 1. Clone the repository:
-    ```bash
-git
-clone
-https: // github.com / leylls / CFG - Group - 6.
-git
+```bash
+ git clone https://github.com/leylls/CFG-Group-6.git
 ```
 
 2.
