@@ -30,7 +30,7 @@ def create_task(name, frequency, command):
             raise ValueError("uh oh")
 
     # Ensuring to delete any other (possible) pre-existing task with the same name
-    subprocess.run(f"schtasks /Delete /TN {name} /F", stdout=subprocess.DEVNULL)
+    subprocess.run(f"schtasks /Delete /TN {name} /F", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
     process_to_execute = f"schtasks /Create /SC {SC} /MO {MO} /TN {name} /TR \"{command}\""
     return subprocess.run(process_to_execute, stdout=subprocess.DEVNULL)
