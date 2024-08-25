@@ -18,12 +18,12 @@ Started
 - [Design and architecture / what software was used](  # contributing)
 -  [Video Demo](  # license)
 
-        ## Description
 
-        TrackMazon is a
-price - tracking
-app
-for Amazon products that alerts users via email when a tracked product hits their desired price.Our project aims to create an application with a user-friendly interface, web scraping for product info, efficient data storage, and an email notification system for when the price drops.
+
+## Description
+
+TrackMazon is a price-tracking app for Amazon products that alerts users via email when a tracked product hits their desired price. Our project aims to create an application with a user-friendly interface, web scraping for product info, efficient data storage, and an email notification system for when the price drops.
+
 
     ## Why TRACKMAZON
 We wanted to create an app that would:
@@ -58,47 +58,29 @@ sqllite
 ## Requirements
 1. Application is developed in Python 3.12
 
-2.
-You
-can
-install
-the
-packages
-using
-the
-requirements.txt
-file.
-
-```pip
-install - r
-requirements.txt
-```
-
-
-
+2. You can install the packages using the requirements.txt file.
+ 
+```pip install -r requirements.txt  ```
 
 
 
 
 ## Project Files Description
-Front
-End
+Front End
 * ascii_playground.txt -
-*ft_end_ascii_prints.py -
-*ft_end_backend_interactions.py -
-*ft_end_dialogues_choice_logic.py -
-*ft_end_input_utils.py -
+* ft_end_ascii_prints.py -
+* ft_end_backend_interactions.py -
+* ft_end_dialogues_choice_logic.py -
+* ft_end_input_utils.py -
 
- Back
-End
+ Back End
 * cron_price_tracking_and_email_notif.py -
-*db_interactions.py -
-*init_db.py -
-*list_common_user_agents.txt -
-*Setup_cron_job.sh -
-*Web_Scraping.py - Used
-for
-*Email_Api.py - Used for
+* db_interactions.py -
+* init_db.py -
+* list_common_user_agents.txt -
+* Setup_cron_job.sh -
+* Web_Scraping.py - Used for
+* Email_Api.py - Used for
 
 ## Video Demo
 
@@ -108,7 +90,7 @@ for
 
 
 ##Authors
-Ikram Ahmed, Leyla Bush, Violeta Pereda, Eva Perez Chirinos, Shaira Jiwany
+ Leyla Bush, Violeta Pereda, Eva Perez Chirinos, Shaira Jiwany, Ikram Ahmed
 
 
 
