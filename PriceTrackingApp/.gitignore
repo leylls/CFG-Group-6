@@ -1,0 +1,6 @@
+.idea/
+__pycache__/
+/cronjob/job_logs/
+/venv/
+/dist/
+/build/
