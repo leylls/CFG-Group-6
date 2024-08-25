@@ -7,10 +7,9 @@ def init_db():
     If the tables already exist, they won't be recreated.
     """
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    print(f">>>searching for db in {current_dir}")
     db_path = os.path.join(current_dir, 'price_tracker.db')
 
-    # Connecting to the SQLite database or creating the database file if it doesn't exist)
+    # Connecting to the SQLite database or creating the database file if it doesn't exist
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 

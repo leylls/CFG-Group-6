@@ -1,5 +1,4 @@
 import argparse
-
 from cronjob.utils import create_updates_job
 from front_end.ft_end_dialogues_choice_logic import *
 from back_end.db_interactions import FrontEndDbInteractions
@@ -11,11 +10,9 @@ def run():
        App's central script.
        :return:
     """
-
     app_welcome_ascii()
     wants_to_exit = False
     db = FrontEndDbInteractions()
-
     if not db.db_exists():
         init_db()
         create_updates_job()
@@ -37,7 +34,6 @@ def run():
 
 
 if __name__ == "__main__":
-    # create_updates_job()
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--cron", help="run the cron job instead of the main application", action="store_true")
     args = parser.parse_args()
@@ -46,8 +42,5 @@ if __name__ == "__main__":
         cron_job_run()
 
     else:
-        try:
-            run()
-        except Exception as e:
-            print(f"Encountered fatal error.\nPlease contact the developers\nError: {e}")
-            input("press enter to exit...")
+        run()
+

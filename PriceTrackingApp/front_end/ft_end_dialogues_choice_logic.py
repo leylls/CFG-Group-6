@@ -1,5 +1,6 @@
 # FRONT END UTILS
-# from cronjob.utils import create_updates_job
+import sqlite3
+import webbrowser
 from front_end.ft_end_ascii_prints import *
 from front_end.ft_end_input_utils import *
 # BACK END IMPLEMENTATION
@@ -23,8 +24,9 @@ def set_up_email_notifications():
         print("We thought it would.".center(60))
         is_correct = False
         while not is_correct:
-            colours.question("Please provide us with your email:".center(60))
-            user_email = input(f"{colours.main_colour()}\n->  ")
+            while not is_valid_email(user_email):
+                colours.question("Please provide us with your email:".center(60))
+                user_email = input(f"{colours.main_colour()}\n->  ")
             print("\n")
             colours.question("Is this email correct?".center(60))
             print(f"{user_email}\n".center(60))
@@ -667,3 +669,4 @@ def get_main_menu_choice():
         case "0":
             return True
     return False
+

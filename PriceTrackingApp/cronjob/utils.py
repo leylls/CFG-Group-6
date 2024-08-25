@@ -7,7 +7,8 @@ from cronjob.task_scheduler import create_task
 
 def is_bundled_application():
     """
-    function to determine during runtime if the app is running as an executable built by PyInstaller or through python. PyInstaller provide this code in their docs:
+    Function to determine during runtime if the app is running as an executable built by PyInstaller or through python.
+    PyInstaller provide this code in their docs:
     https://pyinstaller.org/en/stable/runtime-information.html#run-time-information
     :return: Boolean - whether the app is running as an executable bundle or just with python
     """
@@ -39,11 +40,20 @@ def create_updates_job():
 
     write_job_config_files(directory_for_project, cronjob_directory)
 
+    # FOR TESTING
     # return create_task("trackmazon_update_task", ("MINUTE", "1"), os.path.abspath(os.path.join("cronjob","job.bat")))
-    return create_task("trackmazon_update_task", ("MINUTE", "1"), f"{job_wrapper_vb_script_path}")
+    # return create_task("trackmazon_update_task", ("MINUTE", "1"), f"{job_wrapper_vb_script_path}")
+
+    return create_task("trackmazon_update_task", ("DAILY", "1"), f"{job_wrapper_vb_script_path}")
 
 
 def write_job_config_files(directory_for_project, cronjob_directory):
+    """
+    It swaps replacements's keys with its values in the cron bat file.
+    :param directory_for_project:
+    :param cronjob_directory:
+    :return:
+    """
     batch_file_path = os.path.join(cronjob_directory, "job.bat")
     job_wrapper_vb_script_path = os.path.join(cronjob_directory, "job_wrapper.vbs")
 
@@ -58,7 +68,6 @@ def write_job_config_files(directory_for_project, cronjob_directory):
     }
 
     for filepath in [batch_file_path, job_wrapper_vb_script_path]:
-        print(f">>> replacing file {filepath}")
         file_lines = []
         with open(filepath, 'r') as file:
             for line in file:

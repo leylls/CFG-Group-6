@@ -3,7 +3,7 @@
 
 a = Analysis(
     ['main.py'],
-    pathex=['C:\\Users\\evasa\\Documents\\Git\\CFG-Group-6\\PriceTrackingApp'],
+    pathex=[],
     binaries=[],
     datas=[('back_end\\list_common_user_agents.txt', 'back_end'), ('cronjob\\job_logs', 'cronjob\\job_logs'), ('cronjob\\job.bat', 'cronjob'), ('cronjob\\job_wrapper.vbs', 'cronjob')],
     hiddenimports=[],
@@ -32,6 +32,7 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    icon=['C:\\Users\\evasa\\Documents\\Git\\CFG-Group-6\\PriceTrackingApp\\future_icon.ico'],
 )
 coll = COLLECT(
     exe,

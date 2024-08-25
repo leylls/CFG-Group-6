@@ -1,5 +1,3 @@
-from time import sleep
-import webbrowser
 from front_end.ft_end_ascii_prints import colours
 
 
@@ -93,8 +91,19 @@ def get_user_input(suggestion=None):
 
 
 def is_valid_email(email):
+    """
+    Validates the input is an email.
+    :param email:
+    :return:
+    """
+    # To enter the validation loop in FE
+    if email == None:
+        return False
+
     if "@" in email:
         username, domain = email.split("@", 1)
         if len(username) > 0 and "." in domain and len(domain.split(".")[-1]) > 1:
             return True
-    raise ValueError(f"The email address '{email}' is not valid.")
+    # Made a customised error message
+    print(f"{colours.error()}The given email is not the correct format. Try again!".center(60))
+    return False

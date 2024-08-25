@@ -4,4 +4,5 @@ pyinstaller --name="Trackmazon" ^
     --add-data="cronjob\job.bat:cronjob" ^
     --add-data="cronjob\job_wrapper.vbs:cronjob" ^
     --clean ^
+    --icon future_icon.ico ^
     main.py
