@@ -100,7 +100,9 @@ https://dev.mailjet.com/email/guides/
 ```
 ## Helpful Tips
 
-At the moment, this can only be ran on Windows and not MacOS.
+How to run on Mac: Run main.py and make sure to update the API keys in the file.
+
+How to run on Windows: Run the executable to automatically schedule the cron job. (Note the following limitations: the path cannot contain whitespaces, the computer must be plugged in, and it needs to be turned on at the scheduled time.)
 
 To stop using the app and remove the scheduled task on Windows 10, follow these instructions:
 
