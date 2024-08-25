@@ -1,40 +1,55 @@
 <img width="783" alt="Screenshot 2024-08-25 at 14 04 53" src="https://github.com/user-attachments/assets/0f11220d-6c08-4eae-b59f-3ff03676b868">
 
 
+<br><br>
+The modern world of e-commerce can be challenging for consumers to navigate. It can be volatile - and sometimes manipulative; with continuous misleading promotional offers. 🤑
 
-# TRACKMAZON
-Our
-app is a
-price - tracking
-app
-for Amazon products, and offers users the ability to receive an email notification when a desired  product falls within their preferred price.
+We all know Amazon and how daunting it can get to get the best deal for your desired product. 
 
+But not to worry, **TrackMazon wants to become your shopping ally**! 🦸‍♀️
+
+In a nutshell, TrackMazon is a price-tracking app for Amazon products that offers users the ability to receive an email notification when a tracked product falls within their set desired price.
 
 
 ## Table of Contents
 
-- Description
-- Why TRACKMAZON
+- How can TRACKMAZON help me with my shopping?
+- So, how do I get this app?
+  * Windows
+  * Mac
 - Getting Started
-- Running on Mac
-- Running on Windows
-- Requirements 
-- Project Files 
-- Helpful Tips 
-- Acknowledgements 
+- How to stop TrackMazon's automated task
+- Requirements
+- Project Files Description
 
 
+ ## How can TRACKMAZON help me with my shopping?
+Imagine this, you're scrolling through Amazon to find your favourite pairs of sneakers and you see the best price is £200. You feel a bit unsure and you leave it for the day. You come back the next day to see they now cost £230. You get a bit upset and you leave it there. You realize perhaps £230 is not that much, so you come back to them just to find out they are on sale for £210. Exhausting, right? 😥
 
-## Description
+Our app will track these price changes for you and send you an email whenever the sneaker's price falls to an amount that feels right to **YOU**. 
 
-TrackMazon is a price-tracking app for Amazon products that alerts users via email when a tracked product hits their desired price. Our project aims to create an application with a user-friendly interface, web scraping for product info, efficient data storage, and an email notification system for when the price drops.
+## So, how do I get this app?
+First things first, there is a difference if you are using either Windows or Mac, so please read carefully...
+
+### Windows
+For Windows users, we have created `TrackMazon.exe`, a plug-and-play program that you can find within `TrackMazon.zip`.
+
+You may get a warning from your computer when running the `TrackMazon.exe` file, please do not be alarmed! Continue and run the program anyway. 
+
+The first time you run this executable, the application will set up in your computer an automatic daily price-drop check.
+
+❗ Please note: 
+- You will need to delete this task manually if you ever want to stop using our app (see Section 'How to stop TrackMazon's automated task').
+- The  file path where the executable is stored cannot contain whitespaces for the executable to work correctly.
 
 
- ## Why TRACKMAZON
+### Mac
+For Mac users, there's no plug-and-play executable available. You will need to run the program through the source code, see the next section for a step-by-step.
 
-Our goal was to create an app that would provide users with the best possible deals on Amazon products. We aimed to offer a convenient and user-friendly experience where users could track prices and receive email notifications when it was the optimal time to purchase their desired items. This feature was intended to help users save money by informing them of the best deals as soon as they became available, making the shopping experience more efficient and cost-effective.
+This app depends on MailJet API to operate email notifications. You will need to manually insert your own API key and API secret key in lines 86 and 87 on file cronjob/trackmazon_task.py. To get this, please follow the below link:
+``` https://app.mailjet.com/signup?lang=en_US ```
 
-
+❗ Please note, that users with Mac systems will need to do a "Manual Price-Drop Check" as automated price tracking has not yet been enabled. You will find this option within option [2] My Tracked Products.
 
 
 ## Getting Started
@@ -43,53 +58,26 @@ Our goal was to create an app that would provide users with the best possible de
  git clone https://github.com/leylls/CFG-Group-6.git
 ```
 
-2.  Install
-dependencies/external libraries:
-```bash
-beautifulsoup4 == 4.12.3
-certifi == 2024.7.4
-charset-normalizer==3.3.2
-idna == 3.8
-mailjet-rest==1.3.4
-requests == 2.32.3
-soupsieve == 2.6
-urllib3==2.2.2
-time.sleep
-os.path 
-mailjet_rest 
-sqlite3
+2.  Install dependencies/external libraries:
+You can install the packages using the requirements.txt file.
+     
+```pip install -r requirements.txt  ```
 
-```
+## How to stop TrackMazon's automated task (only for Windows users)
 
-## Running on Mac: 
+To stop using the app and remove the scheduled task on Windows, follow these instructions:
 
-As this uses  MailJet API 
+* Open Task Scheduler: Press Win + S, type "Task Scheduler," and press Enter.
 
-Please register for an account to access the API, (this will be the sender email address) with MailJet API to access API key and API secret key. 
+* Locate the Task: In the Task Scheduler window, navigate to Task Scheduler Library in the left pane to find the scheduled task associated with the app.
 
-``` https://app.mailjet.com/signup?lang=en_US ```
+* Delete the Task: Right-click the task you want to remove and select Delete from the context menu.
 
-Run main.py and make sure to update the API keys in the folder cronjob, file trackmazon_task.py 
-
-Users on Mac will need to use "Manual Price-Drop Check" for price tracking as it is not automized on Mac systems.
- 
-
-## Running on Windows:
-Run (.exe file) for task automation. This can be found in the TrackMazon.zip file, download and unzip!
-
-Please note the following: The  file path where the executable is stored cannot contain whitespaces. 
-
+* Confirm Deletion: Confirm the deletion when prompted to ensure the task is removed.
 
 
 ## Requirements
-1. Application is developed in Python 3.12
-
-2. You can install the packages using the requirements.txt file.
- 
-     
-                       ```pip install -r requirements.txt  ```
-
-
+Application is developed in Python 3.12
 
 
 ## Project Files Description
@@ -108,29 +96,16 @@ Front End
 * web_scraping.py - Handles the extraction of product price information from websites using web scraping techniques.
 * email_api.py - Provides functionality to send email notifications, using an external email API.
 
-
-
-
-
-## Helpful Tips
-
-To stop using the app and remove the scheduled task on Windows, follow these instructions:
-
-* Open Task Scheduler: Press Win + S, type "Task Scheduler," and press Enter.
-
-* Locate the Task: In the Task Scheduler window, navigate to Task Scheduler Library in the left pane to find the scheduled task associated with the app.
-
-* Delete the Task: Right-click the task you want to remove and select Delete from the context menu.
-
-* Confirm Deletion: Confirm the deletion when prompted to ensure the task is removed.
-
-
-You may get a warning from your computer when running the exe. file, please do not be alarmed! Continue and run the program anyway. 
+  Cron Job
+* job.bat & job_wrapper.vbs - These files work together to make the insertion of the command for the creation of the scheduled task.
+* trackmazon_task.py - Full logic for the scheduled task.
+* task_scheduler.py - Here lies the functions that will interact with Window's built-in Task Scheduler through the Command Prompt (cmd).
+* utils.py - Code that interacts with the boundary (i.e. task_scheduler.py) and the cron-job logic (i.e. trackmazon_task.py).
 
 
 ## Authors
 
-Shaira Jiwany, Ikram Ahmed, Leyla Bush, Violeta Pereda, Eva Perez Chirinos. 
+Shaira Jiwany, Ikram Ahmed, Leyla Bush, Violeta de Pereda, Eva Perez Chirinos. 
 
 
 ## License
