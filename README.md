@@ -25,8 +25,9 @@ Started
 TrackMazon is a price-tracking app for Amazon products that alerts users via email when a tracked product hits their desired price. Our project aims to create an application with a user-friendly interface, web scraping for product info, efficient data storage, and an email notification system for when the price drops.
 
 
-    ## Why TRACKMAZON
-We wanted to create an app that would:
+ ## Why TRACKMAZON
+ 
+ We wanted to create an app that would:
     1) Allow users to get the best deal on Amazon products
     2) Having an App where you get email notifications when its best to purchase your wished product.
 
