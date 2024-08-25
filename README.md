@@ -1,8 +1,9 @@
 
 
+Our<img width="783" alt="Screenshot 2024-08-25 at 14 04 53" src="https://github.com/user-attachments/assets/0f11220d-6c08-4eae-b59f-3ff03676b868">
+
 # TRACKMAZON
-Our
-app is a
+Our app is a
 price - tracking
 app
 for Amazon products, and offers users the ability to receive an email notification when a desired  product falls within their preferred price.
@@ -89,7 +90,9 @@ Front End
 
 ## Authors
 
-Ikram Ahmed ,Leyla Bush, Violeta Pereda, Eva Perez Chirinos, Shaira Jiwany
+Ikram Ahmed
+Shaira Jiwany, 
+Leyla Bush, Violeta Pereda, Eva Perez Chirinos
 
 
 
