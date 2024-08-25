@@ -21,6 +21,9 @@ def track_sent_mail(sent_mail):
     :param sent_mail:
     :return:
     """
+    # Only need to track the sent out emails if in dev mode
+    if is_bundled_application():
+        return
     current_timestamp = datetime.datetime.now().isoformat()[:-7].replace(':', '-')
 
     log_file = open(os.path.join("cronjob", "job_logs", f"job_result_{current_timestamp}.html"), 'w')
