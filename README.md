@@ -15,7 +15,9 @@ for Amazon products, and offers users the ability to receive an email notificati
 
 - Description
 - Why TRACKMAZON
-- Getting Started 
+- Getting Started
+- Running on Mac
+- Running on Windows
 - Requirements 
 - Project Files 
 - Email API
