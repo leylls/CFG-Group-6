@@ -1,10 +1,12 @@
 # FRONT END UTILS
+import sqlite3
+import webbrowser
 from front_end.ft_end_ascii_prints import *
 from front_end.ft_end_input_utils import *
 # BACK END IMPLEMENTATION
 from front_end.ft_end_backend_interactions import *
 from back_end.db_interactions import FrontEndDbInteractions
-from back_end.cron_price_tracking_and_email_notif import cron_job_run
+from cronjob.trackmazon_task import cron_job_run
 
 db = FrontEndDbInteractions()
 
@@ -22,8 +24,9 @@ def set_up_email_notifications():
         print("We thought it would.".center(60))
         is_correct = False
         while not is_correct:
-            colours.question("Please provide us with your email:".center(60))
-            user_email = input(f"{colours.main_colour()}\n->  ")
+            while not is_valid_email(user_email):
+                colours.question("Please provide us with your email:".center(60))
+                user_email = input(f"{colours.main_colour()}\n->  ")
             print("\n")
             colours.question("Is this email correct?".center(60))
             print(f"{user_email}\n".center(60))
@@ -199,6 +202,7 @@ def opt_1_track_new_dialogue():
                 print(f"Great! You will get an email if the price of".center(60))
                 print(f"'{product_data['title'][:40]}'".center(60))
                 print(f"drops to {product_data['currency']}{product_data['target_price']}".center(60))
+                # create_updates_job()
                 valid_threshold = True
             else:
                 print(f"{colours.error()}Your desired price cannot be more than current price".center(60))
@@ -665,3 +669,4 @@ def get_main_menu_choice():
         case "0":
             return True
     return False
+

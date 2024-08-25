@@ -1,6 +1,5 @@
 from time import sleep
 
-
 class Colours:
     def dialogue(self):
         return "\33[0m"
@@ -91,10 +90,10 @@ def goodbye():
     """
     print(f"""{colours.main_colour()}  ................  \\\\      Bye bye!      //  ................""")
     print("""                 **    Thank you for using    **
-                        PriceTrackingApp!
+                           TrackMazon!
                             *   *   *""")
     sleep(4)
-    quit()
+    exit()
 
 
 @main_menu_ascii

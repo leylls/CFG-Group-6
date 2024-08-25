@@ -1,25 +1,21 @@
-import sys
+import argparse
+from cronjob.utils import create_updates_job
 from front_end.ft_end_dialogues_choice_logic import *
 from back_end.db_interactions import FrontEndDbInteractions
 from back_end.init_db import init_db
-from back_end.cron_price_tracking_and_email_notif import cron_job_run
 
 
-def run(cron_job = False):
-    if cron_job:
-        cron_job_run()
-        return
-    
+def run():
     """
-    App's central script.
-    :return:
+       App's central script.
+       :return:
     """
     app_welcome_ascii()
     wants_to_exit = False
     db = FrontEndDbInteractions()
-
     if not db.db_exists():
         init_db()
+        create_updates_job()
         new_user_setup_dialogue()
         sleep(1.5)
         main_menu_text(main_menu_options)
@@ -33,12 +29,18 @@ def run(cron_job = False):
             goodbye()
         else:
             main_menu_text(main_menu_options)
+
     return
 
+
 if __name__ == "__main__":
-    if len(sys.argv) > 1:                       #check if an argument is passed
-        argument = sys.argv[1].split('=',1)
-        if argument[0] == 'cron_job':
-            run(argument[1])
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-c", "--cron", help="run the cron job instead of the main application", action="store_true")
+    args = parser.parse_args()
+
+    if args.cron:
+        cron_job_run()
+
     else:
         run()
+

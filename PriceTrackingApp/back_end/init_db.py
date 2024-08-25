@@ -9,7 +9,7 @@ def init_db():
     current_dir = os.path.dirname(os.path.abspath(__file__))
     db_path = os.path.join(current_dir, 'price_tracker.db')
 
-    # Connecting to the SQLite database or creating the database file if it doesn't exist)
+    # Connecting to the SQLite database or creating the database file if it doesn't exist
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
