@@ -59,10 +59,22 @@ mailjet_rest
 sqlite3
 
 ```
-3. Running on Mac: Run main.py and make sure to update the API keys in the file.
-   Users using Mac will need to use "Manual Price-Drop Check" for task automation. 
 
-5. Running on Windows: Run (.exe file) for task automation. This can be found in the TrackMazon.zip file, download and unzip!
+## Running on Mac: 
+
+As this uses  MailJet API 
+
+Please register for an account to access the API, (this will be the sender email address) with MailJet API to access API key and API secret key. 
+
+``` https://app.mailjet.com/signup?lang=en_US ```
+
+Run main.py and make sure to update the API keys in the folder cronjob, file trackmazon_task.py 
+Users using Mac will need to use "Manual Price-Drop Check" for task automation.
+
+ 
+
+## Running on Windows:
+Run (.exe file) for task automation. This can be found in the TrackMazon.zip file, download and unzip!
 
 (Note the following limitations: the path cannot contain whitespaces, the computer must be plugged in, and it needs to be turned on at the scheduled time.)
 
@@ -83,7 +95,7 @@ Front End
 
 * ft_end_ascii_prints.py - Functions for ASCII art and stylized text output to enhance interface. 
 * ft_end_backend_interactions.py - Interactions between the front end and the back end. 
-* ft_end_dialogues_choice_logic.py - Logic for handling user choices/ dialogue flows in interface.
+* ft_end_dialogues_choice_logic.py - Logic for handling user choices/ dialogue flows in interface. 
 * ft_end_input_utils.py - Provides utility functions for processing and validating user input in the terminal interface.
 
  Back End
@@ -100,13 +112,14 @@ Front End
 
 ## Email API
 
-MailJet API - Please register for an account to access the API.
+
 ```
 https://dev.mailjet.com/email/guides/
-```
+``
+
 ## Helpful Tips
 
-To stop using the app and remove the scheduled task on Windows 10, follow these instructions:
+To stop using the app and remove the scheduled task on Windows, follow these instructions:
 
 * Open Task Scheduler: Press Win + S, type "Task Scheduler," and press Enter.
 
