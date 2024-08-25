@@ -115,9 +115,7 @@ Front End
 ## Email API
 
 
-```
-https://dev.mailjet.com/email/guides/
-``
+
 
 ## Helpful Tips
 
