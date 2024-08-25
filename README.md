@@ -70,7 +70,7 @@ Please register for an account to access the API, (this will be the sender email
 ``` https://app.mailjet.com/signup?lang=en_US ```
 
 Run main.py and make sure to update the API keys in the folder cronjob, file trackmazon_task.py 
-Users using Mac will need to use "Manual Price-Drop Check" for price tracking as price tracking is not automisised on Mac.
+Users on Mac will need to use "Manual Price-Drop Check" for price tracking as it is not automized on Mac systems.
  
 
 ## Running on Windows:
