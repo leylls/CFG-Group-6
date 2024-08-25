@@ -87,17 +87,18 @@ Front End
 
 
 
-##Authors
- Leyla Bush, Violeta Pereda, Eva Perez Chirinos, Shaira Jiwany, Ikram Ahmed
+## Authors
+
+Ikram Ahmed ,Leyla Bush, Violeta Pereda, Eva Perez Chirinos, Shaira Jiwany
 
 
 
-##License
+## License
 This project is open source.
 
 
 
-##Project Status
+## Project Status
 This app is created as a final project for Summer 2024 Software Engineering CFG Degree.
 The development of this project has stopped completely as we have submitted and presented this project.
 
