@@ -112,11 +112,6 @@ Front End
 
 
 
-## Email API
-
-
-
-
 ## Helpful Tips
 
 To stop using the app and remove the scheduled task on Windows, follow these instructions:
