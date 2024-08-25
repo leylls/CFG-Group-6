@@ -27,7 +27,7 @@ class PriceAlert:
 
 
     def send_alert(self, recipient_email, name, product_name, current_price, threshold_price, product_url, currency):
-        subject = f"Price Alert: {product_name}"
+        subject = f"TrackMazon Price Alert!: {product_name}"
         shortened_subject = PriceAlert.shorten_subject(subject)
         text_content = self._create_text_content(product_name, current_price, threshold_price)
         html_content = self._create_html_content(name, product_name, current_price, threshold_price, product_url, currency, recipient_email)
