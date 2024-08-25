@@ -16,7 +16,7 @@ for Amazon products, and offers users the ability to receive an email notificati
 Started
 - Specification and Design / Requirements
 - [Design and architecture / what software was used](  # contributing)
-    - [Video Demo](  # license)
+-  [Video Demo](  # license)
 
         ## Description
 
@@ -43,29 +43,20 @@ We wanted to create an app that would:
 Install
 dependencies:
 ```bash
-beautifulsoup4 == 4.12
-.3
-bs4 == 0.0
-.2
-certifi == 2024.7
-.4
-charset - normalizer == 3.3
-.2
+beautifulsoup4 == 4.12.3
+bs4 == 0.0.2
+certifi == 2024.7.4
+charset - normalizer == 3.3.2
 idna == 3.8
-mailjet - rest == 1.3
-.4
-requests == 2.32
-.3
+mailjet - rest == 1.3.4
+requests == 2.32.3
 soupsieve == 2.6
-urllib3 == 2.2
-.2
+urllib3 == 2.2.2
 sqllite
 ```
 
 ## Requirements
-1.
-Application is developed in Python
-3.12
+1. Application is developed in Python 3.12
 
 2.
 You
