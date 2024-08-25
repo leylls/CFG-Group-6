@@ -1,10 +1,5 @@
 
 
-< img
-width = "631"
-alt = "Screenshot 2024-08-24 at 18 57 31"
-src = "https://github.com/user-attachments/assets/973c8753-83be-4794-bda6-f064ab87d370" >
-
 # TRACKMAZON
 Our
 app is a
